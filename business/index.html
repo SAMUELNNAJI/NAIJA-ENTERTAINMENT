@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script>document.documentElement.classList.add('js');</script>
+<title>Business — News, strategies and growth ideas for Nigerian businesses</title>
+<link rel="icon" href="../assets/img/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <meta name="description" content="Business news, strategy, startups, small business and tools — practical resources for Nigerian entrepreneurs and business owners.">
+  <link rel="stylesheet" href="../assets/css/style.css">
+</head>
+<body data-page="business">
+
+<a class="btn btn--primary btn--sm" href="#main" style="position:absolute;left:-999px;top:0;z-index:100" onfocus="this.style.left='8px';this.style.top='8px'" onblur="this.style.left='-999px'">Skip to content</a>
+
+<!-- ================= HEADER ================= -->
+<header class="site-header">
+  <div class="container header__inner">
+    <a class="logo" href="home/index.html">
+      <span class="logo__mark">NE</span>
+      <span class="logo__text">The Nigerian<span>Entrepreneur</span></span>
+    </a>
+
+    <button class="icon-btn nav-toggle" id="navToggle" aria-label="Toggle navigation" aria-expanded="false">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+    </button>
+
+    <ul class="nav" id="nav">
+      <li class="nav__item"><a href="home/index.html">Home</a></li>
+
+      <li class="nav__item has-menu">
+        <button class="nav__trigger" aria-expanded="false">Finance <i class="caret"></i></button>
+        <ul class="dropdown">
+          <li><a href="finance/index.html">Investing</a></li>
+          <li><a href="finance/index.html">Personal Finance</a></li>
+          <li><a href="finance/index.html">Savings</a></li>
+          <li><a href="finance/index.html">Banking</a></li>
+          <li><a href="finance/index.html">Financial Tips</a></li>
+        </ul>
+      </li>
+
+      <li class="nav__item has-menu is-active">
+        <button class="nav__trigger" aria-expanded="false">Business <i class="caret"></i></button>
+        <ul class="dropdown">
+          <li><a href="business/index.html">Business News</a></li>
+          <li><a href="business/index.html">Strategy</a></li>
+          <li><a href="business/index.html">Startups</a></li>
+          <li><a href="business/index.html">Small Business</a></li>
+          <li><a href="business/index.html">Business Tools</a></li>
+        </ul>
+      </li>
+
+      <li class="nav__item"><a href="crypto/index.html">Crypto / Web 3.0</a></li>
+
+      <li class="nav__item has-menu">
+        <button class="nav__trigger" aria-expanded="false">Entrepreneur Corner <i class="caret"></i></button>
+        <ul class="dropdown">
+          <li><a href="entrepreneur/index.html">Startups</a></li>
+          <li><a href="entrepreneur/index.html">Startup Stories</a></li>
+          <li><a href="entrepreneur/index.html">Skills &amp; Tools</a></li>
+          <li><a href="entrepreneur/index.html">Funding</a></li>
+          <li><a href="entrepreneur/index.html">Motivation</a></li>
+        </ul>
+      </li>
+
+      <li class="nav__item has-menu">
+        <button class="nav__trigger" aria-expanded="false">Affiliates <i class="caret"></i></button>
+        <ul class="dropdown">
+          <li><a href="affiliates/index.html">Affiliate Marketing</a></li>
+          <li><a href="affiliates/index.html">Online Income</a></li>
+          <li><a href="affiliates/index.html">Programs</a></li>
+          <li><a href="affiliates/index.html">Tips &amp; Guides</a></li>
+        </ul>
+      </li>
+
+      <li class="nav__item has-menu">
+        <button class="nav__trigger" aria-expanded="false">More <i class="caret"></i></button>
+        <ul class="dropdown">
+          <li><a href="about/index.html">About Us</a></li>
+          <li><a href="contact/index.html">Contact</a></li>
+          <li><a href="privacy-policy/index.html">Privacy Policy</a></li>
+          <li><a href="404/index.html">404 Page</a></li>
+        </ul>
+      </li>
+    </ul>
+
+    <div class="header__actions">
+      <button class="icon-btn" id="searchToggle" aria-label="Search">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+      </button>
+      <a class="btn btn--primary btn--sm btn--sub-hide" href="#subscribe">Subscribe</a>
+    </div>
+  </div>
+
+  <div class="search-panel" id="searchPanel">
+    <div class="container">
+      <form data-search>
+        <input type="search" placeholder="Search articles, guides, funding, crypto…" aria-label="Search the site">
+        <button class="btn btn--primary" type="submit">Search</button>
+      </form>
+    </div>
+  </div>
+
+
+<main id="main">
+<section class="page-hero t-business">
+  <div class="hero-scene"><img src="../assets/img/scene-city.svg" alt="City skyline at dusk"></div>
+  <div class="container page-hero__body">
+    <nav class="crumbs"><a href="home/index.html">Home</a><span>›</span>Business</nav>
+    <h1>Business</h1>
+    <p>Business news, market trends, growth strategies and tools for Nigerian entrepreneurs and business owners.</p>
+    <div class="page-hero__actions"><a class="btn btn--light" href="#latest">Browse Articles</a>
+        <a class="btn btn--outline-light" href="entrepreneur/index.html">Startup Stories</a></div>
+  </div>
+</section>
+
+<div class="container" data-filter-scope>
+  <div class="filters" data-filter-group="this">
+    <span class="filters__label">Filter:</span>
+    <button class="chip is-active" data-filter="all">All</button>
+    <button class="chip" data-filter="news">Business News</button>
+    <button class="chip" data-filter="strategy">Strategy</button>
+    <button class="chip" data-filter="startups">Startups</button>
+    <button class="chip" data-filter="small">Small Business</button>
+    <button class="chip" data-filter="tools">Business Tools</button>
+  </div>
+
+  <div class="cat-grid">
+
+          <article class="feature-card reveal" data-tags="strategy small">
+            <a href="article-10-profitable-business-ideas/index.html">
+              <div class="media">
+                <img src="../assets/img/scene-laptop.svg" alt="Laptop on a desk with growth charts">
+                <span class="media__tag">Featured</span>
+              </div>
+              <div class="feature-card__body">
+                <h3>Nigerian SMEs: 5 Strategies to Survive and Thrive in 2025</h3>
+                <p>Discover practical strategies to help small and medium businesses navigate challenges, secure funding, and achieve sustainable growth.</p>
+            <div class="mini-card__meta">
+              <span>
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align:-2px"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 3.6-6 8-6s8 2 8 6"/></svg>
+                Ngozi Eze
+              </span>
+              <span class="dot">•</span><time datetime="2025-04-24">Apr 24, 2025</time>
+              <span class="dot">•</span><span>6 min read</span>
+            </div>
+              </div>
+            </a>
+          </article>
+    <div class="article-stack">
+
+          <article class="mini-card reveal" data-tags="strategy tools">
+            <a class="media" href="business/index.html"><img src="../assets/img/scene-ideas.svg" alt="Notebook with a plan"></a>
+            <div>
+              <span class="tagline tag-blue">Strategy</span>
+              <h4><a href="business/index.html">How to Write a Winning Business Plan</a></h4>
+              <div class="mini-card__meta"><time datetime="2025-04-21">Apr 21, 2025</time><span class="dot">•</span><span>6 min read</span></div>
+            </div>
+          </article>
+
+          <article class="mini-card reveal" data-tags="news">
+            <a class="media" href="business/index.html"><img src="../assets/img/scene-phones.svg" alt="Shopping on a phone"></a>
+            <div>
+              <span class="tagline tag-cyan">Business News</span>
+              <h4><a href="business/index.html">The Rise of E-commerce in Nigeria</a></h4>
+              <div class="mini-card__meta"><time datetime="2025-04-18">Apr 18, 2025</time><span class="dot">•</span><span>4 min read</span></div>
+            </div>
+          </article>
+
+          <article class="mini-card reveal" data-tags="small startups">
+            <a class="media" href="business/index.html"><img src="../assets/img/scene-team.svg" alt="Founders meeting"></a>
+            <div>
+              <span class="tagline tag-orange">Startups</span>
+              <h4><a href="business/index.html">5 Nigerian Entrepreneurs Making Global Impact</a></h4>
+              <div class="mini-card__meta"><time datetime="2025-04-16">Apr 16, 2025</time><span class="dot">•</span><span>7 min read</span></div>
+            </div>
+          </article>
+
+          <article class="mini-card reveal" data-tags="strategy">
+            <a class="media" href="business/index.html"><img src="../assets/img/scene-city.svg" alt="Growing business district"></a>
+            <div>
+              <span class="tagline tag-blue">Small Business</span>
+              <h4><a href="business/index.html">Business Opportunities in Nigeria’s Growing Sectors</a></h4>
+              <div class="mini-card__meta"><time datetime="2025-04-15">Apr 15, 2025</time><span class="dot">•</span><span>8 min read</span></div>
+            </div>
+          </article>
+
+          <article class="mini-card reveal" data-tags="tools" data-more-item hidden>
+            <a class="media" href="business/index.html"><img src="../assets/img/scene-desk.svg" alt="Bookkeeping desk"></a>
+            <div>
+              <span class="tagline tag-green">Business Tools</span>
+              <h4><a href="business/index.html">7 Free Tools Every Nigerian Small Business Needs</a></h4>
+              <div class="mini-card__meta"><time datetime="2025-04-13">Apr 13, 2025</time><span class="dot">•</span><span>6 min read</span></div>
+            </div>
+          </article>
+
+          <article class="mini-card reveal" data-tags="news strategy" data-more-item hidden>
+            <a class="media" href="business/index.html"><img src="../assets/img/scene-founder.svg" alt="Entrepreneur reviewing results"></a>
+            <div>
+              <span class="tagline tag-blue">Business News</span>
+              <h4><a href="business/index.html">What Nigeria’s New Tax Act Means for Your Business</a></h4>
+              <div class="mini-card__meta"><time datetime="2025-04-11">Apr 11, 2025</time><span class="dot">•</span><span>5 min read</span></div>
+            </div>
+          </article>
+
+          <article class="mini-card reveal" data-tags="startups" data-more-item hidden>
+            <a class="media" href="business/index.html"><img src="../assets/img/scene-startup.svg" alt="Founder on a ridge"></a>
+            <div>
+              <span class="tagline tag-orange">Startups</span>
+              <h4><a href="business/index.html">How to Register a Company in Nigeria: A Step-by-Step Guide</a></h4>
+              <div class="mini-card__meta"><time datetime="2025-04-09">Apr 9, 2025</time><span class="dot">•</span><span>7 min read</span></div>
+            </div>
+          </article>
+    </div>
+  </div>
+
+  <div data-empty hidden style="text-align:center;color:var(--muted);font-size:13.5px;padding:30px 0">
+    Nothing published in this filter yet — check back soon.
+  </div>
+
+  <div style="text-align:center;padding-bottom:8px" data-more-scope>
+    <button class="btn btn--ghost btn--sm" type="button" data-more-btn>Load more articles</button>
+  </div>
+</div>
+
+<section class="container" style="padding-bottom:12px">
+  <div class="cta cta--blue reveal">
+    <span class="cta__icon"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 20h18M7 20V10M12 20V4M17 20v-7"/></svg></span>
+    <div>
+      <h3>Grow Your Business</h3>
+      <p>Get expert insights, tools and resources to scale your business.</p>
+    </div>
+    <div class="cta__actions">
+      <a class="btn btn--light" href="business/index.html">Explore Resources →</a>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer class="site-footer">
+  <div class="container footer__inner">
+    <div class="footer__brand">
+      <a class="logo" href="home/index.html">
+        <span class="logo__mark">NE</span>
+        <span class="logo__text">The Nigerian<span>Entrepreneur</span></span>
+      </a>
+      <p>Inspiring a generation of Nigerians to build wealth, create jobs and shape the future of our economy — one smart decision at a time.</p>
+    </div>
+
+    <div class="footer__col">
+      <h4>Home</h4>
+      <ul>
+        <li><a href="home/index.html">Home</a></li>
+        <li><a href="about/index.html">About Us</a></li>
+        <li><a href="contact/index.html">Contact</a></li>
+        <li><a href="services/index.html">Services</a></li>
+        <li><a href="entrepreneur/index.html">Entrepreneur Corner</a></li>
+      </ul>
+    </div>
+
+    <div class="footer__col">
+      <h4>Finance</h4>
+      <ul>
+        <li><a href="finance/index.html">Investing</a></li>
+        <li><a href="finance/index.html">Personal Finance</a></li>
+        <li><a href="finance/index.html">Savings</a></li>
+        <li><a href="finance/index.html">Banking</a></li>
+        <li><a href="finance/index.html">Financial Tips</a></li>
+      </ul>
+    </div>
+
+    <div class="footer__col">
+      <h4>Business</h4>
+      <ul>
+        <li><a href="business/index.html">Business News</a></li>
+        <li><a href="business/index.html">Strategy</a></li>
+        <li><a href="business/index.html">Startups</a></li>
+        <li><a href="business/index.html">Small Business</a></li>
+        <li><a href="crypto/index.html">Crypto / Web 3.0</a></li>
+      </ul>
+    </div>
+
+    <div class="footer__col">
+      <h4>Legal</h4>
+      <ul>
+        <li><a href="privacy-policy/index.html">Privacy Policy</a></li>
+        <li><a href="privacy-policy/index.html#information-we-collect">Information We Collect</a></li>
+        <li><a href="privacy-policy/index.html#contact-us">Contact Us</a></li>
+        <li><a href="privacy-policy/index.html#cookies">Cookies</a></li>
+        <li><a href="404/index.html">404 Page</a></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="container footer__bottom">
+    <span>© <span data-year>2026</span> The Nigerian Entrepreneur. All rights reserved.</span>
+    <div class="socials">
+      <a class="s-x" href="#" aria-label="X">X</a>
+      <a class="s-f" href="#" aria-label="Facebook">f</a>
+      <a class="s-wa" href="#" aria-label="WhatsApp">W</a>
+      <a class="s-in" href="#" aria-label="LinkedIn">in</a>
+      <a class="s-ig" href="#" aria-label="Instagram">ig</a>
+    </div>
+    <nav>
+      <a href="privacy-policy/index.html">Privacy Policy</a>
+      <a href="privacy-policy/index.html#contact-us">Terms of Service</a>
+      <a href="privacy-policy/index.html#cookies">Cookies</a>
+    </nav>
+  </div>
+</footer>
+
+<button class="to-top" aria-label="Back to top">
+  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M12 19V6M6 12l6-6 6 6"/></svg>
+</button>
+<div class="toast" role="status" aria-live="polite"></div>
+
+<script src="../assets/js/main.js"></script>
+</body>

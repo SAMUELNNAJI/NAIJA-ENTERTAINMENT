@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500" role="img" aria-label="Open notebook with a written business idea">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#04361f"/><stop offset=".55" stop-color="#0e8a4f"/><stop offset="1" stop-color="#a7f3d0"/>
+    </linearGradient>
+    <linearGradient id="page" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#ffffff"/><stop offset="1" stop-color="#e7eef8"/>
+    </linearGradient>
+  </defs>
+  <rect width="800" height="500" fill="url(#bg)"/>
+  <circle cx="650" cy="110" r="140" fill="#ffffff" opacity=".10"/>
+  <circle cx="120" cy="410" r="110" fill="#ffffff" opacity=".07"/>
+  <rect y="386" width="800" height="114" fill="#7c4a1d" opacity=".35"/>
+  <g transform="rotate(-4 400 270)">
+    <rect x="120" y="150" width="290" height="240" rx="10" fill="url(#page)"/>
+    <rect x="400" y="150" width="290" height="240" rx="10" fill="#f1f5f9"/>
+    <g stroke="#0e8a4f" stroke-width="6" fill="none" stroke-linecap="round" opacity=".85">
+      <path d="M150 200h230M150 232h190M150 264h230M150 296h150"/>
+    </g>
+    <g stroke="#1d4ed8" stroke-width="7" fill="none" stroke-linecap="round" opacity=".85">
+      <path d="M436 200h220M436 236h170"/>
+    </g>
+    <text x="436" y="300" font-family="Segoe UI, Arial" font-size="54" font-weight="700" fill="#1d4ed8">Business</text>
+    <text x="436" y="356" font-family="Segoe UI, Arial" font-size="54" font-weight="700" fill="#0e8a4f">Ideas</text>
+    <g stroke="#d1d5db" stroke-width="3" opacity=".9"><path d="M400 150v240"/></g>
+  </g>
+  <g transform="rotate(20 726 176)">
+    <rect x="712" y="56" width="28" height="220" rx="8" fill="#f8fafc"/>
+    <rect x="712" y="56" width="28" height="46" fill="#f59e0b"/>
+    <path d="M726 276l-16 22h32z" fill="#111827"/>
+  </g>
+</svg>

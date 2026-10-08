@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script>document.documentElement.classList.add('js');</script>
+<title>Finance — Practical financial tips, tools and resources</title>
+<link rel="icon" href="../assets/img/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <meta name="description" content="Learn how to budget, save, invest and grow your money in Nigeria with practical guides on personal finance, savings, banking and wealth building.">
+  <link rel="stylesheet" href="../assets/css/style.css">
+</head>
+<body data-page="finance">
+
+<a class="btn btn--primary btn--sm" href="#main" style="position:absolute;left:-999px;top:0;z-index:100" onfocus="this.style.left='8px';this.style.top='8px'" onblur="this.style.left='-999px'">Skip to content</a>
+
+<!-- ================= HEADER ================= -->
+<header class="site-header">
+  <div class="container header__inner">
+    <a class="logo" href="home/index.html">
+      <span class="logo__mark">NE</span>
+      <span class="logo__text">The Nigerian<span>Entrepreneur</span></span>
+    </a>
+
+    <button class="icon-btn nav-toggle" id="navToggle" aria-label="Toggle navigation" aria-expanded="false">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+    </button>
+
+    <ul class="nav" id="nav">
+      <li class="nav__item"><a href="home/index.html">Home</a></li>
+
+      <li class="nav__item has-menu is-active">
+        <button class="nav__trigger" aria-expanded="false">Finance <i class="caret"></i></button>
+        <ul class="dropdown">
+          <li><a href="finance/index.html">Investing</a></li>
+          <li><a href="finance/index.html">Personal Finance</a></li>
+          <li><a href="finance/index.html">Savings</a></li>
+          <li><a href="finance/index.html">Banking</a></li>
+          <li><a href="finance/index.html">Financial Tips</a></li>
+        </ul>
+      </li>
+
+      <li class="nav__item has-menu">
+        <button class="nav__trigger" aria-expanded="false">Business <i class="caret"></i></button>
+        <ul class="dropdown">
+          <li><a href="business/index.html">Business News</a></li>
+          <li><a href="business/index.html">Strategy</a></li>
+          <li><a href="business/index.html">Startups</a></li>
+          <li><a href="business/index.html">Small Business</a></li>
+          <li><a href="business/index.html">Business Tools</a></li>
+        </ul>
+      </li>
+
+      <li class="nav__item"><a href="crypto/index.html">Crypto / Web 3.0</a></li>
+
+      <li class="nav__item has-menu">
+        <button class="nav__trigger" aria-expanded="false">Entrepreneur Corner <i class="caret"></i></button>
+        <ul class="dropdown">
+          <li><a href="entrepreneur/index.html">Startups</a></li>
+          <li><a href="entrepreneur/index.html">Startup Stories</a></li>
+          <li><a href="entrepreneur/index.html">Skills &amp; Tools</a></li>
+          <li><a href="entrepreneur/index.html">Funding</a></li>
+          <li><a href="entrepreneur/index.html">Motivation</a></li>
+        </ul>
+      </li>
+
+      <li class="nav__item has-menu">
+        <button class="nav__trigger" aria-expanded="false">Affiliates <i class="caret"></i></button>
+        <ul class="dropdown">
+          <li><a href="affiliates/index.html">Affiliate Marketing</a></li>
+          <li><a href="affiliates/index.html">Online Income</a></li>
+          <li><a href="affiliates/index.html">Programs</a></li>
+          <li><a href="affiliates/index.html">Tips &amp; Guides</a></li>
+        </ul>
+      </li>
+
+      <li class="nav__item has-menu">
+        <button class="nav__trigger" aria-expanded="false">More <i class="caret"></i></button>
+        <ul class="dropdown">
+          <li><a href="about/index.html">About Us</a></li>
+          <li><a href="contact/index.html">Contact</a></li>
+          <li><a href="privacy-policy/index.html">Privacy Policy</a></li>
+          <li><a href="404/index.html">404 Page</a></li>
+        </ul>
+      </li>
+    </ul>
+
+    <div class="header__actions">
+      <button class="icon-btn" id="searchToggle" aria-label="Search">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+      </button>
+      <a class="btn btn--primary btn--sm btn--sub-hide" href="#subscribe">Subscribe</a>
+    </div>
+  </div>
+
+  <div class="search-panel" id="searchPanel">
+    <div class="container">
+      <form data-search>
+        <input type="search" placeholder="Search articles, guides, funding, crypto…" aria-label="Search the site">
+        <button class="btn btn--primary" type="submit">Search</button>
+      </form>
+    </div>
+  </div>
+
+
+<main id="main">
+<section class="page-hero t-finance">
+  <div class="hero-scene"><img src="../assets/img/scene-coins.svg" alt="Coin stacks with a growing plant"></div>
+  <div class="container page-hero__body">
+    <nav class="crumbs"><a href="home/index.html">Home</a><span>›</span>Finance</nav>
+    <h1>Finance</h1>
+    <p>Practical financial tips, investment strategies, and tools to help you manage, grow and protect your money. Learn how to build wealth and financial freedom as a Nigerian entrepreneur.</p>
+    <div class="page-hero__actions"><a class="btn btn--light" href="#latest">Browse Articles</a>
+        <a class="btn btn--outline-light" href="crypto/index.html">Crypto &amp; Web3</a></div>
+  </div>
+</section>
+
+<div class="container" data-filter-scope>
+  <div class="filters" data-filter-group="this">
+    <span class="filters__label">Filter:</span>
+    <button class="chip is-active" data-filter="all">All</button>
+    <button class="chip" data-filter="investing">Investing</button>
+    <button class="chip" data-filter="personal">Personal Finance</button>
+    <button class="chip" data-filter="savings">Savings</button>
+    <button class="chip" data-filter="banking">Banking</button>
+    <button class="chip" data-filter="tips">Financial Tips</button>
+  </div>
+
+  <div class="cat-grid">
+
+          <article class="feature-card reveal" data-tags="investing personal">
+            <a href="article-10-profitable-business-ideas/index.html">
+              <div class="media">
+                <img src="../assets/img/scene-desk.svg" alt="Notebook, pen and savings jar on a study desk">
+                <span class="media__tag">Featured</span>
+              </div>
+              <div class="feature-card__body">
+                <h3>How to Build a Solid Investment Portfolio in Nigeria</h3>
+                <p>Learn the investment options available to you, asset management tips and how to grow your wealth steadily — whether you are starting small or scaling up.</p>
+            <div class="mini-card__meta">
+              <span>
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align:-2px"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 3.6-6 8-6s8 2 8 6"/></svg>
+                Ngozi Eze
+              </span>
+              <span class="dot">•</span><time datetime="2025-04-25">Apr 25, 2025</time>
+              <span class="dot">•</span><span>6 min read</span>
+            </div>
+              </div>
+            </a>
+          </article>
+    <div class="article-stack">
+
+          <article class="mini-card reveal" data-tags="savings personal tips">
+            <a class="media" href="finance/index.html"><img src="../assets/img/scene-laptop.svg" alt="Budget chart on a laptop"></a>
+            <div>
+              <span class="tagline tag-green">Savings</span>
+              <h4><a href="finance/index.html">7 Smart Ways to Save Money in Nigeria (Even on a Low Income)</a></h4>
+              <div class="mini-card__meta"><time datetime="2025-04-22">Apr 22, 2025</time><span class="dot">•</span><span>7 min read</span></div>
+            </div>
+          </article>
+
+          <article class="mini-card reveal" data-tags="tips personal">
+            <a class="media" href="finance/index.html"><img src="../assets/img/scene-team.svg" alt="Experts discussing money"></a>
+            <div>
+              <span class="tagline tag-orange">Personal Finance</span>
+              <h4><a href="finance/index.html">Understanding Inflation and How to Protect Your Money</a></h4>
+              <div class="mini-card__meta"><time datetime="2025-04-20">Apr 20, 2025</time><span class="dot">•</span><span>5 min read</span></div>
+            </div>
+          </article>
+
+          <article class="mini-card reveal" data-tags="banking">
+            <a class="media" href="finance/index.html"><img src="../assets/img/scene-city.svg" alt="Bank building in the city"></a>
+            <div>
+              <span class="tagline tag-blue">Banking</span>
+              <h4><a href="finance/index.html">The Best Nigerian Banks for Business Owners in 2025</a></h4>
+              <div class="mini-card__meta"><time datetime="2025-04-17">Apr 17, 2025</time><span class="dot">•</span><span>6 min read</span></div>
+            </div>
+          </article>
+
+          <article class="mini-card reveal" data-tags="tips savings">
+            <a class="media" href="finance/index.html"><img src="../assets/img/scene-cafe.svg" alt="Saving money at a cafe"></a>
+            <div>
+              <span class="tagline tag-green">Financial Tips</span>
+              <h4><a href="finance/index.html">Financial Freedom: 7 Habits of Successful Nigerians</a></h4>
+              <div class="mini-card__meta"><time datetime="2025-04-15">Apr 15, 2025</time><span class="dot">•</span><span>8 min read</span></div>
+            </div>
+          </article>
+
+          <article class="mini-card reveal" data-tags="investing" data-more-item hidden>
+            <a class="media" href="finance/index.html"><img src="../assets/img/scene-crypto.svg" alt="Digital assets"></a>
+            <div>
+              <span class="tagline tag-purple">Investing</span>
+              <h4><a href="finance/index.html">Stocks vs. Crypto: Where Should Nigerians Invest in 2025?</a></h4>
+              <div class="mini-card__meta"><time datetime="2025-04-12">Apr 12, 2025</time><span class="dot">•</span><span>7 min read</span></div>
+            </div>
+          </article>
+
+          <article class="mini-card reveal" data-tags="banking tips" data-more-item hidden>
+            <a class="media" href="finance/index.html"><img src="../assets/img/scene-founder.svg" alt="Business owner reviewing finances"></a>
+            <div>
+              <span class="tagline tag-blue">Banking</span>
+              <h4><a href="finance/index.html">Getting a Business Loan in Nigeria: What Banks Look For</a></h4>
+              <div class="mini-card__meta"><time datetime="2025-04-10">Apr 10, 2025</time><span class="dot">•</span><span>6 min read</span></div>
+            </div>
+          </article>
+
+          <article class="mini-card reveal" data-tags="savings personal" data-more-item hidden>
+            <a class="media" href="finance/index.html"><img src="../assets/img/scene-ideas.svg" alt="Written savings plan"></a>
+            <div>
+              <span class="tagline tag-green">Savings</span>
+              <h4><a href="finance/index.html">A Simple Budget Template That Works for Nigerian Households</a></h4>
+              <div class="mini-card__meta"><time datetime="2025-04-08">Apr 8, 2025</time><span class="dot">•</span><span>5 min read</span></div>
+            </div>
+          </article>
+    </div>
+  </div>
+
+  <div data-empty hidden style="text-align:center;color:var(--muted);font-size:13.5px;padding:30px 0">
+    Nothing published in this filter yet — check back soon.
+  </div>
+
+  <div style="text-align:center;padding-bottom:8px" data-more-scope>
+    <button class="btn btn--ghost btn--sm" type="button" data-more-btn>Load more articles</button>
+  </div>
+</div>
+
+<section class="container" style="padding-bottom:12px">
+  <div class="cta reveal">
+    <span class="cta__icon"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 17l5-6 4 4 5-8 4 5"/><path d="M3 21h18"/></svg></span>
+    <div>
+      <h3>Get smart with your money.</h3>
+      <p>Subscribe for the latest finance tips and business guides.</p>
+    </div>
+    <div class="cta__form">
+      <input type="email" placeholder="Enter your email address" aria-label="Email address">
+      <button class="btn btn--light" type="button" onclick="TNE_subscribe(this)">Subscribe</button>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer class="site-footer">
+  <div class="container footer__inner">
+    <div class="footer__brand">
+      <a class="logo" href="home/index.html">
+        <span class="logo__mark">NE</span>
+        <span class="logo__text">The Nigerian<span>Entrepreneur</span></span>
+      </a>
+      <p>Inspiring a generation of Nigerians to build wealth, create jobs and shape the future of our economy — one smart decision at a time.</p>
+    </div>
+
+    <div class="footer__col">
+      <h4>Home</h4>
+      <ul>
+        <li><a href="home/index.html">Home</a></li>
+        <li><a href="about/index.html">About Us</a></li>
+        <li><a href="contact/index.html">Contact</a></li>
+        <li><a href="services/index.html">Services</a></li>
+        <li><a href="entrepreneur/index.html">Entrepreneur Corner</a></li>
+      </ul>
+    </div>
+
+    <div class="footer__col">
+      <h4>Finance</h4>
+      <ul>
+        <li><a href="finance/index.html">Investing</a></li>
+        <li><a href="finance/index.html">Personal Finance</a></li>
+        <li><a href="finance/index.html">Savings</a></li>
+        <li><a href="finance/index.html">Banking</a></li>
+        <li><a href="finance/index.html">Financial Tips</a></li>
+      </ul>
+    </div>
+
+    <div class="footer__col">
+      <h4>Business</h4>
+      <ul>
+        <li><a href="business/index.html">Business News</a></li>
+        <li><a href="business/index.html">Strategy</a></li>
+        <li><a href="business/index.html">Startups</a></li>
+        <li><a href="business/index.html">Small Business</a></li>
+        <li><a href="crypto/index.html">Crypto / Web 3.0</a></li>
+      </ul>
+    </div>
+
+    <div class="footer__col">
+      <h4>Legal</h4>
+      <ul>
+        <li><a href="privacy-policy/index.html">Privacy Policy</a></li>
+        <li><a href="privacy-policy/index.html#information-we-collect">Information We Collect</a></li>
+        <li><a href="privacy-policy/index.html#contact-us">Contact Us</a></li>
+        <li><a href="privacy-policy/index.html#cookies">Cookies</a></li>
+        <li><a href="404/index.html">404 Page</a></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="container footer__bottom">
+    <span>© <span data-year>2026</span> The Nigerian Entrepreneur. All rights reserved.</span>
+    <div class="socials">
+      <a class="s-x" href="#" aria-label="X">X</a>
+      <a class="s-f" href="#" aria-label="Facebook">f</a>
+      <a class="s-wa" href="#" aria-label="WhatsApp">W</a>
+      <a class="s-in" href="#" aria-label="LinkedIn">in</a>
+      <a class="s-ig" href="#" aria-label="Instagram">ig</a>
+    </div>
+    <nav>
+      <a href="privacy-policy/index.html">Privacy Policy</a>
+      <a href="privacy-policy/index.html#contact-us">Terms of Service</a>
+      <a href="privacy-policy/index.html#cookies">Cookies</a>
+    </nav>
+  </div>
+</footer>
+
+<button class="to-top" aria-label="Back to top">
+  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M12 19V6M6 12l6-6 6 6"/></svg>
+</button>
+<div class="toast" role="status" aria-live="polite"></div>
+
+<script src="../assets/js/main.js"></script>
+</body>

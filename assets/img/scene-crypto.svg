@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500" role="img" aria-label="Crypto coins and blockchain network">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#2e1065"/><stop offset=".55" stop-color="#7c3aed"/><stop offset="1" stop-color="#c084fc"/>
+    </linearGradient>
+    <radialGradient id="coin" cx="35%" cy="30%">
+      <stop offset="0" stop-color="#f5d0fe"/><stop offset="1" stop-color="#7c3aed"/>
+    </radialGradient>
+    <radialGradient id="coin2" cx="35%" cy="30%">
+      <stop offset="0" stop-color="#bae6fd"/><stop offset="1" stop-color="#2563eb"/>
+    </radialGradient>
+    <radialGradient id="coin3" cx="35%" cy="30%">
+      <stop offset="0" stop-color="#fde68a"/><stop offset="1" stop-color="#d97706"/>
+    </radialGradient>
+  </defs>
+  <rect width="800" height="500" fill="url(#bg)"/>
+  <circle cx="400" cy="250" r="180" fill="#ffffff" opacity=".06"/>
+  <g stroke="#e9d5ff" stroke-width="2" opacity=".45" fill="none">
+    <path d="M120 130 300 90 470 170 660 120 700 300 520 400 300 360 140 420"/>
+    <path d="M300 90 300 360M470 170 520 400M660 120 700 300"/>
+  </g>
+  <g fill="#e9d5ff" opacity=".7">
+    <circle cx="300" cy="90" r="7"/><circle cx="470" cy="170" r="7"/><circle cx="660" cy="120" r="7"/>
+    <circle cx="300" cy="360" r="7"/><circle cx="520" cy="400" r="7"/><circle cx="140" cy="420" r="7"/>
+  </g>
+  <g>
+    <circle cx="392" cy="252" r="96" fill="url(#coin)"/>
+    <text x="392" y="286" font-family="Segoe UI, Arial" font-size="104" font-weight="700" fill="#fff" text-anchor="middle" opacity=".92">₿</text>
+    <circle cx="215" cy="205" r="52" fill="url(#coin3)"/>
+    <text x="215" y="222" font-family="Segoe UI, Arial" font-size="46" font-weight="700" fill="#fff" text-anchor="middle" opacity=".9">₦</text>
+    <circle cx="586" cy="300" r="46" fill="url(#coin2)"/>
+    <text x="586" y="314" font-family="Segoe UI, Arial" font-size="40" font-weight="700" fill="#fff" text-anchor="middle" opacity=".9">Ξ</text>
+    <circle cx="180" cy="368" r="34" fill="url(#coin2)" opacity=".9"/>
+    <circle cx="660" cy="180" r="30" fill="url(#coin)" opacity=".9"/>
+  </g>
+  <ellipse cx="400" cy="424" rx="250" ry="34" fill="#1e0b45" opacity=".45"/>
+</svg>

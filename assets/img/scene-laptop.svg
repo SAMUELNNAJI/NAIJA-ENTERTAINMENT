@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500" role="img" aria-label="Laptop on a desk with growth charts">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#0b2a6b"/><stop offset=".5" stop-color="#1d4ed8"/><stop offset="1" stop-color="#7dd3fc"/>
+    </linearGradient>
+    <linearGradient id="scr" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#f0f9ff"/><stop offset="1" stop-color="#bfdbfe"/>
+    </linearGradient>
+    <linearGradient id="wood" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#8b5a2b"/><stop offset="1" stop-color="#5b3a19"/>
+    </linearGradient>
+  </defs>
+  <rect width="800" height="500" fill="url(#bg)"/>
+  <circle cx="672" cy="86" r="158" fill="#ffffff" opacity=".10"/>
+  <circle cx="120" cy="430" r="120" fill="#ffffff" opacity=".07"/>
+  <rect y="356" width="800" height="144" fill="url(#wood)"/>
+  <rect y="356" width="800" height="10" fill="#ffffff" opacity=".18"/>
+  <!-- laptop -->
+  <rect x="238" y="150" width="330" height="212" rx="16" fill="#0f172a"/>
+  <rect x="256" y="168" width="294" height="176" rx="9" fill="url(#scr)"/>
+  <rect x="272" y="184" width="150" height="12" rx="6" fill="#1d4ed8" opacity=".75"/>
+  <rect x="272" y="206" width="104" height="8" rx="4" fill="#334155" opacity=".45"/>
+  <g fill="#12a35d">
+    <rect x="278" y="300" width="22" height="26" rx="4"/><rect x="308" y="286" width="22" height="40" rx="4"/>
+    <rect x="338" y="266" width="22" height="60" rx="4"/><rect x="368" y="246" width="22" height="80" rx="4"/>
+  </g>
+  <g fill="#1d4ed8" opacity=".7">
+    <rect x="418" y="212" width="16" height="114" rx="4"/><rect x="442" y="232" width="16" height="94" rx="4"/>
+    <rect x="466" y="252" width="16" height="74" rx="4"/><rect x="490" y="272" width="16" height="54" rx="4"/>
+  </g>
+  <path d="M214 362h378l26 28H188z" fill="#1e293b"/>
+  <!-- mug -->
+  <rect x="120" y="298" width="66" height="64" rx="8" fill="#f8fafc"/>
+  <path d="M186 312h16a16 16 0 0 1 0 32h-16z" fill="none" stroke="#f8fafc" stroke-width="7"/>
+  <path d="M138 288c0-14 14-14 14-28M160 288c0-14 14-14 14-28" stroke="#ffffff" stroke-width="6" fill="none" opacity=".55" stroke-linecap="round"/>
+  <!-- notebook -->
+  <rect x="620" y="316" width="140" height="46" rx="6" fill="#f8fafc" transform="rotate(-8 690 340)"/>
+  <g stroke="#1d4ed8" stroke-width="4" opacity=".5">
+    <path d="M636 330h96M636 342h96M636 354h70"/>
+  </g>
+</svg>

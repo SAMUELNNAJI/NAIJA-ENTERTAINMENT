@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500" role="img" aria-label="Business team collaborating around a table">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#111827"/><stop offset=".5" stop-color="#1f2937"/><stop offset="1" stop-color="#4b5563"/>
+    </linearGradient>
+    <linearGradient id="skin" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#d8a07a"/><stop offset="1" stop-color="#b07a56"/>
+    </linearGradient>
+  </defs>
+  <rect width="800" height="500" fill="url(#bg)"/>
+  <circle cx="140" cy="90" r="120" fill="#ffffff" opacity=".05"/>
+  <rect x="60" y="60" width="180" height="120" rx="10" fill="#0f172a" opacity=".8"/>
+  <g fill="#22c55e" opacity=".5"><rect x="80" y="150" width="20" height="14" rx="3"/><rect x="110" y="128" width="20" height="36" rx="3"/><rect x="140" y="104" width="20" height="60" rx="3"/><rect x="170" y="82" width="20" height="82" rx="3"/></g>
+  <rect x="540" y="70" width="190" height="110" rx="10" fill="#0f172a" opacity=".8"/>
+  <g stroke="#38bdf8" stroke-width="5" opacity=".6"><path d="M560 160l40-38 34 22 40-52 36 30"/></g>
+  <rect y="392" width="800" height="108" fill="#0b1220"/>
+  <rect x="120" y="356" width="560" height="26" rx="10" fill="#1f2937"/>
+  <!-- people -->
+  <g>
+    <circle cx="196" cy="252" r="26" fill="url(#skin)"/>
+    <path d="M162 350c0-30 15-52 34-52s34 22 34 52z" fill="#0e7490"/>
+    <circle cx="330" cy="238" r="28" fill="#8d5524"/>
+    <path d="M292 352c0-34 17-56 38-56s38 22 38 56z" fill="#16a34a"/>
+    <circle cx="470" cy="250" r="27" fill="url(#skin)"/>
+    <path d="M432 352c0-32 17-54 38-54s38 22 38 54z" fill="#b45309"/>
+    <circle cx="606" cy="242" r="26" fill="#c68642"/>
+    <path d="M570 352c0-32 16-54 36-54s36 22 36 54z" fill="#4338ca"/>
+    <!-- laptops -->
+    <rect x="270" y="306" width="112" height="52" rx="6" fill="#e2e8f0"/>
+    <rect x="440" y="308" width="112" height="50" rx="6" fill="#cbd5e1"/>
+  </g>
+  <g fill="#1c1917">
+    <path d="M150 208c8-24 44-28 56-4-16-6-38-4-56 4z"/>
+    <path d="M292 186c14-26 62-26 76 2-24-10-52-10-76-2z"/>
+    <path d="M438 208c10-24 48-26 60-2-18-8-40-6-60 2z"/>
+    <path d="M576 202c10-24 48-26 60-2-18-8-40-6-60 2z"/>
+  </g>
+</svg>
