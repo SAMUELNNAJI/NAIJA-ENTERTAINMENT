@@ -47,6 +47,7 @@ const HEADER_LINKS = {
 
 /** Every page sits one directory deep, so root-relative URLs gain a `../`. */
 const routeUrl = (file) => `../${ROUTES[file]}`;
+const ROUTE_FILES = new Set(Object.values(ROUTES));
 
 /**
  * Rewrites root-relative URLs for pages that live in their own directory.
@@ -62,6 +63,7 @@ export function rebase(html) {
 
     if (file.startsWith('assets/')) return `${attr}="../${file}${hash}"`;
     if (ROUTES[file]) return `${attr}="${routeUrl(file)}${hash}"`;
+    if (ROUTE_FILES.has(file)) return `${attr}="../${file}${hash}"`;
     return match;
   });
 }
@@ -84,8 +86,8 @@ function markActive(html, active) {
   const href = HEADER_LINKS[active];
   if (!href) return html;
 
-  // tries the authored name first, then the rebased path
-  for (const target of [href, ROUTES[href]]) {
+  // tries the authored name, then the rebased path
+  for (const target of [href, ROUTES[href], routeUrl(href)]) {
     // direct link (Crypto / Web 3.0)
     const direct = `<li class="nav__item"><a href="${target}">`;
     if (html.includes(direct)) {
