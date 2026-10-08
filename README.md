@@ -14,11 +14,11 @@ it — open `index.html` in a browser.
 | `contact.html` | Contact Us — validated message form + contact details sidebar |
 | `privacy-policy.html` | Privacy Policy — sticky table of contents + numbered sections |
 | `404.html` | Page Not Found |
-| `category-finance.html` | Finance archive |
-| `category-business.html` | Business archive |
-| `category-crypto.html` | Crypto / Web 3.0 archive |
-| `category-entrepreneur.html` | Entrepreneur Corner archive |
-| `category-affiliates.html` | Affiliates archive |
+| `finance.html` | Finance archive |
+| `business.html` | Business archive |
+| `crypto.html` | Crypto / Web 3.0 archive |
+| `entrepreneur.html` | Entrepreneur Corner archive |
+| `affiliates.html` | Affiliates archive |
 | `article-10-profitable-business-ideas.html` | Full article with table of contents and share row |
 
 ## Assets

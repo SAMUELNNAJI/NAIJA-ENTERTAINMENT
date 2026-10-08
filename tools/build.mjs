@@ -1,7 +1,7 @@
 /**
  * Static site generator for "The Nigerian Entrepreneur".
  *
- * home/index.html is the shell: its <head>, header and footer are extracted
+ * index.html is the shell: its <head>, header and footer are extracted
  * once and reused for every other page, so navigation stays identical
  * site-wide. Page bodies live in ./content-*.mjs.
  *
@@ -17,23 +17,23 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
-const SHELL = 'home/index.html';
+const SHELL = 'index.html';
 const shell = fs.readFileSync(path.join(root, SHELL), 'utf8');
 
 /* page name (as authored) -> directory it lives in */
 const ROUTES = {
-  'index.html': 'home/index.html',
-  'services.html': 'services/index.html',
-  'about.html': 'about/index.html',
-  'contact.html': 'contact/index.html',
-  'privacy-policy.html': 'privacy-policy/index.html',
-  '404.html': '404/index.html',
-  'category-finance.html': 'finance/index.html',
-  'category-business.html': 'business/index.html',
-  'category-crypto.html': 'crypto/index.html',
-  'category-entrepreneur.html': 'entrepreneur/index.html',
-  'category-affiliates.html': 'affiliates/index.html',
-  'article-10-profitable-business-ideas.html': 'article-10-profitable-business-ideas/index.html'
+  'index.html': 'index.html',
+  'services.html': 'services.html',
+  'about.html': 'about.html',
+  'contact.html': 'contact.html',
+  'privacy-policy.html': 'privacy-policy.html',
+  '404.html': '404.html',
+  'category-finance.html': 'finance.html',
+  'category-business.html': 'business.html',
+  'category-crypto.html': 'crypto.html',
+  'category-entrepreneur.html': 'entrepreneur.html',
+  'category-affiliates.html': 'affiliates.html',
+  'article-10-profitable-business-ideas.html': 'article-10-profitable-business-ideas.html'
 };
 
 /* which nav entry each content section belongs to */
@@ -46,7 +46,7 @@ const HEADER_LINKS = {
 };
 
 /** Every page sits one directory deep, so root-relative URLs gain a `../`. */
-const routeUrl = (file) => `../${ROUTES[file]}`;
+const routeUrl = (file) => ROUTES[file];
 
 /**
  * Rewrites root-relative URLs for pages that live in their own directory.
@@ -60,7 +60,7 @@ export function rebase(html) {
     const file = hashAt === -1 ? url : url.slice(0, hashAt);
     const hash = hashAt === -1 ? '' : url.slice(hashAt);
 
-    if (file.startsWith('assets/')) return `${attr}="../${file}${hash}"`;
+    if (file.startsWith('assets/')) return match;
     if (ROUTES[file]) return `${attr}="${routeUrl(file)}${hash}"`;
     return match;
   });
