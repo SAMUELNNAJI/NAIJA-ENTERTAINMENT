@@ -69,15 +69,22 @@ export function rebase(html) {
 }
 
 /* ---------- extract reusable pieces from the shell page ---------- */
-const slice = (from, to) => {
+/**
+ * Copies shell text from `from` up to `to`.
+ * `to` is exclusive by default; pass { inclusive: true } to keep the marker
+ * itself. The header needs this: dropping `</header>` would leave <main>,
+ * <footer>, .to-top and .toast nested inside <header>, which breaks the
+ * sticky positioning and the dropdown stacking.
+ */
+const slice = (from, to, { inclusive = false } = {}) => {
   const a = shell.indexOf(from);
   const b = shell.indexOf(to, a);
   if (a === -1 || b === -1) throw new Error(`Could not extract "${from}" from ${SHELL}`);
-  return shell.slice(a, b);
+  return shell.slice(a, inclusive ? b + to.length : b);
 };
 
 const head = slice('<!DOCTYPE html>', '<link rel="stylesheet"').trim();
-const header = slice('<a class="btn btn--primary btn--sm" href="#main"', '</header>');
+const header = slice('<a class="btn btn--primary btn--sm" href="#main"', '</header>', { inclusive: true });
 const footer = slice('<footer class="site-footer">', '</html>');
 
 /** Marks the matching nav entry (or its dropdown parent) as active. */
