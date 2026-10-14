@@ -14,7 +14,7 @@ const meta = (author, iso, date, minutes) => `
             </div>`;
 
 const featureCard = (a) => `
-          <article class="feature-card reveal" data-tags="${a.tags}">
+          <article class="feature-card feature-card--spotlight reveal" data-tags="${a.tags}">
             <a href="${a.href}">
               <div class="media">
                 <img src="${a.img}" alt="${a.alt}">
@@ -23,6 +23,7 @@ const featureCard = (a) => `
               <div class="feature-card__body">
                 <h3>${a.title}</h3>
                 <p>${a.blurb}</p>${meta(a.author, a.iso, a.date, a.time)}
+                <span class="feature-card__cta">Read full story <svg class="ico" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
               </div>
             </a>
           </article>`;
@@ -92,7 +93,7 @@ const pages = [
     description: 'Learn how to budget, save, invest and grow your money in Nigeria with practical guides on personal finance, savings, banking and wealth building.',
     body: page({
       theme: 't-finance',
-      img: 'assets/img/scene-coins.svg',
+      img: 'assets/img/photos/coins.jpg',
       alt: 'Coin stacks with a growing plant',
       crumb: 'Finance',
       title: 'Finance',
@@ -103,7 +104,7 @@ const pages = [
       feature: {
         tags: 'investing personal',
         href: 'article-10-profitable-business-ideas.html',
-        img: 'assets/img/scene-desk.svg',
+        img: 'assets/img/photos/desk.jpg',
         alt: 'Notebook, pen and savings jar on a study desk',
         tag: 'Featured',
         title: 'How to Build a Solid Investment Portfolio in Nigeria',
@@ -114,15 +115,15 @@ const pages = [
         time: 6
       },
       stack: [
-        { tags: 'savings personal tips', href: 'category-finance.html', img: 'assets/img/scene-laptop.svg', alt: 'Budget chart on a laptop', tagClass: 'tag-green', tag: 'Savings', title: '7 Smart Ways to Save Money in Nigeria (Even on a Low Income)', iso: '2025-04-22', date: 'Apr 22, 2025', time: 7 },
-        { tags: 'tips personal', href: 'category-finance.html', img: 'assets/img/scene-team.svg', alt: 'Experts discussing money', tagClass: 'tag-orange', tag: 'Personal Finance', title: 'Understanding Inflation and How to Protect Your Money', iso: '2025-04-20', date: 'Apr 20, 2025', time: 5 },
-        { tags: 'banking', href: 'category-finance.html', img: 'assets/img/scene-city.svg', alt: 'Bank building in the city', tagClass: 'tag-blue', tag: 'Banking', title: 'The Best Nigerian Banks for Business Owners in 2025', iso: '2025-04-17', date: 'Apr 17, 2025', time: 6 },
-        { tags: 'tips savings', href: 'category-finance.html', img: 'assets/img/scene-cafe.svg', alt: 'Saving money at a cafe', tagClass: 'tag-green', tag: 'Financial Tips', title: 'Financial Freedom: 7 Habits of Successful Nigerians', iso: '2025-04-15', date: 'Apr 15, 2025', time: 8 }
+        { tags: 'savings personal tips', href: 'category-finance.html', img: 'assets/img/photos/laptop.jpg', alt: 'Budget chart on a laptop', tagClass: 'tag-green', tag: 'Savings', title: '7 Smart Ways to Save Money in Nigeria (Even on a Low Income)', iso: '2025-04-22', date: 'Apr 22, 2025', time: 7 },
+        { tags: 'tips personal', href: 'category-finance.html', img: 'assets/img/photos/team.jpg', alt: 'Experts discussing money', tagClass: 'tag-orange', tag: 'Personal Finance', title: 'Understanding Inflation and How to Protect Your Money', iso: '2025-04-20', date: 'Apr 20, 2025', time: 5 },
+        { tags: 'banking', href: 'category-finance.html', img: 'assets/img/photos/city.jpg', alt: 'Bank building in the city', tagClass: 'tag-blue', tag: 'Banking', title: 'The Best Nigerian Banks for Business Owners in 2025', iso: '2025-04-17', date: 'Apr 17, 2025', time: 6 },
+        { tags: 'tips savings', href: 'category-finance.html', img: 'assets/img/photos/cafe.jpg', alt: 'Saving money at a cafe', tagClass: 'tag-green', tag: 'Financial Tips', title: 'Financial Freedom: 7 Habits of Successful Nigerians', iso: '2025-04-15', date: 'Apr 15, 2025', time: 8 }
       ],
       more: [
-        { tags: 'investing', href: 'category-finance.html', img: 'assets/img/scene-crypto.svg', alt: 'Digital assets', tagClass: 'tag-purple', tag: 'Investing', title: 'Stocks vs. Crypto: Where Should Nigerians Invest in 2025?', iso: '2025-04-12', date: 'Apr 12, 2025', time: 7 },
-        { tags: 'banking tips', href: 'category-finance.html', img: 'assets/img/scene-founder.svg', alt: 'Business owner reviewing finances', tagClass: 'tag-blue', tag: 'Banking', title: 'Getting a Business Loan in Nigeria: What Banks Look For', iso: '2025-04-10', date: 'Apr 10, 2025', time: 6 },
-        { tags: 'savings personal', href: 'category-finance.html', img: 'assets/img/scene-ideas.svg', alt: 'Written savings plan', tagClass: 'tag-green', tag: 'Savings', title: 'A Simple Budget Template That Works for Nigerian Households', iso: '2025-04-08', date: 'Apr 8, 2025', time: 5 }
+        { tags: 'investing', href: 'category-finance.html', img: 'assets/img/photos/crypto.jpg', alt: 'Digital assets', tagClass: 'tag-purple', tag: 'Investing', title: 'Stocks vs. Crypto: Where Should Nigerians Invest in 2025?', iso: '2025-04-12', date: 'Apr 12, 2025', time: 7 },
+        { tags: 'banking tips', href: 'category-finance.html', img: 'assets/img/photos/founder.jpg', alt: 'Business owner reviewing finances', tagClass: 'tag-blue', tag: 'Banking', title: 'Getting a Business Loan in Nigeria: What Banks Look For', iso: '2025-04-10', date: 'Apr 10, 2025', time: 6 },
+        { tags: 'savings personal', href: 'category-finance.html', img: 'assets/img/photos/ideas.jpg', alt: 'Written savings plan', tagClass: 'tag-green', tag: 'Savings', title: 'A Simple Budget Template That Works for Nigerian Households', iso: '2025-04-08', date: 'Apr 8, 2025', time: 5 }
       ],
       cta: `  <div class="cta reveal">
     <span class="cta__icon"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 17l5-6 4 4 5-8 4 5"/><path d="M3 21h18"/></svg></span>
@@ -143,7 +144,7 @@ const pages = [
     description: 'Business news, strategy, startups, small business and tools — practical resources for Nigerian entrepreneurs and business owners.',
     body: page({
       theme: 't-business',
-      img: 'assets/img/scene-city.svg',
+      img: 'assets/img/photos/city.jpg',
       alt: 'City skyline at dusk',
       crumb: 'Business',
       title: 'Business',
@@ -154,7 +155,7 @@ const pages = [
       feature: {
         tags: 'strategy small',
         href: 'article-10-profitable-business-ideas.html',
-        img: 'assets/img/scene-laptop.svg',
+        img: 'assets/img/photos/laptop.jpg',
         alt: 'Laptop on a desk with growth charts',
         tag: 'Featured',
         title: 'Nigerian SMEs: 5 Strategies to Survive and Thrive in 2025',
@@ -165,15 +166,15 @@ const pages = [
         time: 6
       },
       stack: [
-        { tags: 'strategy tools', href: 'category-business.html', img: 'assets/img/scene-ideas.svg', alt: 'Notebook with a plan', tagClass: 'tag-blue', tag: 'Strategy', title: 'How to Write a Winning Business Plan', iso: '2025-04-21', date: 'Apr 21, 2025', time: 6 },
-        { tags: 'news', href: 'category-business.html', img: 'assets/img/scene-phones.svg', alt: 'Shopping on a phone', tagClass: 'tag-cyan', tag: 'Business News', title: 'The Rise of E-commerce in Nigeria', iso: '2025-04-18', date: 'Apr 18, 2025', time: 4 },
-        { tags: 'small startups', href: 'category-business.html', img: 'assets/img/scene-team.svg', alt: 'Founders meeting', tagClass: 'tag-orange', tag: 'Startups', title: '5 Nigerian Entrepreneurs Making Global Impact', iso: '2025-04-16', date: 'Apr 16, 2025', time: 7 },
-        { tags: 'strategy', href: 'category-business.html', img: 'assets/img/scene-city.svg', alt: 'Growing business district', tagClass: 'tag-blue', tag: 'Small Business', title: 'Business Opportunities in Nigeria’s Growing Sectors', iso: '2025-04-15', date: 'Apr 15, 2025', time: 8 }
+        { tags: 'strategy tools', href: 'category-business.html', img: 'assets/img/photos/ideas.jpg', alt: 'Notebook with a plan', tagClass: 'tag-blue', tag: 'Strategy', title: 'How to Write a Winning Business Plan', iso: '2025-04-21', date: 'Apr 21, 2025', time: 6 },
+        { tags: 'news', href: 'category-business.html', img: 'assets/img/photos/phones.jpg', alt: 'Shopping on a phone', tagClass: 'tag-cyan', tag: 'Business News', title: 'The Rise of E-commerce in Nigeria', iso: '2025-04-18', date: 'Apr 18, 2025', time: 4 },
+        { tags: 'small startups', href: 'category-business.html', img: 'assets/img/photos/team.jpg', alt: 'Founders meeting', tagClass: 'tag-orange', tag: 'Startups', title: '5 Nigerian Entrepreneurs Making Global Impact', iso: '2025-04-16', date: 'Apr 16, 2025', time: 7 },
+        { tags: 'strategy', href: 'category-business.html', img: 'assets/img/photos/city.jpg', alt: 'Growing business district', tagClass: 'tag-blue', tag: 'Small Business', title: 'Business Opportunities in Nigeria’s Growing Sectors', iso: '2025-04-15', date: 'Apr 15, 2025', time: 8 }
       ],
       more: [
-        { tags: 'tools', href: 'category-business.html', img: 'assets/img/scene-desk.svg', alt: 'Bookkeeping desk', tagClass: 'tag-green', tag: 'Business Tools', title: '7 Free Tools Every Nigerian Small Business Needs', iso: '2025-04-13', date: 'Apr 13, 2025', time: 6 },
-        { tags: 'news strategy', href: 'category-business.html', img: 'assets/img/scene-founder.svg', alt: 'Entrepreneur reviewing results', tagClass: 'tag-blue', tag: 'Business News', title: 'What Nigeria’s New Tax Act Means for Your Business', iso: '2025-04-11', date: 'Apr 11, 2025', time: 5 },
-        { tags: 'startups', href: 'category-business.html', img: 'assets/img/scene-startup.svg', alt: 'Founder on a ridge', tagClass: 'tag-orange', tag: 'Startups', title: 'How to Register a Company in Nigeria: A Step-by-Step Guide', iso: '2025-04-09', date: 'Apr 9, 2025', time: 7 }
+        { tags: 'tools', href: 'category-business.html', img: 'assets/img/photos/desk.jpg', alt: 'Bookkeeping desk', tagClass: 'tag-green', tag: 'Business Tools', title: '7 Free Tools Every Nigerian Small Business Needs', iso: '2025-04-13', date: 'Apr 13, 2025', time: 6 },
+        { tags: 'news strategy', href: 'category-business.html', img: 'assets/img/photos/founder.jpg', alt: 'Entrepreneur reviewing results', tagClass: 'tag-blue', tag: 'Business News', title: 'What Nigeria’s New Tax Act Means for Your Business', iso: '2025-04-11', date: 'Apr 11, 2025', time: 5 },
+        { tags: 'startups', href: 'category-business.html', img: 'assets/img/photos/startup.jpg', alt: 'Founder on a ridge', tagClass: 'tag-orange', tag: 'Startups', title: 'How to Register a Company in Nigeria: A Step-by-Step Guide', iso: '2025-04-09', date: 'Apr 9, 2025', time: 7 }
       ],
       cta: `  <div class="cta cta--blue reveal">
     <span class="cta__icon"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 20h18M7 20V10M12 20V4M17 20v-7"/></svg></span>
@@ -182,7 +183,7 @@ const pages = [
       <p>Get expert insights, tools and resources to scale your business.</p>
     </div>
     <div class="cta__actions">
-      <a class="btn btn--light" href="category-business.html">Explore Resources →</a>
+      <a class="btn btn--light" href="category-business.html">Explore Resources <svg class="ico" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
     </div>
   </div>`
     })
@@ -197,7 +198,7 @@ const pages = [
     description: 'Blockchain, crypto news, Web3, DeFi and NFT insights for Nigerians — the next generation of on-chain business and investment.',
     body: page({
       theme: 't-crypto',
-      img: 'assets/img/scene-crypto.svg',
+      img: 'assets/img/photos/crypto.jpg',
       alt: 'Crypto coins with a blockchain network',
       crumb: 'Crypto / Web 3.0',
       title: 'Crypto / Web 3.0',
@@ -208,7 +209,7 @@ const pages = [
       feature: {
         tags: 'crypto blockchain',
         href: 'article-10-profitable-business-ideas.html',
-        img: 'assets/img/scene-crypto.svg',
+        img: 'assets/img/photos/crypto.jpg',
         alt: 'Bitcoin and altcoins',
         tag: 'Featured',
         title: 'Bitcoin Price Analysis: What to Expect in 2025',
@@ -219,15 +220,15 @@ const pages = [
         time: 7
       },
       stack: [
-        { tags: 'crypto', href: 'category-crypto.html', img: 'assets/img/scene-crypto.svg', alt: 'Altcoin list', tagClass: 'tag-purple', tag: 'Crypto News', title: 'Top 5 Altcoins to Watch in 2025', iso: '2025-04-20', date: 'Apr 20, 2025', time: 5 },
-        { tags: 'web3', href: 'category-crypto.html', img: 'assets/img/scene-phones.svg', alt: 'Web3 apps on a phone', tagClass: 'tag-cyan', tag: 'Web3', title: 'What is Web3 and Why It Matters', iso: '2025-04-18', date: 'Apr 18, 2025', time: 6 },
-        { tags: 'defi', href: 'category-crypto.html', img: 'assets/img/scene-coins.svg', alt: 'DeFi tokens', tagClass: 'tag-green', tag: 'DeFi', title: 'How to Get Started with DeFi', iso: '2025-04-16', date: 'Apr 16, 2025', time: 6 },
-        { tags: 'crypto blockchain', href: 'category-crypto.html', img: 'assets/img/scene-desk.svg', alt: 'Crypto wallet checklist', tagClass: 'tag-purple', tag: 'Wallets', title: 'Best Crypto Wallets for Nigerians', iso: '2025-04-14', date: 'Apr 14, 2025', time: 5 }
+        { tags: 'crypto', href: 'category-crypto.html', img: 'assets/img/photos/crypto.jpg', alt: 'Altcoin list', tagClass: 'tag-purple', tag: 'Crypto News', title: 'Top 5 Altcoins to Watch in 2025', iso: '2025-04-20', date: 'Apr 20, 2025', time: 5 },
+        { tags: 'web3', href: 'category-crypto.html', img: 'assets/img/photos/phones.jpg', alt: 'Web3 apps on a phone', tagClass: 'tag-cyan', tag: 'Web3', title: 'What is Web3 and Why It Matters', iso: '2025-04-18', date: 'Apr 18, 2025', time: 6 },
+        { tags: 'defi', href: 'category-crypto.html', img: 'assets/img/photos/coins.jpg', alt: 'DeFi tokens', tagClass: 'tag-green', tag: 'DeFi', title: 'How to Get Started with DeFi', iso: '2025-04-16', date: 'Apr 16, 2025', time: 6 },
+        { tags: 'crypto blockchain', href: 'category-crypto.html', img: 'assets/img/photos/desk.jpg', alt: 'Crypto wallet checklist', tagClass: 'tag-purple', tag: 'Wallets', title: 'Best Crypto Wallets for Nigerians', iso: '2025-04-14', date: 'Apr 14, 2025', time: 5 }
       ],
       more: [
-        { tags: 'nfts', href: 'category-crypto.html', img: 'assets/img/scene-team.svg', alt: 'Digital collectables', tagClass: 'tag-orange', tag: 'NFTs', title: 'NFTs in Nigeria: Creative Passions Meet Blockchain', iso: '2025-04-12', date: 'Apr 12, 2025', time: 6 },
-        { tags: 'blockchain web3', href: 'category-crypto.html', img: 'assets/img/scene-city.svg', alt: 'Distributed network over a city', tagClass: 'tag-blue', tag: 'Blockchain', title: 'Beyond Crypto: Real-World Use Cases of Blockchain in Nigeria', iso: '2025-04-10', date: 'Apr 10, 2025', time: 8 },
-        { tags: 'defi crypto', href: 'category-crypto.html', img: 'assets/img/scene-founder.svg', alt: 'Person using a crypto app', tagClass: 'tag-green', tag: 'DeFi', title: 'Yield Farming Explained for First-Time Users', iso: '2025-04-07', date: 'Apr 7, 2025', time: 7 }
+        { tags: 'nfts', href: 'category-crypto.html', img: 'assets/img/photos/team.jpg', alt: 'Digital collectables', tagClass: 'tag-orange', tag: 'NFTs', title: 'NFTs in Nigeria: Creative Passions Meet Blockchain', iso: '2025-04-12', date: 'Apr 12, 2025', time: 6 },
+        { tags: 'blockchain web3', href: 'category-crypto.html', img: 'assets/img/photos/city.jpg', alt: 'Distributed network over a city', tagClass: 'tag-blue', tag: 'Blockchain', title: 'Beyond Crypto: Real-World Use Cases of Blockchain in Nigeria', iso: '2025-04-10', date: 'Apr 10, 2025', time: 8 },
+        { tags: 'defi crypto', href: 'category-crypto.html', img: 'assets/img/photos/founder.jpg', alt: 'Person using a crypto app', tagClass: 'tag-green', tag: 'DeFi', title: 'Yield Farming Explained for First-Time Users', iso: '2025-04-07', date: 'Apr 7, 2025', time: 7 }
       ],
       cta: `  <div class="cta cta--purple reveal">
     <span class="cta__icon"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg></span>
@@ -248,7 +249,7 @@ const pages = [
     description: 'Inspiration, startup stories, skills, tools and resources for aspiring and existing Nigerian entrepreneurs — from idea to impact.',
     body: page({
       theme: 't-startup',
-      img: 'assets/img/scene-startup.svg',
+      img: 'assets/img/photos/startup.jpg',
       alt: 'Entrepreneur silhouette on a mountain ridge at sunrise',
       crumb: 'Entrepreneur Corner',
       title: 'Entrepreneur Corner',
@@ -259,7 +260,7 @@ const pages = [
       feature: {
         tags: 'motivation stories',
         href: 'article-10-profitable-business-ideas.html',
-        img: 'assets/img/scene-founder.svg',
+        img: 'assets/img/photos/founder.jpg',
         alt: 'Founder smiling with a laptop',
         tag: 'Featured',
         title: 'From Idea to Impact: Lessons from Nigerian Founders',
@@ -270,15 +271,15 @@ const pages = [
         time: 8
       },
       stack: [
-        { tags: 'startups skills', href: 'category-entrepreneur.html', img: 'assets/img/scene-ideas.svg', alt: 'Testing a business idea', tagClass: 'tag-orange', tag: 'Startups', title: 'How to Validate Your Business Idea', iso: '2025-04-15', date: 'Apr 15, 2025', time: 6 },
-        { tags: 'skills', href: 'category-entrepreneur.html', img: 'assets/img/scene-team.svg', alt: 'Team working together', tagClass: 'tag-blue', tag: 'Skills & Tools', title: 'Essential Skills Every Entrepreneur Needs', iso: '2025-04-12', date: 'Apr 12, 2025', time: 7 },
-        { tags: 'funding', href: 'category-entrepreneur.html', img: 'assets/img/scene-city.svg', alt: 'Investors meeting', tagClass: 'tag-cyan', tag: 'Funding', title: 'Accessing Funding as a Nigerian Startup', iso: '2025-04-10', date: 'Apr 10, 2025', time: 6 },
-        { tags: 'motivation', href: 'category-entrepreneur.html', img: 'assets/img/scene-startup.svg', alt: 'Climbing the next mountain', tagClass: 'tag-orange', tag: 'Motivation', title: 'Overcoming Challenges as a Young Entrepreneur', iso: '2025-04-08', date: 'Apr 8, 2025', time: 6 }
+        { tags: 'startups skills', href: 'category-entrepreneur.html', img: 'assets/img/photos/ideas.jpg', alt: 'Testing a business idea', tagClass: 'tag-orange', tag: 'Startups', title: 'How to Validate Your Business Idea', iso: '2025-04-15', date: 'Apr 15, 2025', time: 6 },
+        { tags: 'skills', href: 'category-entrepreneur.html', img: 'assets/img/photos/team.jpg', alt: 'Team working together', tagClass: 'tag-blue', tag: 'Skills & Tools', title: 'Essential Skills Every Entrepreneur Needs', iso: '2025-04-12', date: 'Apr 12, 2025', time: 7 },
+        { tags: 'funding', href: 'category-entrepreneur.html', img: 'assets/img/photos/city.jpg', alt: 'Investors meeting', tagClass: 'tag-cyan', tag: 'Funding', title: 'Accessing Funding as a Nigerian Startup', iso: '2025-04-10', date: 'Apr 10, 2025', time: 6 },
+        { tags: 'motivation', href: 'category-entrepreneur.html', img: 'assets/img/photos/startup.jpg', alt: 'Climbing the next mountain', tagClass: 'tag-orange', tag: 'Motivation', title: 'Overcoming Challenges as a Young Entrepreneur', iso: '2025-04-08', date: 'Apr 8, 2025', time: 6 }
       ],
       more: [
-        { tags: 'stories', href: 'category-entrepreneur.html', img: 'assets/img/scene-laptop.svg', alt: 'Founder at work', tagClass: 'tag-green', tag: 'Startup Stories', title: 'How a Lagos Side Hustle Became a ₦50M Yearly Business', iso: '2025-04-06', date: 'Apr 6, 2025', time: 7 },
-        { tags: 'funding startups', href: 'category-entrepreneur.html', img: 'assets/img/scene-cafe.svg', alt: 'Pitch meeting over coffee', tagClass: 'tag-blue', tag: 'Funding', title: 'Grants and Programs Nigerian Founders Can Apply For', iso: '2025-04-04', date: 'Apr 4, 2025', time: 8 },
-        { tags: 'skills tools', href: 'category-entrepreneur.html', img: 'assets/img/scene-desk.svg', alt: 'Planning a launch', tagClass: 'tag-purple', tag: 'Skills & Tools', title: 'Project Management Basics for Busy Founders', iso: '2025-04-02', date: 'Apr 2, 2025', time: 6 }
+        { tags: 'stories', href: 'category-entrepreneur.html', img: 'assets/img/photos/laptop.jpg', alt: 'Founder at work', tagClass: 'tag-green', tag: 'Startup Stories', title: 'How a Lagos Side Hustle Became a ₦50M Yearly Business', iso: '2025-04-06', date: 'Apr 6, 2025', time: 7 },
+        { tags: 'funding startups', href: 'category-entrepreneur.html', img: 'assets/img/photos/cafe.jpg', alt: 'Pitch meeting over coffee', tagClass: 'tag-blue', tag: 'Funding', title: 'Grants and Programs Nigerian Founders Can Apply For', iso: '2025-04-04', date: 'Apr 4, 2025', time: 8 },
+        { tags: 'skills tools', href: 'category-entrepreneur.html', img: 'assets/img/photos/desk.jpg', alt: 'Planning a launch', tagClass: 'tag-purple', tag: 'Skills & Tools', title: 'Project Management Basics for Busy Founders', iso: '2025-04-02', date: 'Apr 2, 2025', time: 6 }
       ],
       cta: `  <div class="cta cta--orange reveal">
     <span class="cta__icon"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M13 2 4 14h6l-1 8 9-12h-6z"/></svg></span>
@@ -287,7 +288,7 @@ const pages = [
       <p>Get resources, mentorship and tools to help you grow.</p>
     </div>
     <div class="cta__actions">
-      <a class="btn btn--light" href="contact.html">Explore More →</a>
+      <a class="btn btn--light" href="contact.html">Explore More <svg class="ico" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
     </div>
   </div>`
     })
@@ -302,7 +303,7 @@ const pages = [
     description: 'Affiliate marketing, online income, programs and proven strategies — learn how to make money online in Nigeria as an affiliate marketer.',
     body: page({
       theme: 't-affiliate',
-      img: 'assets/img/scene-phones.svg',
+      img: 'assets/img/photos/phones.jpg',
       alt: 'Hand holding a phone showing an affiliate dashboard',
       crumb: 'Affiliates',
       title: 'Affiliates',
@@ -313,7 +314,7 @@ const pages = [
       feature: {
         tags: 'marketing guides',
         href: 'article-10-profitable-business-ideas.html',
-        img: 'assets/img/scene-phones.svg',
+        img: 'assets/img/photos/phones.jpg',
         alt: 'Affiliate dashboard on a smartphone',
         tag: 'Featured',
         title: 'Step-by-Step Guide to Making Money with Affiliate Marketing in Nigeria',
@@ -324,15 +325,15 @@ const pages = [
         time: 10
       },
       stack: [
-        { tags: 'programs', href: 'category-affiliates.html', img: 'assets/img/scene-crypto.svg', alt: 'Program list', tagClass: 'tag-purple', tag: 'Programs', title: 'Top 10 Best Affiliate Programs for Nigerians', iso: '2025-04-16', date: 'Apr 16, 2025', time: 7 },
-        { tags: 'marketing guides', href: 'category-affiliates.html', img: 'assets/img/scene-laptop.svg', alt: 'Blog being written', tagClass: 'tag-green', tag: 'Tips & Guides', title: 'How to Create a High-Converting Blog', iso: '2025-04-14', date: 'Apr 14, 2025', time: 8 },
-        { tags: 'online', href: 'category-affiliates.html', img: 'assets/img/scene-coins.svg', alt: 'Passive income coins', tagClass: 'tag-blue', tag: 'Online Income', title: 'Passive Income Ideas for 2025', iso: '2025-04-12', date: 'Apr 12, 2025', time: 6 },
-        { tags: 'marketing', href: 'category-affiliates.html', img: 'assets/img/scene-team.svg', alt: 'Marketing meeting', tagClass: 'tag-orange', tag: 'Affiliate Marketing', title: 'Affiliate Marketing Mistakes to Avoid', iso: '2025-04-10', date: 'Apr 10, 2025', time: 6 }
+        { tags: 'programs', href: 'category-affiliates.html', img: 'assets/img/photos/crypto.jpg', alt: 'Program list', tagClass: 'tag-purple', tag: 'Programs', title: 'Top 10 Best Affiliate Programs for Nigerians', iso: '2025-04-16', date: 'Apr 16, 2025', time: 7 },
+        { tags: 'marketing guides', href: 'category-affiliates.html', img: 'assets/img/photos/laptop.jpg', alt: 'Blog being written', tagClass: 'tag-green', tag: 'Tips & Guides', title: 'How to Create a High-Converting Blog', iso: '2025-04-14', date: 'Apr 14, 2025', time: 8 },
+        { tags: 'online', href: 'category-affiliates.html', img: 'assets/img/photos/coins.jpg', alt: 'Passive income coins', tagClass: 'tag-blue', tag: 'Online Income', title: 'Passive Income Ideas for 2025', iso: '2025-04-12', date: 'Apr 12, 2025', time: 6 },
+        { tags: 'marketing', href: 'category-affiliates.html', img: 'assets/img/photos/team.jpg', alt: 'Marketing meeting', tagClass: 'tag-orange', tag: 'Affiliate Marketing', title: 'Affiliate Marketing Mistakes to Avoid', iso: '2025-04-10', date: 'Apr 10, 2025', time: 6 }
       ],
       more: [
-        { tags: 'online', href: 'category-affiliates.html', img: 'assets/img/scene-ideas.svg', alt: 'Digital product ideas', tagClass: 'tag-cyan', tag: 'Online Income', title: 'Selling Digital Products in Nigeria: A Beginner’s Roadmap', iso: '2025-04-08', date: 'Apr 8, 2025', time: 7 },
-        { tags: 'guides', href: 'category-affiliates.html', img: 'assets/img/scene-founder.svg', alt: 'Creator with a camera', tagClass: 'tag-blue', tag: 'Tips & Guides', title: 'Using Short-Form Video to Drive Affiliate Sales', iso: '2025-04-06', date: 'Apr 6, 2025', time: 6 },
-        { tags: 'programs online', href: 'category-affiliates.html', img: 'assets/img/scene-city.svg', alt: 'Global affiliate network', tagClass: 'tag-green', tag: 'Programs', title: 'How Affiliate Payments Work: Payout Methods Nigerians Can Use', iso: '2025-04-03', date: 'Apr 3, 2025', time: 5 }
+        { tags: 'online', href: 'category-affiliates.html', img: 'assets/img/photos/ideas.jpg', alt: 'Digital product ideas', tagClass: 'tag-cyan', tag: 'Online Income', title: 'Selling Digital Products in Nigeria: A Beginner’s Roadmap', iso: '2025-04-08', date: 'Apr 8, 2025', time: 7 },
+        { tags: 'guides', href: 'category-affiliates.html', img: 'assets/img/photos/founder.jpg', alt: 'Creator with a camera', tagClass: 'tag-blue', tag: 'Tips & Guides', title: 'Using Short-Form Video to Drive Affiliate Sales', iso: '2025-04-06', date: 'Apr 6, 2025', time: 6 },
+        { tags: 'programs online', href: 'category-affiliates.html', img: 'assets/img/photos/city.jpg', alt: 'Global affiliate network', tagClass: 'tag-green', tag: 'Programs', title: 'How Affiliate Payments Work: Payout Methods Nigerians Can Use', iso: '2025-04-03', date: 'Apr 3, 2025', time: 5 }
       ],
       cta: `  <div class="cta cta--cyan reveal">
     <span class="cta__icon"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M17 3h4v4"/><path d="M21 3 11 13"/><path d="M8 21H5a2 2 0 0 1-2-2v-3M15 21h4a2 2 0 0 0 2-2v-3"/></svg></span>
@@ -341,7 +342,7 @@ const pages = [
       <p>Join 50+ affiliate programs and earn with proven strategies.</p>
     </div>
     <div class="cta__actions">
-      <a class="btn btn--light" href="contact.html">Get Started →</a>
+      <a class="btn btn--light" href="contact.html">Get Started <svg class="ico" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
     </div>
   </div>`
     })

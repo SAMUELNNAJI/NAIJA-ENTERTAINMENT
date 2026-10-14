@@ -25,6 +25,26 @@
   }
 
   /* ---------------------------------------------------------
+     Theme toggle (light / dark)
+     --------------------------------------------------------- */
+  var themeBtn = $('#themeToggle');
+  function applyTheme(t) {
+    document.documentElement.setAttribute('data-theme', t);
+    if (themeBtn) {
+      themeBtn.setAttribute('aria-pressed', t === 'dark' ? 'true' : 'false');
+      themeBtn.setAttribute('aria-label', t === 'dark' ? 'Switch to light mode' : 'Switch to dark mode');
+    }
+  }
+  applyTheme(document.documentElement.getAttribute('data-theme') || 'light');
+  if (themeBtn) {
+    themeBtn.addEventListener('click', function () {
+      var next = document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+      applyTheme(next);
+      try { localStorage.setItem('theme', next); } catch (e) {}
+    });
+  }
+
+  /* ---------------------------------------------------------
      Header: dropdown menus (desktop) / accordion (mobile)
      --------------------------------------------------------- */
   var nav = $('#nav');
@@ -50,13 +70,31 @@
     });
   });
 
+  var navBackdrop = $('#navBackdrop');
+  var navClose = $('#navClose');
+
+  function setDrawer(open) {
+    if (!nav || !navToggle) return;
+    nav.classList.toggle('is-open', open);
+    navToggle.classList.toggle('is-open', open);
+    navToggle.setAttribute('aria-expanded', String(open));
+    navToggle.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
+    if (navBackdrop) navBackdrop.hidden = !open;
+    document.documentElement.classList.toggle('no-scroll', open);
+    if (!open) closeAllMenus(null);
+  }
+
   if (navToggle && nav) {
     navToggle.addEventListener('click', function () {
-      var open = nav.classList.toggle('is-open');
-      navToggle.setAttribute('aria-expanded', String(open));
-      navToggle.innerHTML = open
-        ? '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M18 6 6 18M6 6l12 12"/></svg>'
-        : '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M3 6h18M3 12h18M3 18h18"/></svg>';
+      setDrawer(!nav.classList.contains('is-open'));
+    });
+    if (navBackdrop) navBackdrop.addEventListener('click', function () { setDrawer(false); });
+    if (navClose) navClose.addEventListener('click', function () { setDrawer(false); });
+    $$('a', nav).forEach(function (a) {
+      a.addEventListener('click', function () { setDrawer(false); });
+    });
+    window.addEventListener('resize', function () {
+      if (window.innerWidth > 1100 && nav.classList.contains('is-open')) setDrawer(false);
     });
   }
 
@@ -67,7 +105,7 @@
   document.addEventListener('keydown', function (e) {
     if (e.key === 'Escape') {
       closeAllMenus(null);
-      if (nav) nav.classList.remove('is-open');
+      setDrawer(false);
       var panel = $('#searchPanel');
       if (panel) panel.classList.remove('is-open');
     }
@@ -261,6 +299,155 @@
   }
 
   /* ---------------------------------------------------------
+     Category cards — mad coverflow carousel
+     Progressively enhances the static .cat-cards grid inside any
+     [data-carousel] section into a 3D, draggable, auto-rotating
+     carousel. Leaves the accessible grid untouched for no-JS and
+     reduced-motion visitors.
+     --------------------------------------------------------- */
+  function initCategoryCarousel(track) {
+    var slides = $$('.cat-card', track);
+    var n = slides.length;
+    if (n < 3) return;
+
+    // Carousel cards own their positioning via JS transforms.
+    // Remove reveal-animation hooks so hover/focus can never trigger
+    // a conflicting transform or transition-delay from the reveal system.
+    slides.forEach(function (slide) {
+      slide.classList.remove('reveal');
+      slide.classList.add('is-in');
+      slide.style.transitionDelay = '0ms';
+    });
+
+    var wrap = document.createElement('div');
+    wrap.className = 'carousel';
+    wrap.setAttribute('tabindex', '0');
+    wrap.setAttribute('role', 'region');
+    wrap.setAttribute('aria-roledescription', 'carousel');
+    wrap.setAttribute('aria-label', 'Browse categories');
+    track.parentNode.insertBefore(wrap, track);
+    wrap.appendChild(track);
+    track.classList.add('cat-cards--carousel');
+
+    function arrowBtn(dir, label, path) {
+      var b = document.createElement('button');
+      b.type = 'button';
+      b.className = 'carousel__arrow carousel__arrow--' + dir;
+      b.setAttribute('aria-label', label);
+      b.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="' + path + '"/></svg>';
+      return b;
+    }
+    var prevBtn = arrowBtn('prev', 'Previous category', 'M15 6l-6 6 6 6');
+    var nextBtn = arrowBtn('next', 'Next category', 'M9 6l6 6-6 6');
+    wrap.appendChild(prevBtn);
+    wrap.appendChild(nextBtn);
+
+    var dots = document.createElement('div');
+    dots.className = 'carousel__dots';
+    dots.setAttribute('role', 'tablist');
+    dots.setAttribute('aria-label', 'Category slides');
+    var dotEls = slides.map(function (slide, i) {
+      var b = document.createElement('button');
+      b.type = 'button';
+      b.className = 'carousel__dot';
+      var title = $('h3', slide);
+      b.setAttribute('aria-label', 'Show ' + (title ? title.textContent : 'slide ' + (i + 1)));
+      b.addEventListener('click', function () { goTo(i); kick(); });
+      dots.appendChild(b);
+      return b;
+    });
+    wrap.appendChild(dots);
+
+    var current = 0;
+
+    function layout() {
+      var w = wrap.clientWidth || 900;
+      var spacing = Math.max(130, Math.min(w * 0.23, 260));
+      slides.forEach(function (slide, i) {
+        var d = i - current;
+        d = ((d % n) + n) % n;
+        if (d > n / 2) d -= n;
+        var ad = Math.abs(d);
+        var tx = d * spacing;
+        var tz = -ad * 170;
+        var ry = d * -28;
+        var sc = Math.max(0.6, 1 - ad * 0.16);
+        var op = ad > 2 ? 0 : 1 - ad * 0.3;
+        slide.style.transform = 'translate(-50%,-50%) translate3d(' + tx + 'px,0,' + tz + 'px) rotateY(' + ry + 'deg) scale(' + sc + ')';
+        slide.style.opacity = String(op);
+        slide.style.zIndex = String(100 - ad);
+        slide.style.pointerEvents = ad > 2 ? 'none' : 'auto';
+        slide.classList.toggle('is-active', d === 0);
+        slide.setAttribute('aria-hidden', d === 0 ? 'false' : 'true');
+        slide.tabIndex = d === 0 ? 0 : -1;
+      });
+      dotEls.forEach(function (dot, i) { dot.classList.toggle('is-active', i === current); });
+    }
+
+    function goTo(i) { current = ((i % n) + n) % n; layout(); }
+    function next() { goTo(current + 1); }
+    function prev() { goTo(current - 1); }
+
+    nextBtn.addEventListener('click', function () { next(); kick(); });
+    prevBtn.addEventListener('click', function () { prev(); kick(); });
+
+    slides.forEach(function (slide, i) {
+      slide.addEventListener('click', function (e) {
+        if (i !== current) { e.preventDefault(); goTo(i); kick(); }
+      });
+    });
+
+    wrap.addEventListener('keydown', function (e) {
+      if (e.key === 'ArrowRight') { next(); kick(); }
+      else if (e.key === 'ArrowLeft') { prev(); kick(); }
+    });
+
+    // Drag / swipe support (mouse + touch via Pointer Events)
+    var dragStartX = null, dragging = false, dragMoved = false;
+    wrap.addEventListener('pointerdown', function (e) {
+      dragging = true; dragMoved = false; dragStartX = e.clientX;
+    });
+    wrap.addEventListener('pointermove', function (e) {
+      if (!dragging) return;
+      if (Math.abs(e.clientX - dragStartX) > 6) dragMoved = true;
+    });
+    window.addEventListener('pointerup', function (e) {
+      if (!dragging) return;
+      dragging = false;
+      if (!dragMoved) return;
+      var dx = e.clientX - dragStartX;
+      if (Math.abs(dx) > 40) { dx < 0 ? next() : prev(); kick(); }
+    });
+
+    // Autoplay — paused on hover/focus/hidden tab, off for reduced motion
+    var reduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    var timer = null;
+    function start() { if (reduced) return; stop(); timer = setInterval(next, 3800); }
+    function stop() { if (timer) clearInterval(timer); timer = null; }
+    function kick() { start(); }
+    wrap.addEventListener('mouseenter', stop);
+    wrap.addEventListener('mouseleave', start);
+    wrap.addEventListener('focusin', stop);
+    wrap.addEventListener('focusout', start);
+    document.addEventListener('visibilitychange', function () {
+      document.hidden ? stop() : start();
+    });
+
+    var resizeTimer;
+    window.addEventListener('resize', function () {
+      clearTimeout(resizeTimer);
+      resizeTimer = setTimeout(layout, 120);
+    });
+
+    layout();
+    start();
+  }
+
+  if (!(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches)) {
+    $$('[data-carousel] .cat-cards').forEach(initCategoryCarousel);
+  }
+
+  /* ---------------------------------------------------------
      Inline CTA subscribe buttons (CTA bands on category pages)
      --------------------------------------------------------- */
   window.TNE_subscribe = function (btn) {
@@ -337,4 +524,71 @@
       toast(q.trim() ? 'Searching for “' + q.trim() + '”…' : 'Type something to search first.');
     });
   }
+
+  /* ---------------------------------------------------------
+     DESIGN LAYER v3 — "Emerald Luxe" motion enhancements
+     Cursor spotlight on heroes, 3D tilt on cards, magnetic
+     buttons. Purely progressive: no-ops where unsupported and
+     disabled entirely under prefers-reduced-motion.
+     --------------------------------------------------------- */
+  (function luxeEnhance() {
+    var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (reduce) return;
+
+    /* --- hero cursor spotlight (desktop pointers only) --- */
+    var fine = window.matchMedia && window.matchMedia('(pointer: fine)').matches;
+    if (fine) {
+      $$('.page-hero').forEach(function (hero) {
+        var glow = document.createElement('span');
+        glow.setAttribute('aria-hidden', 'true');
+        glow.style.cssText =
+          'position:absolute;inset:0;pointer-events:none;z-index:-1;opacity:0;' +
+          'transition:opacity .35s ease;' +
+          'background:radial-gradient(340px 340px at var(--mx,50%) var(--my,50%), rgba(232,198,106,.22), transparent 65%);';
+        hero.style.position = hero.style.position || 'relative';
+        hero.appendChild(glow);
+        hero.addEventListener('pointermove', function (e) {
+          var r = hero.getBoundingClientRect();
+          glow.style.setProperty('--mx', ((e.clientX - r.left) / r.width * 100) + '%');
+          glow.style.setProperty('--my', ((e.clientY - r.top) / r.height * 100) + '%');
+          glow.style.opacity = '1';
+        });
+        hero.addEventListener('pointerleave', function () { glow.style.opacity = '0'; });
+      });
+    }
+
+    /* --- 3D tilt on cards --- */
+    if (fine) {
+      var TILT = '.feature-card, .cat-card, .service-card';
+      $$(TILT).forEach(function (card) {
+        // Never tilt cards inside the coverflow carousel — the inline
+        // transform would override the carousel's JS positioning and make
+        // the cards scatter out of place on hover.
+        if (card.closest('.cat-cards--carousel')) return;
+        card.style.transformStyle = 'preserve-3d';
+        card.addEventListener('pointermove', function (e) {
+          var r = card.getBoundingClientRect();
+          var px = (e.clientX - r.left) / r.width - 0.5;
+          var py = (e.clientY - r.top) / r.height - 0.5;
+          card.style.transform =
+            'perspective(900px) rotateX(' + (-py * 4).toFixed(2) + 'deg) rotateY(' + (px * 5).toFixed(2) + 'deg) translateY(-6px)';
+        });
+        card.addEventListener('pointerleave', function () { card.style.transform = ''; });
+      });
+    }
+
+    /* --- magnetic primary buttons --- */
+    if (fine) {
+      $$('.btn--primary').forEach(function (btn) {
+        btn.addEventListener('pointermove', function (e) {
+          var r = btn.getBoundingClientRect();
+          var x = (e.clientX - (r.left + r.width / 2)) * 0.18;
+          var y = (e.clientY - (r.top + r.height / 2)) * 0.28;
+          btn.style.transform = 'translate(' + x.toFixed(1) + 'px,' + (y - 2).toFixed(1) + 'px)';
+        });
+        btn.addEventListener('pointerleave', function () { btn.style.transform = ''; });
+      });
+    }
+  })();
+
 })();

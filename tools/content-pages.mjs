@@ -4,12 +4,12 @@
 
 const socials = `
         <div class="socials">
-          <a class="s-x" href="#" aria-label="X">X</a>
-          <a class="s-f" href="#" aria-label="Facebook">f</a>
-          <a class="s-wa" href="#" aria-label="WhatsApp">W</a>
-          <a class="s-in" href="#" aria-label="LinkedIn">in</a>
-          <a class="s-ig" href="#" aria-label="Instagram">ig</a>
-          <a class="s-yt" href="#" aria-label="YouTube">▶</a>
+          <a class="s-x" href="#" aria-label="X"><svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor" aria-hidden="true"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg></a>
+          <a class="s-f" href="#" aria-label="Facebook"><svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor" aria-hidden="true"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg></a>
+          <a class="s-wa" href="#" aria-label="WhatsApp"><svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg></a>
+          <a class="s-in" href="#" aria-label="LinkedIn"><svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor" aria-hidden="true"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg></a>
+          <a class="s-ig" href="#" aria-label="Instagram"><svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor" aria-hidden="true"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg></a>
+          <a class="s-yt" href="#" aria-label="YouTube"><svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor" aria-hidden="true"><path d="M23.498 6.186a3.016 3.016 0 00-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 00.502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 002.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 002.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg></a>
         </div>`;
 
 const newsletterWidget = `
@@ -56,7 +56,7 @@ const pages = [
   <div class="cat-grid">
     <article class="feature-card reveal" style="grid-column:1/-1">
       <div class="media article-hero" style="aspect-ratio:16/7">
-        <img src="assets/img/scene-ideas.svg" alt="Open notebook filled with business ideas">
+        <img src="assets/img/photos/ideas.jpg" alt="Open notebook filled with business ideas">
         <span class="media__tag">Business Ideas</span>
       </div>
       <div class="feature-card__body">
@@ -122,7 +122,7 @@ const pages = [
 
         <div class="share-row">
           <span>Share this article</span>${socials}
-          <button class="btn btn--ghost btn--sm" type="button" data-copy-link style="margin-left:auto">🔗 Copy link</button>
+          <button class="btn btn--ghost btn--sm" type="button" data-copy-link style="margin-left:auto"><svg class="ico" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.5.5l3-3a5 5 0 0 0-7-7l-1.7 1.7"/><path d="M14 11a5 5 0 0 0-7.5-.5l-3 3a5 5 0 0 0 7 7l1.7-1.7"/></svg> Copy link</button>
         </div>
       </div>
     </section>
@@ -132,11 +132,11 @@ const pages = [
       <div class="panel__body">
         <div class="card-grid-2">
           <article class="mini-card reveal">
-            <a class="media" href="category-finance.html"><img src="assets/img/scene-coins.svg" alt="Coin stacks"></a>
+            <a class="media" href="category-finance.html"><img src="assets/img/photos/coins.jpg" alt="Coin stacks"></a>
             <div><span class="tagline tag-green">Investing</span><h4><a href="category-finance.html">How to Build a Solid Investment Portfolio in Nigeria</a></h4><div class="mini-card__meta"><time datetime="2025-04-25">Apr 25, 2025</time><span class="dot">•</span><span>6 min read</span></div></div>
           </article>
           <article class="mini-card reveal">
-            <a class="media" href="category-business.html"><img src="assets/img/scene-laptop.svg" alt="Laptop with charts"></a>
+            <a class="media" href="category-business.html"><img src="assets/img/photos/laptop.jpg" alt="Laptop with charts"></a>
             <div><span class="tagline tag-blue">Strategy</span><h4><a href="category-business.html">Nigerian SMEs: 5 Strategies to Survive and Thrive in 2025</a></h4><div class="mini-card__meta"><time datetime="2025-04-24">Apr 24, 2025</time><span class="dot">•</span><span>6 min read</span></div></div>
           </article>
         </div>
@@ -194,7 +194,7 @@ ${followWidget}
     description: 'We provide reliable resources and tools to help you grow: business resources, affiliate guidance, consultation, digital products and community access.',
     body: `
 <section class="page-hero t-services">
-  <div class="hero-scene"><img src="assets/img/scene-cafe.svg" alt="Coffee and laptop workspace"></div>
+  <div class="hero-scene"><img src="assets/img/photos/cafe.jpg" alt="Coffee and laptop workspace"></div>
   <div class="container page-hero__body">
     <nav class="crumbs"><a href="index.html">Home</a><span>›</span>Services</nav>
     <h1>Our Services</h1>
@@ -256,7 +256,7 @@ ${followWidget}
       <p>Get expert advice and consultation tailored to your goals.</p>
     </div>
     <div class="cta__actions">
-      <a class="btn btn--light" href="contact.html">Download List →</a>
+      <a class="btn btn--light" href="contact.html">Download List <svg class="ico" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
     </div>
   </div>
 </section>`
@@ -270,7 +270,7 @@ ${followWidget}
     description: 'The Nigerian Entrepreneur is a leading blog platform dedicated to promoting entrepreneurship and financial literacy in Nigeria, inspiring a new generation of wealth creators.',
     body: `
 <section class="page-hero t-about">
-  <div class="hero-scene"><img src="assets/img/scene-founder.svg" alt="Founder of The Nigerian Entrepreneur at work"></div>
+  <div class="hero-scene"><img src="assets/img/photos/founder.jpg" alt="Founder of The Nigerian Entrepreneur at work"></div>
   <div class="container page-hero__body">
     <nav class="crumbs"><a href="index.html">Home</a><span>›</span>About Us</nav>
     <h1>About Us</h1>
@@ -319,7 +319,7 @@ ${followWidget}
         </div>
       </div>
       <div class="vision__art">
-        <img src="assets/img/scene-city.svg" alt="City skyline representing economic opportunity">
+        <img src="assets/img/photos/city.jpg" alt="City skyline representing economic opportunity">
       </div>
     </div>
   </div>
@@ -329,11 +329,11 @@ ${followWidget}
       <h2 class="section__title" style="margin:0">What we cover</h2>
     </div>
     <div class="cat-cards">
-      <a class="cat-card cc-finance reveal" href="category-finance.html"><span class="cat-card__icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 17l5-6 4 4 5-8 4 5"/><path d="M3 21h18"/></svg></span><h3>Finance</h3><p>Investing, saving and protecting your money.</p><span class="cat-card__arrow">Explore →</span></a>
-      <a class="cat-card cc-business reveal" href="category-business.html"><span class="cat-card__icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="7" width="18" height="13" rx="2"/><path d="M8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg></span><h3>Business</h3><p>News, strategy and growth for small businesses.</p><span class="cat-card__arrow">Explore →</span></a>
-      <a class="cat-card cc-crypto reveal" href="category-crypto.html"><span class="cat-card__icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/></svg></span><h3>Crypto / Web 3.0</h3><p>Blockchain news and the next generation of finance.</p><span class="cat-card__arrow">Explore →</span></a>
-      <a class="cat-card cc-startup reveal" href="category-entrepreneur.html"><span class="cat-card__icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg></span><h3>Entrepreneur Corner</h3><p>Stories, skills and funding for founders.</p><span class="cat-card__arrow">Explore →</span></a>
-      <a class="cat-card cc-affiliate reveal" href="category-affiliates.html"><span class="cat-card__icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M17 3h4v4"/><path d="M21 3 11 13"/></svg></span><h3>Affiliates</h3><p>Make money online with proven strategies.</p><span class="cat-card__arrow">Explore →</span></a>
+      <a class="cat-card cc-finance reveal" href="category-finance.html"><span class="cat-card__icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 17l5-6 4 4 5-8 4 5"/><path d="M3 21h18"/></svg></span><h3>Finance</h3><p>Investing, saving and protecting your money.</p><span class="cat-card__arrow">Explore <svg class="ico" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span></a>
+      <a class="cat-card cc-business reveal" href="category-business.html"><span class="cat-card__icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="7" width="18" height="13" rx="2"/><path d="M8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg></span><h3>Business</h3><p>News, strategy and growth for small businesses.</p><span class="cat-card__arrow">Explore <svg class="ico" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span></a>
+      <a class="cat-card cc-crypto reveal" href="category-crypto.html"><span class="cat-card__icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/></svg></span><h3>Crypto / Web 3.0</h3><p>Blockchain news and the next generation of finance.</p><span class="cat-card__arrow">Explore <svg class="ico" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span></a>
+      <a class="cat-card cc-startup reveal" href="category-entrepreneur.html"><span class="cat-card__icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg></span><h3>Entrepreneur Corner</h3><p>Stories, skills and funding for founders.</p><span class="cat-card__arrow">Explore <svg class="ico" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span></a>
+      <a class="cat-card cc-affiliate reveal" href="category-affiliates.html"><span class="cat-card__icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M17 3h4v4"/><path d="M21 3 11 13"/></svg></span><h3>Affiliates</h3><p>Make money online with proven strategies.</p><span class="cat-card__arrow">Explore <svg class="ico" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span></a>
     </div>
   </div>
 </div>`
@@ -347,7 +347,7 @@ ${followWidget}
     description: 'Have a question, proposal or need support? Send us a message and our team will reply within one business day.',
     body: `
 <section class="page-hero t-business">
-  <div class="hero-scene"><img src="assets/img/scene-city.svg" alt="City skyline at night"></div>
+  <div class="hero-scene"><img src="assets/img/photos/city.jpg" alt="City skyline at night"></div>
   <div class="container page-hero__body">
     <nav class="crumbs"><a href="index.html">Home</a><span>›</span>Contact</nav>
     <h1>Contact Us</h1>
@@ -437,7 +437,7 @@ ${sidebar(`    <section class="widget reveal">
         <div class="promo">
           <h4>Partner With Us</h4>
           <p>Full-scale brand collaboration, growth, paid promotions and more.</p>
-          <a class="btn btn--light btn--sm" href="mailto:partnerships@thenigerianentrepreneur.com">Talk to Us →</a>
+          <a class="btn btn--light btn--sm" href="mailto:partnerships@thenigerianentrepreneur.com">Talk to Us <svg class="ico" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
         </div>
       </div>
     </section>
@@ -467,7 +467,7 @@ ${sidebar(`    <section class="widget reveal">
     description: 'Your privacy matters. Read how The Nigerian Entrepreneur collects, uses, stores and protects your personal information.',
     body: `
 <section class="page-hero t-about">
-  <div class="hero-scene"><img src="assets/img/scene-mesh.svg" alt="Secure abstract backdrop"></div>
+  <div class="hero-scene"><img src="assets/img/photos/mesh.jpg" alt="Secure abstract backdrop"></div>
   <div class="container page-hero__body">
     <nav class="crumbs"><a href="index.html">Home</a><span>›</span>Privacy Policy</nav>
     <h1>Privacy Policy</h1>
@@ -596,7 +596,7 @@ ${sidebar(`    <section class="widget reveal">
       <p>Our most-read guides on business, finance and crypto — all in one place.</p>
     </div>
     <div class="cta__actions">
-      <a class="btn btn--light" href="category-business.html">Browse Articles →</a>
+      <a class="btn btn--light" href="category-business.html">Browse Articles <svg class="ico" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
     </div>
   </div>
 </section>`
