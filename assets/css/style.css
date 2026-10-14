@@ -2097,7 +2097,6 @@ body, .site-header, .panel, .feature-card, .mini-card, .widget, .service-card, .
 [data-theme="dark"] .service-card,
 [data-theme="dark"] .stat,
 [data-theme="dark"] .badge,
-[data-theme="dark"] .nav,
 [data-theme="dark"] .nav__drawer-head,
 [data-theme="dark"] .nf__search input,
 [data-theme="dark"] .field input,
@@ -2106,6 +2105,9 @@ body, .site-header, .panel, .feature-card, .mini-card, .widget, .service-card, .
 [data-theme="dark"] .newsletter-form input { background: var(--white); color: var(--ink); }
 [data-theme="dark"] .site-header { box-shadow: 0 1px 0 var(--line), 0 8px 24px rgba(0, 0, 0, .35); }
 [data-theme="dark"] .nav .dropdown { background: #0f1519; }
+@media (max-width: 900px) {
+  [data-theme="dark"] .nav { background: var(--white); color: var(--ink); }
+}
 [data-theme="dark"] .nav-toggle { background: var(--white); color: var(--ink); border-color: var(--line); }
 [data-theme="dark"] .nav-toggle__bars i { background: var(--ink); }
 [data-theme="dark"] .vision { background: linear-gradient(120deg, #11231b, #131c21); }
