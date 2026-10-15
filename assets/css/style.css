@@ -1960,6 +1960,11 @@ section.container { padding-top: 12px; }
 .cat-section { position: relative; }
 .cat-section .headline-row { margin-bottom: 4px; }
 
+/* Prevent horizontal page overflow on small screens (off-canvas drawer, 3D carousel, glows).
+   `clip` does not create a scroll container, so the sticky header keeps working. */
+html, body { max-width: 100%; overflow-x: clip; }
+.cat-section, .carousel, .site-header, .cta, .footer__cta-card { overflow-x: clip; }
+
 /* Base .cat-cards already renders as a clean, accessible grid — that
    stays as-is for no-JS / reduced-motion visitors. JS progressively
    enhances it into the 3D coverflow carousel below. */
@@ -1972,7 +1977,7 @@ section.container { padding-top: 12px; }
 .carousel::before {
   content: "";
   position: absolute;
-  inset: -40px -40px 0;
+  inset: -40px 0 0;
   background: radial-gradient(60% 60% at 50% 38%, rgba(217, 164, 65, .16), transparent 70%);
   pointer-events: none;
   z-index: 0;
