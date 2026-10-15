@@ -76,25 +76,23 @@ p { margin: 0 0 1em; }
 }
 
 .logo__mark {
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  background: linear-gradient(145deg, var(--green-500), var(--green-800));
-  display: grid;
-  place-items: center;
-  color: #fff;
-  font-weight: 800;
-  font-size: 15px;
+  width: 42px;
+  height: 42px;
+  border-radius: 12px;
+  object-fit: cover;
+  object-position: center;
+  display: block;
   position: relative;
-  box-shadow: 0 3px 10px rgba(10, 74, 46, .3);
+  background: var(--green-50);
+  box-shadow: 0 4px 14px rgba(10, 74, 46, .22);
 }
 
 .logo__mark::after {
   content: "";
   position: absolute;
   inset: -3px;
-  border-radius: 50%;
-  border: 2px dashed rgba(18, 163, 93, .45);
+  border-radius: 15px;
+  border: 1.5px solid rgba(201, 162, 75, .55);
 }
 
 .logo__text {
@@ -1417,9 +1415,9 @@ section[id], h2[id], div[id] { scroll-margin-top: 92px; }
    ------------------------------------------------------------ */
 .logo-big { display: grid; place-items: center; gap: 12px; padding: 10px 0; }
 
-.logo-big .logo__mark { width: 96px; height: 96px; font-size: 34px; }
+.logo-big .logo__mark { width: 96px; height: 96px; border-radius: 22px; }
 
-.logo-big .logo__mark::after { inset: -7px; border-width: 3px; }
+.logo-big .logo__mark::after { inset: -7px; border-radius: 30px; border-width: 2px; }
 
 .logo-big .logo__text { font-size: 22px; text-align: center; }
 

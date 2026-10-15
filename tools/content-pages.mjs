@@ -282,7 +282,7 @@ ${followWidget}
   <div class="split">
     <div class="panel reveal" style="padding:26px">
       <div class="logo-big">
-        <span class="logo__mark">NE</span>
+        <img class="logo__mark" src="assets/img/photos/LOgo.png" alt="The Nigerian Entrepreneur logo" width="96" height="96">
         <span class="logo__text">The Nigerian<span>Entrepreneur</span></span>
       </div>
     </div>
