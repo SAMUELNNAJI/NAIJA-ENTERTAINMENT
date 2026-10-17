@@ -2660,3 +2660,9 @@ a.chip { text-decoration: none; }
 }
 
 
+
+input.field, select.field {
+  display: block !important;
+  width: 100% !important;
+  box-sizing: border-box !important;
+}

@@ -72,10 +72,25 @@
     <header class="dash-stories-panel__header">
       <div>
         <span class="card-eyebrow">IDENTITY &amp; ROLES</span>
-        <h2 class="card-title">Registered Accounts ({{ users|length }})</h2>
+        <h2 class="card-title">Registered Accounts ({{ total_users_count|default:users.paginator.count|default:users|length }})</h2>
       </div>
     </header>
 
+    <!-- Search Form -->
+    <div class="dash-search-bar">
+      <form method="get" class="search-form">
+        <div class="search-input-group">
+          <svg viewBox="0 0 24 24" class="search-icon"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+          <input type="text" name="q" value="{{ q }}" placeholder="Search users by username, email, or full name..." class="search-input">
+        </div>
+        <button class="dash-btn ghost sm" type="submit">Filter Users</button>
+        {% if q %}
+        <a href="{% url 'admin_panel_users' %}" class="dash-btn ghost sm">Clear</a>
+        {% endif %}
+      </form>
+    </div>
+
+    {% if users %}
     <div class="dash-table-container">
       <table class="dash-table">
         <thead>
@@ -83,7 +98,9 @@
             <th>User</th>
             <th>Email</th>
             <th>Role</th>
+            <th>Account Status</th>
             <th class="text-right">Joined Platform</th>
+            <th class="text-right">Administrative Controls</th>
           </tr>
         </thead>
         <tbody>
@@ -108,18 +125,71 @@
               <span class="dash-chip standard">Reader</span>
               {% endif %}
             </td>
+            <td>
+              {% if u.is_active %}
+              <span class="dash-chip published dot">Active</span>
+              {% else %}
+              <span class="dash-chip draft dot" style="background:rgba(239,68,68,0.15);color:#f87171;border-color:rgba(239,68,68,0.3)">Suspended</span>
+              {% endif %}
+            </td>
             <td class="text-right font-num text-muted">
               {{ u.date_joined|date:"M d, Y" }}
             </td>
-          </tr>
-          {% empty %}
-          <tr>
-            <td colspan="4">No users registered yet.</td>
+            <td class="text-right col-actions">
+              <div class="dash-action-group">
+                {% if u.pk == request.user.pk %}
+                <span class="dash-chip standard" style="opacity:0.7">Current Session</span>
+                {% else %}
+                <form method="post" action="{% url 'admin_panel_user_toggle_suspend' u.pk %}" style="display:inline">
+                  {% csrf_token %}
+                  {% if u.is_active %}
+                  <button type="submit" class="dash-btn sm danger" title="Suspend this user" onclick="return confirm('Suspend user {{ u.username }}? They will not be able to log in or publish.')">
+                    Suspend
+                  </button>
+                  {% else %}
+                  <button type="submit" class="dash-btn sm primary" title="Reactivate this user" onclick="return confirm('Reactivate account for {{ u.username }}?')">
+                    Activate
+                  </button>
+                  {% endif %}
+                </form>
+                <form method="post" action="{% url 'admin_panel_user_delete' u.pk %}" style="display:inline" onsubmit="return confirm('Are you sure you want to PERMANENTLY DELETE user {{ u.username }}? This action cannot be undone!')">
+                  {% csrf_token %}
+                  <button type="submit" class="dash-btn danger sm" title="Permanently delete user">
+                    Delete
+                  </button>
+                </form>
+                {% endif %}
+              </div>
+            </td>
           </tr>
           {% endfor %}
         </tbody>
       </table>
     </div>
+
+    {% if page_obj.paginator.num_pages > 1 %}
+    <nav class="dashboard-pagination" aria-label="User directory pagination">
+      {% if page_obj.has_previous %}
+      <a href="?q={{ q|urlencode }}&page={{ page_obj.previous_page_number }}" class="dash-btn ghost sm">&larr; Previous</a>
+      {% endif %}
+      <span class="pagination-info">Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}</span>
+      {% if page_obj.has_next %}
+      <a href="?q={{ q|urlencode }}&page={{ page_obj.next_page_number }}" class="dash-btn ghost sm">Next &rarr;</a>
+      {% endif %}
+    </nav>
+    {% endif %}
+
+    {% else %}
+    <div class="dash-empty-state">
+      <div class="empty-icon">👥</div>
+      <h3>No users found</h3>
+      <p class="dash-muted">No accounts match your search query. Try clearing filters.</p>
+      {% if q %}
+      <a href="{% url 'admin_panel_users' %}" class="dash-btn ghost">Clear Search</a>
+      {% endif %}
+    </div>
+    {% endif %}
+
   </div>
 </div>
 {% endblock %}

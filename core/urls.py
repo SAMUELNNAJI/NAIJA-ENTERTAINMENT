@@ -3,6 +3,8 @@ from django.urls import path, re_path
 
 from . import views, views_dashboard, views_tools
 
+from .forms import CustomPasswordResetForm, CustomSetPasswordForm
+
 urlpatterns = [
     path("", views.home, name="home"),
     # site-wide search
@@ -22,8 +24,19 @@ urlpatterns = [
     path("login/", views.login_view, name="login"),
     path("logout/", views.logout_view, name="logout"),
     path(
+        "password_reset/",
+        auth_views.PasswordResetView.as_view(
+            form_class=CustomPasswordResetForm,
+            template_name="auth/password_reset.html",
+            email_template_name="auth/password_reset_email.html",
+            subject_template_name="auth/password_reset_subject.txt",
+            success_url="/password-reset/done/",
+        ),
+    ),
+    path(
         "password-reset/",
         auth_views.PasswordResetView.as_view(
+            form_class=CustomPasswordResetForm,
             template_name="auth/password_reset.html",
             email_template_name="auth/password_reset_email.html",
             subject_template_name="auth/password_reset_subject.txt",
@@ -41,6 +54,7 @@ urlpatterns = [
     path(
         "password-reset-confirm/<uidb64>/<token>/",
         auth_views.PasswordResetConfirmView.as_view(
+            form_class=CustomSetPasswordForm,
             template_name="auth/password_reset_confirm.html",
             success_url="/password-reset/complete/",
         ),
@@ -92,6 +106,21 @@ urlpatterns = [
     ),
     path("panel/comments/", views_dashboard.admin_panel_comments, name="admin_panel_comments"),
     path("panel/users/", views_dashboard.admin_panel_users, name="admin_panel_users"),
+    path(
+        "panel/user/<int:pk>/toggle-suspend/",
+        views_dashboard.admin_panel_user_toggle_suspend,
+        name="admin_panel_user_toggle_suspend",
+    ),
+    path(
+        "panel/user/<int:pk>/delete/",
+        views_dashboard.admin_panel_user_delete,
+        name="admin_panel_user_delete",
+    ),
+    path(
+        "notification/<int:pk>/dismiss/",
+        views_dashboard.notification_dismiss,
+        name="notification_dismiss",
+    ),
     path("panel/payouts/", views_dashboard.admin_panel_payouts, name="admin_panel_payouts"),
     path("panel/sponsors/", views_dashboard.admin_panel_sponsors, name="admin_panel_sponsors"),
     path("panel/sponsor/<int:pk>/toggle/", views_dashboard.admin_panel_sponsor_toggle, name="admin_panel_sponsor_toggle"),

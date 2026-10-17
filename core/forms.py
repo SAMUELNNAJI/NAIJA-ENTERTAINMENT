@@ -4,11 +4,16 @@ from html.parser import HTMLParser
 from django import forms
 from django.utils.html import escape
 from django.contrib.auth import authenticate
-from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
+from django.contrib.auth.forms import (
+    AuthenticationForm,
+    PasswordResetForm,
+    SetPasswordForm,
+    UserCreationForm,
+)
 from django.contrib.auth.models import User
 from django.db.models import Q
 
-from .models import Comment, PayoutAccount, PayoutRequest, Post, SponsorAd
+from .models import Comment, Notification, PayoutAccount, PayoutRequest, Post, SponsorAd
 
 
 class BootstrapFormMixin:
@@ -21,8 +26,17 @@ class BootstrapFormMixin:
             if isinstance(widget, forms.CheckboxInput):
                 widget.attrs.setdefault("class", "form-check")
             else:
-                widget.attrs.setdefault("class", "field")
+                existing_cls = widget.attrs.get("class", "")
+                widget.attrs["class"] = f"{existing_cls} field".strip()
             widget.attrs.setdefault("placeholder", field.label or "")
+
+
+class CustomPasswordResetForm(BootstrapFormMixin, PasswordResetForm):
+    pass
+
+
+class CustomSetPasswordForm(BootstrapFormMixin, SetPasswordForm):
+    pass
 
 
 class SignupForm(BootstrapFormMixin, UserCreationForm):
@@ -141,9 +155,26 @@ class PostForm(BootstrapFormMixin, forms.ModelForm):
         return cleaned
 
     def clean_body(self):
-        """Keep editor markup while rejecting executable HTML."""
-        allowed_tags = {"a", "blockquote", "br", "code", "div", "em", "h2", "h3", "li", "ol", "p", "pre", "strong", "u", "ul"}
-        allowed_attrs = {"a": {"href", "title", "target", "rel"}}
+        """Keep Summernote and editor markup while rejecting executable scripts."""
+        allowed_tags = {
+            "a", "b", "blockquote", "br", "code", "div", "em", "font",
+            "h1", "h2", "h3", "h4", "h5", "h6", "hr", "i", "iframe",
+            "img", "li", "ol", "p", "pre", "s", "span", "strike",
+            "strong", "sub", "sup", "table", "tbody", "td", "th", "thead", "tr", "u", "ul"
+        }
+        allowed_attrs = {
+            "a": {"href", "title", "target", "rel", "class", "style"},
+            "span": {"style", "class"},
+            "p": {"style", "class"},
+            "div": {"style", "class"},
+            "img": {"src", "alt", "title", "width", "height", "style", "class"},
+            "table": {"class", "style", "border", "cellpadding", "cellspacing"},
+            "th": {"class", "style", "colspan", "rowspan", "scope"},
+            "td": {"class", "style", "colspan", "rowspan"},
+            "tr": {"class", "style"},
+            "iframe": {"src", "width", "height", "frameborder", "allowfullscreen"},
+            "font": {"color", "size", "face"},
+        }
 
         class SafeHTML(HTMLParser):
             def __init__(self):
@@ -157,7 +188,7 @@ class PostForm(BootstrapFormMixin, forms.ModelForm):
                 for key, value in attrs:
                     if key not in allowed_attrs.get(tag, set()) or value is None:
                         continue
-                    if key == "href" and not value.lower().startswith(("https://", "http://", "mailto:", "/", "#")):
+                    if key in ("href", "src") and not value.lower().startswith(("https://", "http://", "mailto:", "/", "#", "data:image/")):
                         continue
                     safe.append(f' {key}="{escape(value)}"')
                 self.parts.append(f"<{tag}{''.join(safe)}>")

@@ -8,13 +8,13 @@ from django.contrib.auth.decorators import login_required, user_passes_test
 from django.contrib.auth.models import User
 from django.core.files.storage import default_storage
 from django.core.paginator import Paginator
-from django.db.models import Count, Sum
+from django.db.models import Count, Q, Sum
 from django.shortcuts import get_object_or_404, redirect, render
 from django.utils import timezone
 
 from . import content
 from .forms import PayoutAccountForm, PayoutRequestForm, PostForm, SponsorAdForm
-from .models import Comment, CreatorProfile, PayoutRequest, Post, PostDailyStat, SponsorAd
+from .models import Comment, CreatorProfile, Notification, PayoutAccount, PayoutRequest, Post, PostDailyStat, SponsorAd
 
 
 def _creator_or_none(user):
@@ -332,15 +332,29 @@ def admin_panel(request):
 
 @user_passes_test(_is_staff, login_url="login")
 def admin_panel_posts(request):
-    posts = Post.objects.all()
+    posts = Post.objects.select_related("author").order_by("-created_at")
     q = request.GET.get("q", "").strip()
     if q:
-        posts = posts.filter(title__icontains=q)
-    page_obj = Paginator(posts.select_related("author"), 20).get_page(request.GET.get("page"))
+        posts = posts.filter(
+            Q(title__icontains=q)
+            | Q(author__username__icontains=q)
+            | Q(author__first_name__icontains=q)
+            | Q(author__last_name__icontains=q)
+            | Q(category__icontains=q)
+            | Q(body__icontains=q)
+        )
+    paginator = Paginator(posts, 20)
+    page_obj = paginator.get_page(request.GET.get("page"))
     return render(
         request,
         "dashboard/admin_studio/posts.html",
-        {"posts": page_obj, "page_obj": page_obj, "q": q, "nav_active": "admin"},
+        {
+            "posts": page_obj,
+            "page_obj": page_obj,
+            "q": q,
+            "total_count": posts.count(),
+            "nav_active": "admin",
+        },
     )
 
 
@@ -445,8 +459,16 @@ def admin_panel_sponsor_edit(request, pk):
 def admin_panel_post_delete(request, pk):
     post = get_object_or_404(Post, pk=pk)
     if request.method == "POST":
+        author = post.author
+        post_title = post.title
+        if author:
+            Notification.objects.create(
+                user=author,
+                title="Post Removed by Administrator",
+                message=f"Your post “{post_title}” was brought down by an administrator because it goes against the community rules.",
+            )
         post.delete()
-        messages.success(request, "Post deleted.")
+        messages.success(request, f"Post “{post_title}” has been permanently deleted and the author was notified.")
     return redirect("admin_panel_posts")
 
 
@@ -463,7 +485,65 @@ def admin_panel_comments(request):
 
 @user_passes_test(_is_staff, login_url="login")
 def admin_panel_users(request):
-    return render(request, "dashboard/admin_studio/users.html", {"users": User.objects.select_related("creator").order_by("-date_joined")})
+    users = User.objects.select_related("creator").order_by("-date_joined")
+    q = request.GET.get("q", "").strip()
+    if q:
+        users = users.filter(
+            Q(username__icontains=q)
+            | Q(email__icontains=q)
+            | Q(first_name__icontains=q)
+            | Q(last_name__icontains=q)
+        )
+    paginator = Paginator(users, 20)
+    page_obj = paginator.get_page(request.GET.get("page"))
+    return render(
+        request,
+        "dashboard/admin_studio/users.html",
+        {
+            "users": page_obj,
+            "page_obj": page_obj,
+            "q": q,
+            "total_users_count": User.objects.count(),
+            "nav_active": "admin",
+        },
+    )
+
+
+@user_passes_test(_is_staff, login_url="login")
+def admin_panel_user_toggle_suspend(request, pk):
+    target_user = get_object_or_404(User, pk=pk)
+    if request.method == "POST":
+        if target_user.pk == request.user.pk:
+            messages.error(request, "You cannot suspend your own administrative account.")
+            return redirect("admin_panel_users")
+        target_user.is_active = not target_user.is_active
+        target_user.save(update_fields=["is_active"])
+        status_str = "re-activated" if target_user.is_active else "suspended"
+        messages.success(request, f"Account for “{target_user.username}” has been {status_str}.")
+    return redirect(request.META.get("HTTP_REFERER") or "admin_panel_users")
+
+
+@user_passes_test(_is_staff, login_url="login")
+def admin_panel_user_delete(request, pk):
+    target_user = get_object_or_404(User, pk=pk)
+    if request.method == "POST":
+        if target_user.pk == request.user.pk:
+            messages.error(request, "You cannot delete your own administrative account.")
+            return redirect("admin_panel_users")
+        username = target_user.username
+        target_user.delete()
+        messages.success(request, f"User account “{username}” has been permanently deleted.")
+    return redirect("admin_panel_users")
+
+
+@login_required
+def notification_dismiss(request, pk):
+    notif = get_object_or_404(Notification, pk=pk, user=request.user)
+    if request.method == "POST":
+        notif.is_read = True
+        notif.save(update_fields=["is_read"])
+        messages.info(request, "Notification marked as read.")
+    return redirect(request.META.get("HTTP_REFERER") or "dashboard")
 
 
 @user_passes_test(_is_staff, login_url="login")

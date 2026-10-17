@@ -2,6 +2,9 @@
 {% load static %}
 {% block title %}{{ mode }} — Creator Studio{% endblock %}
 {% block dashboard_heading %}{{ mode }}{% endblock %}
+{% block extra_head %}
+<link href="https://cdn.jsdelivr.net/npm/summernote@0.8.20/dist/summernote-lite.min.css" rel="stylesheet">
+{% endblock %}
 {% block content %}
 <div class="dashboard-editor">
   <div class="dashboard-editor__intro">
@@ -37,21 +40,8 @@
         {% for error in form.excerpt.errors %}<small>{{ error }}</small>{% endfor %}
       </div>
       <div class="dashboard-field dashboard-field--wide dashboard-field--body">
-        <label for="{{ form.body.id_for_label }}">Your story</label>
-        <div class="rich-editor" data-rich-editor>
-          <div class="rich-editor__toolbar" role="toolbar" aria-label="Text formatting">
-            <button type="button" data-command="bold" title="Bold"><b>B</b></button>
-            <button type="button" data-command="italic" title="Italic"><i>I</i></button>
-            <button type="button" data-command="underline" title="Underline"><u>U</u></button>
-            <button type="button" data-command="formatBlock" data-value="h2" title="Heading">H2</button>
-            <button type="button" data-command="formatBlock" data-value="h3" title="Subheading">H3</button>
-            <button type="button" data-command="insertUnorderedList" title="Bullet list">• List</button>
-            <button type="button" data-command="insertOrderedList" title="Numbered list">1. List</button>
-            <button type="button" data-command="formatBlock" data-value="blockquote" title="Quote">❝</button>
-            <button type="button" data-command="createLink" title="Add link">Link</button>
-            <button type="button" data-command="removeFormat" title="Clear formatting">Clear</button>
-          </div>
-          <div class="rich-editor__surface" contenteditable="true" role="textbox" aria-multiline="true" data-rich-surface></div>
+        <label for="{{ form.body.id_for_label }}">Your story (Summernote Rich Editor)</label>
+        <div class="summernote-wrapper">
           {{ form.body }}
         </div>
         {% for error in form.body.errors %}<small>{{ error }}</small>{% endfor %}
@@ -141,7 +131,39 @@
 {% endblock %}
 
 {% block scripts %}
-<script src="{% static 'js/rich-editor.js' %}"></script>
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/summernote@0.8.20/dist/summernote-lite.min.js"></script>
+<script>
+$(document).ready(function() {
+  var $body = $('#{{ form.body.id_for_label }}');
+  $body.summernote({
+    placeholder: 'Craft your article here... Write compelling stories, format headings, insert images, links and quotes.',
+    tabsize: 2,
+    height: 420,
+    minHeight: 280,
+    toolbar: [
+      ['style', ['style']],
+      ['font', ['bold', 'italic', 'underline', 'strikethrough', 'clear']],
+      ['fontname', ['fontname']],
+      ['fontsize', ['fontsize']],
+      ['color', ['color']],
+      ['para', ['ul', 'ol', 'paragraph']],
+      ['table', ['table']],
+      ['insert', ['link', 'picture', 'video', 'hr']],
+      ['view', ['fullscreen', 'codeview', 'help']]
+    ],
+    callbacks: {
+      onChange: function(contents) {
+        $body.val(contents);
+      }
+    }
+  });
+
+  $('form.dashboard-editor__form').on('submit', function() {
+    $body.val($body.summernote('code'));
+  });
+});
+</script>
 <script>
 (function () {
   try {
