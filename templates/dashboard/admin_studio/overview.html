@@ -1,74 +1,349 @@
-
 {% extends "dashboard_base.html" %}
-{% load static %}
+{% load static humanize %}
 
-{% block title %}Admin control panel — TNE{% endblock %}
+{% block title %}Admin Command Center — The Nigerian Entrepreneur{% endblock %}
+
 {% block extra_head %}
-<link rel="stylesheet" href="{% static 'css/mad.css' %}">
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
 <script src="{% static 'js/charts.js' %}"></script>
 {% endblock %}
 
-{% block dashboard_brand %}<a class="dashboard-brand" href="{% url 'admin_panel' %}"><span>TN</span><strong>Command<br>Center</strong></a>{% endblock %}
-{% block dashboard_heading %}Admin command center{% endblock %}
-{% block dashboard_nav %}<a href="{% url 'admin_panel' %}" class="is-active"><i><svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg></i> Overview</a><a href="{% url 'admin_panel_posts' %}"><i><svg viewBox="0 0 24 24"><path d="M4 5h16v14H4zM8 9h8M8 13h5"/></svg></i> Posts</a><a href="{% url 'admin_panel_comments' %}"><i><svg viewBox="0 0 24 24"><path d="M20 15a4 4 0 0 1-4 4H8l-4 3v-7a4 4 0 0 1-2-3.5v-5A4 4 0 0 1 6 3h10a4 4 0 0 1 4 4z"/></svg></i> Comments</a><a href="{% url 'home' %}"><i><svg viewBox="0 0 24 24"><path d="M14 3h7v7M21 3l-9 9"/><path d="M19 14v5a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2h5"/></svg></i> View website</a>{% endblock %}
-{% block dashboard_action %}<a class="dashboard-new" href="{% url 'admin_panel_post_new' %}">New post <b>＋</b></a>{% endblock %}
-{% block dashboard_tabs %}<nav class="dashboard-tabs" aria-label="Admin sections"><a class="is-active" href="#overview">Overview</a><a href="#performance">Performance</a><a href="{% url 'admin_panel_posts' %}">All posts</a><a href="{% url 'admin_panel_comments' %}">Moderation</a><a href="{% url 'admin_panel_sponsors' %}">Sponsor ads</a><a href="{% url 'admin_panel_payouts' %}">Payouts</a></nav>{% endblock %}
+{% block dashboard_brand %}
+<a class="dashboard-brand" href="{% url 'admin_panel' %}">
+  <span class="dashboard-brand__mark dashboard-brand__mark--admin">TN</span>
+  <div class="dashboard-brand__meta">
+    <strong>Command Center</strong>
+    <small>Administrative Studio</small>
+  </div>
+</a>
+{% endblock %}
+
+{% block dashboard_heading %}Admin Command Center{% endblock %}
+
+{% block dashboard_nav %}
+<div class="dashboard-nav__group-title">ADMINISTRATION</div>
+<a href="{% url 'admin_panel' %}" class="is-active">
+  <i><svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg></i>
+  <span>Command Center</span>
+</a>
+<a href="{% url 'admin_panel_posts' %}">
+  <i><svg viewBox="0 0 24 24"><path d="M4 5h16v14H4z"/><path d="M8 9h8M8 13h5"/></svg></i>
+  <span>Editorial Content</span>
+</a>
+<a href="{% url 'admin_panel_comments' %}">
+  <i><svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></i>
+  <span>Moderation Queue</span>
+  {% if stats.pending_comments > 0 %}
+  <span class="nav-counter">{{ stats.pending_comments }}</span>
+  {% endif %}
+</a>
+<a href="{% url 'admin_panel_sponsors' %}">
+  <i><svg viewBox="0 0 24 24"><path d="M4 12V7a2 2 0 0 1 2-2h12l2 3v9a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2v-5zM4 12h16"/></svg></i>
+  <span>Sponsor Campaigns</span>
+</a>
+<a href="{% url 'admin_panel_payouts' %}">
+  <i><svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 10h18M7 15h3"/></svg></i>
+  <span>Payout Review</span>
+</a>
+<a href="{% url 'admin_panel_users' %}">
+  <i><svg viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg></i>
+  <span>User Directory</span>
+</a>
+
+<div class="dashboard-nav__group-title">PORTAL</div>
+<a href="{% url 'dashboard' %}">
+  <i><svg viewBox="0 0 24 24"><path d="M12 20h9M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg></i>
+  <span>Switch to Creator View</span>
+</a>
+<a href="{% url 'home' %}">
+  <i><svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></i>
+  <span>View Live Site</span>
+</a>
+{% endblock %}
+
+{% block dashboard_action %}
+<a class="dashboard-new" href="{% url 'admin_panel_post_new' %}">
+  <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>
+  <span>Publish Post</span>
+</a>
+{% endblock %}
+
+{% block dashboard_tabs %}
+<nav class="dashboard-tabs" aria-label="Admin sections">
+  <div class="dashboard-tabs__inner">
+    <a class="is-active" href="{% url 'admin_panel' %}">Overview</a>
+    <a href="{% url 'admin_panel_posts' %}">Editorial Posts</a>
+    <a href="{% url 'admin_panel_comments' %}">Comments Moderation</a>
+    <a href="{% url 'admin_panel_sponsors' %}">Sponsor Ads</a>
+    <a href="{% url 'admin_panel_payouts' %}">Payouts</a>
+    <a href="{% url 'admin_panel_users' %}">Users</a>
+  </div>
+</nav>
+{% endblock %}
 
 {% block content %}
-<div class="mad-body" id="overview">
-  <div class="mad-panel" style="max-width:1100px;margin:0 auto">
-    <div class="flex justify-between items-start">
-      <div>
-        <h1 class="mad-title glow">Control panel <span class="title-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m13 2-9 12h7l-1 8 10-13h-7z"/></svg></span></h1>
-        <p class="mad-muted">Everything the site runs on — posts, comments and creators.</p>
+<div class="dash-studio" id="overview">
+
+  <!-- Admin Executive Header -->
+  <section class="dash-hero dash-hero--admin">
+    <div class="dash-hero__badge">
+      <span class="live-dot live-dot--cyan"></span>
+      <span>SYSTEM OPERATIONS &amp; TELEMETRY</span>
+    </div>
+    <div class="dash-hero__main">
+      <div class="dash-hero__text">
+        <h1 class="dash-hero__title">
+          Platform <em>Command Center</em>
+        </h1>
+        <p class="dash-hero__subtitle">
+          Real-time oversight over all editorial publications, community debates, sponsor campaigns, and creator payouts across Nigeria.
+        </p>
       </div>
-      <div class="flex gap-3">
-        <a href="{% url 'admin_panel_posts' %}" class="mad-btn sm">Manage posts</a>
-        <a href="{% url 'admin_panel_comments' %}" class="mad-btn sm">Moderate comments</a>
-        <a href="{% url 'admin_panel_users' %}" class="mad-btn sm">All users</a>
-        <a href="{% url 'admin_panel_payouts' %}" class="mad-btn sm">Payouts</a>
-        <a href="{% url 'admin_panel_sponsors' %}" class="mad-btn sm">Sponsor ads</a>
+      <div class="dash-hero__actions">
+        <a href="{% url 'admin_panel_posts' %}" class="dash-btn ghost">Content Control</a>
+        <a href="{% url 'admin_panel_comments' %}" class="dash-btn ghost">
+          <span>Moderation</span>
+          {% if stats.pending_comments > 0 %}
+          <span class="badge-alert">{{ stats.pending_comments }}</span>
+          {% endif %}
+        </a>
+        <a href="{% url 'admin_panel_post_new' %}" class="dash-btn primary">
+          <svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>
+          <span>Publish Article</span>
+        </a>
       </div>
     </div>
-  </div>
 
-  <div class="mad-stats" style="max-width:1100px;margin:0 auto">
-    <div class="mad-stat accent-neon"><div class="label">Total posts</div><div class="value">{{ stats.posted }}</div><div class="delta up">{{ stats.published }} published</div></div>
-    <div class="mad-stat accent-aqua"><div class="label">Views this week</div><div class="value">{{ stats.total_views }}</div><div class="delta up">{{ stats.total_views|floatformat:0 }} readers</div></div>
-    <div class="mad-stat accent-violet"><div class="label">Comments</div><div class="value">{{ stats.comments }}</div><div class="delta">{{ stats.pending_comments }} pending</div></div>
-    <div class="mad-stat accent-pink"><div class="label">Creators</div><div class="value">{{ stats.creators }}</div><div class="delta">{{ stats.users }} users</div></div>
-  </div>
+    <!-- Quick Navigation Shortcuts -->
+    <div class="dash-admin-shortcuts">
+      <a href="{% url 'admin_panel_posts' %}" class="shortcut-chip">
+        <svg viewBox="0 0 24 24"><path d="M4 5h16v14H4zM8 9h8M8 13h5"/></svg>
+        <span>Posts ({{ stats.posts }})</span>
+      </a>
+      <a href="{% url 'admin_panel_comments' %}" class="shortcut-chip {% if stats.pending_comments > 0 %}shortcut-chip--alert{% endif %}">
+        <svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+        <span>Comments ({{ stats.comments }}{% if stats.pending_comments > 0 %} · {{ stats.pending_comments }} pending{% endif %})</span>
+      </a>
+      <a href="{% url 'admin_panel_sponsors' %}" class="shortcut-chip">
+        <svg viewBox="0 0 24 24"><path d="M4 12V7a2 2 0 0 1 2-2h12l2 3v9a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2v-5zM4 12h16"/></svg>
+        <span>Sponsor Campaigns</span>
+      </a>
+      <a href="{% url 'admin_panel_payouts' %}" class="shortcut-chip">
+        <svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 10h18M7 15h3"/></svg>
+        <span>Payout Approvals</span>
+      </a>
+      <a href="{% url 'admin_panel_users' %}" class="shortcut-chip">
+        <svg viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>
+        <span>Users ({{ stats.users }})</span>
+      </a>
+    </div>
+  </section>
 
-  <div class="mad-grid-2" id="performance" style="max-width:1100px;margin:0 auto">
-    <div class="mad-panel">
-      <h3 class="mad-kicker"><span class="pulse"></span> Views per day</h3>
-      <canvas class="mad-chart" data-chart="line" data-from="admin-views-json"></canvas>
+  <!-- Bento Stats Grid -->
+  <section class="dash-bento">
+    <!-- Stat 1: Total Posts -->
+    <div class="dash-stat-card theme-lime">
+      <div class="dash-stat-card__top">
+        <span class="dash-stat-card__label">Total Stories</span>
+        <div class="dash-stat-card__icon">
+          <svg viewBox="0 0 24 24"><path d="m13 2-9 12h7l-1 8 10-13h-7z"/></svg>
+        </div>
+      </div>
+      <div class="dash-stat-card__value">{{ stats.posts }}</div>
+      <div class="dash-stat-card__meta">
+        <span class="tag-trend up">{{ stats.published }} Published</span>
+        <span>· {{ stats.drafts }} drafts</span>
+      </div>
+    </div>
+
+    <!-- Stat 2: Total Views -->
+    <div class="dash-stat-card theme-cyan">
+      <div class="dash-stat-card__top">
+        <span class="dash-stat-card__label">Platform Impressions</span>
+        <div class="dash-stat-card__icon">
+          <svg viewBox="0 0 24 24"><path d="M2 12s3.5-6 10-6 10 6 10 6-3.5 6-10 6S2 12 2 12z"/><circle cx="12" cy="12" r="2.5"/></svg>
+        </div>
+      </div>
+      <div class="dash-stat-card__value">{{ stats.total_views|intcomma }}</div>
+      <div class="dash-stat-card__meta">
+        <span class="tag-trend up">Total Reads</span>
+        <span>Across all posts</span>
+      </div>
+    </div>
+
+    <!-- Stat 3: Moderation -->
+    <div class="dash-stat-card {% if stats.pending_comments > 0 %}theme-amber{% else %}theme-teal{% endif %}">
+      <div class="dash-stat-card__top">
+        <span class="dash-stat-card__label">Comments Moderation</span>
+        <div class="dash-stat-card__icon">
+          <svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+        </div>
+      </div>
+      <div class="dash-stat-card__value">{{ stats.comments }}</div>
+      <div class="dash-stat-card__meta">
+        {% if stats.pending_comments > 0 %}
+        <span class="tag-trend warn">{{ stats.pending_comments }} Pending Review</span>
+        {% else %}
+        <span class="tag-trend up">All Approved</span>
+        {% endif %}
+      </div>
+    </div>
+
+    <!-- Stat 4: Users & Creators -->
+    <div class="dash-stat-card theme-violet">
+      <div class="dash-stat-card__top">
+        <span class="dash-stat-card__label">Community Network</span>
+        <div class="dash-stat-card__icon">
+          <svg viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+        </div>
+      </div>
+      <div class="dash-stat-card__value">{{ stats.users }}</div>
+      <div class="dash-stat-card__meta">
+        <span class="tag-trend up">{{ stats.creators }} Creators</span>
+        <span>Registered members</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4-Widget Analytics Cockpit -->
+  <section class="dash-analytics-grid dash-analytics-grid--4">
+    <!-- Chart 1: Daily views traffic -->
+    <div class="dash-chart-card">
+      <header class="dash-chart-card__header">
+        <div>
+          <span class="card-eyebrow">SITE TRAFFIC</span>
+          <h2 class="card-title">Daily Views</h2>
+        </div>
+        <span class="dash-badge live">14 Days</span>
+      </header>
+      <div class="dash-chart-wrapper">
+        <canvas class="mad-chart" data-chart="line" data-from="admin-views-json"></canvas>
+      </div>
       <script id="admin-views-json" type="application/json">
-        {"labels":{{ chart_labels|tojson }},"datasets":[{"label":"Views","data":{{ chart_views|tojson }},"borderColor":"#38f9d7","backgroundColor":"rgba(56,249,215,0.12)","fill":true,"pointBackgroundColor":"#38f9d7"}]}
+        {"labels":{{ chart_labels|tojson }},"datasets":[{"label":"Views","data":{{ chart_views|tojson }},"borderColor":"#06b6d4","backgroundColor":"rgba(6, 182, 212, 0.12)","fill":true,"pointRadius":3,"pointHoverRadius":6,"tension":0.35,"borderWidth":3}]}
       </script>
     </div>
-    <div class="mad-panel">
-      <h3 class="mad-kicker"><span class="pulse"></span> Comments per day</h3>
-      <canvas class="mad-chart" data-chart="line" data-from="admin-comments-json"></canvas>
+
+    <!-- Chart 2: Daily comments -->
+    <div class="dash-chart-card">
+      <header class="dash-chart-card__header">
+        <div>
+          <span class="card-eyebrow">COMMUNITY ENGAGEMENT</span>
+          <h2 class="card-title">Comments Velocity</h2>
+        </div>
+      </header>
+      <div class="dash-chart-wrapper">
+        <canvas class="mad-chart" data-chart="line" data-from="admin-comments-json"></canvas>
+      </div>
       <script id="admin-comments-json" type="application/json">
-        {"labels":{{ chart_labels|tojson }},"datasets":[{"label":"New comments","data":{{ chart_comments|tojson }},"borderColor":"#ff5edb","backgroundColor":"rgba(255,94,219,0.12)","fill":true,"pointBackgroundColor":"#ff5edb"}]}
+        {"labels":{{ chart_labels|tojson }},"datasets":[{"label":"New Comments","data":{{ chart_comments|tojson }},"borderColor":"#ec4899","backgroundColor":"rgba(236, 72, 153, 0.12)","fill":true,"pointRadius":3,"pointHoverRadius":6,"tension":0.35,"borderWidth":3}]}
       </script>
     </div>
-    <div class="mad-panel">
-      <h3 class="mad-kicker"><span class="pulse"></span> New accounts per day</h3>
-      <canvas class="mad-chart" data-chart="line" data-from="admin-signups-json"></canvas>
+
+    <!-- Chart 3: Signups -->
+    <div class="dash-chart-card">
+      <header class="dash-chart-card__header">
+        <div>
+          <span class="card-eyebrow">NETWORK GROWTH</span>
+          <h2 class="card-title">New User Signups</h2>
+        </div>
+      </header>
+      <div class="dash-chart-wrapper">
+        <canvas class="mad-chart" data-chart="line" data-from="admin-signups-json"></canvas>
+      </div>
       <script id="admin-signups-json" type="application/json">
-        {"labels":{{ chart_labels|tojson }},"datasets":[{"label":"Signups","data":{{ chart_signups|tojson }},"borderColor":"#ffb020","backgroundColor":"rgba(255,176,32,0.12)","fill":true,"pointBackgroundColor":"#ffb020"}]}
+        {"labels":{{ chart_labels|tojson }},"datasets":[{"label":"Signups","data":{{ chart_signups|tojson }},"borderColor":"#f59e0b","backgroundColor":"rgba(245, 158, 11, 0.12)","fill":true,"pointRadius":3,"pointHoverRadius":6,"tension":0.35,"borderWidth":3}]}
       </script>
     </div>
-    <div class="mad-panel">
-      <h3 class="mad-kicker"><span class="pulse"></span> Posts by category</h3>
-      <canvas class="mad-chart" data-chart="doughnut" data-from="admin-categories-json"></canvas>
+
+    <!-- Chart 4: Categories -->
+    <div class="dash-chart-card">
+      <header class="dash-chart-card__header">
+        <div>
+          <span class="card-eyebrow">CONTENT DIVERSITY</span>
+          <h2 class="card-title">Stories by Category</h2>
+        </div>
+      </header>
+      <div class="dash-chart-wrapper dash-chart-wrapper--doughnut">
+        <canvas class="mad-chart" data-chart="doughnut" data-from="admin-categories-json"></canvas>
+      </div>
       <script id="admin-categories-json" type="application/json">
-        {"labels":{{ chart_categories|tojson }},"datasets":[{"data":{{ chart_category_counts|tojson }},"backgroundColor":["#b9ff3d","#38f9d7","#ff5edb","#7c6cff","#ffb020"]}]}
+        {"labels":{{ chart_categories|tojson }},"datasets":[{"data":{{ chart_category_counts|tojson }},"backgroundColor":["#10b981","#06b6d4","#8b5cf6","#ec4899","#f59e0b"],"borderWidth":0,"hoverOffset":12}]}
       </script>
     </div>
-  </div>
+  </section>
+
+  <!-- Operations Dual Row: Moderation Queue & Top Performing Content -->
+  <section class="dash-ops-grid">
+    <!-- Left: Pending Moderation -->
+    <div class="dash-ops-card">
+      <header class="dash-ops-card__header">
+        <div>
+          <span class="card-eyebrow">MODERATION QUEUE</span>
+          <h2 class="card-title">Pending Comment Reviews</h2>
+        </div>
+        <a href="{% url 'admin_panel_comments' %}" class="dash-btn ghost sm">View All</a>
+      </header>
+      <div class="dash-ops-card__body">
+        {% for c in pending_comments %}
+        <div class="comment-review-item">
+          <div class="comment-review-item__meta">
+            <strong>{{ c.name|default:"Reader" }}</strong>
+            <span>on <a href="{% url 'blog_detail' c.post.slug %}">{{ c.post.title|truncatechars:35 }}</a></span>
+          </div>
+          <p class="comment-review-item__text">{{ c.body|truncatechars:140 }}</p>
+          <div class="comment-review-item__actions">
+            <form method="post" action="{% url 'admin_panel_comment_toggle' c.pk %}" style="display:inline">
+              {% csrf_token %}
+              <button type="submit" class="dash-btn primary sm">Approve &amp; Publish</button>
+            </form>
+            <form method="post" action="{% url 'admin_panel_comment_toggle' c.pk %}" style="display:inline">
+              {% csrf_token %}
+              <button type="submit" class="dash-btn danger sm">Reject</button>
+            </form>
+          </div>
+        </div>
+        {% empty %}
+        <div class="dash-ops-empty">
+          <div class="check-icon">✓</div>
+          <p><strong>Moderation inbox is clear.</strong> All reader comments are reviewed and approved.</p>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+
+    <!-- Right: Top Performing Content -->
+    <div class="dash-ops-card">
+      <header class="dash-ops-card__header">
+        <div>
+          <span class="card-eyebrow">READERSHIP IMPACT</span>
+          <h2 class="card-title">Top Performing Stories</h2>
+        </div>
+        <a href="{% url 'admin_panel_posts' %}" class="dash-btn ghost sm">Manage All</a>
+      </header>
+      <div class="dash-ops-card__body">
+        <div class="top-posts-list">
+          {% for p in top_posts %}
+          <div class="top-post-item">
+            <span class="rank-badge">{{ forloop.counter }}</span>
+            <div class="top-post-item__info">
+              <a href="{% url 'blog_detail' p.slug %}" class="top-post-title" target="_blank" rel="noopener">
+                {{ p.title }}
+              </a>
+              <span class="top-post-cat">{{ p.get_category_display }}</span>
+            </div>
+            <div class="top-post-views">
+              <strong>{{ p.views|intcomma }}</strong>
+              <small>views</small>
+            </div>
+          </div>
+          {% empty %}
+          <p class="dash-muted">No published stories yet.</p>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+  </section>
+
 </div>
 {% endblock %}

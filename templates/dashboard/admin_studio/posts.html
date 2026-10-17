@@ -1,56 +1,199 @@
-
 {% extends "dashboard_base.html" %}
-{% load static %}
+{% load static humanize %}
 
-{% block title %}Posts — Admin — TNE{% endblock %}
-{% block extra_head %}
-<link rel="stylesheet" href="{% static 'css/mad.css' %}">
+{% block title %}Editorial Posts — Admin — TNE{% endblock %}
+
+{% block dashboard_brand %}
+<a class="dashboard-brand" href="{% url 'admin_panel' %}">
+  <span class="dashboard-brand__mark dashboard-brand__mark--admin">TN</span>
+  <div class="dashboard-brand__meta">
+    <strong>Command Center</strong>
+    <small>Administrative Studio</small>
+  </div>
+</a>
 {% endblock %}
 
-{% block dashboard_brand %}<a class="dashboard-brand" href="{% url 'admin_panel' %}"><span>TN</span><strong>Command<br>Center</strong></a>{% endblock %}
-{% block dashboard_heading %}Content control{% endblock %}
-{% block dashboard_nav %}<a href="{% url 'admin_panel' %}"><i><svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg></i> Overview</a><a href="{% url 'admin_panel_posts' %}" class="is-active"><i><svg viewBox="0 0 24 24"><path d="M4 5h16v14H4zM8 9h8M8 13h5"/></svg></i> Posts</a><a href="{% url 'admin_panel_comments' %}"><i><svg viewBox="0 0 24 24"><path d="M20 15a4 4 0 0 1-4 4H8l-4 3v-7a4 4 0 0 1-2-3.5v-5A4 4 0 0 1 6 3h10a4 4 0 0 1 4 4z"/></svg></i> Comments</a><a href="{% url 'home' %}"><i><svg viewBox="0 0 24 24"><path d="M14 3h7v7M21 3l-9 9"/><path d="M19 14v5a2 2 0 0 1-2 2H5a2 2 0 0 1 2-2V7a2 2 0 0 1 2-2h5"/></svg></i> View website</a>{% endblock %}
-{% block dashboard_action %}<a class="dashboard-new" href="{% url 'admin_panel_post_new' %}">New post <b>＋</b></a>{% endblock %}
-{% block dashboard_tabs %}<nav class="dashboard-tabs" aria-label="Admin sections"><a href="{% url 'admin_panel' %}">Overview</a><a class="is-active" href="{% url 'admin_panel_posts' %}">All posts</a><a href="{% url 'admin_panel_comments' %}">Moderation</a><a href="{% url 'admin_panel_sponsors' %}">Sponsor ads</a><a href="{% url 'admin_panel_payouts' %}">Payouts</a></nav>{% endblock %}
+{% block dashboard_heading %}Editorial Content{% endblock %}
+
+{% block dashboard_nav %}
+<div class="dashboard-nav__group-title">ADMINISTRATION</div>
+<a href="{% url 'admin_panel' %}">
+  <i><svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg></i>
+  <span>Command Center</span>
+</a>
+<a href="{% url 'admin_panel_posts' %}" class="is-active">
+  <i><svg viewBox="0 0 24 24"><path d="M4 5h16v14H4z"/><path d="M8 9h8M8 13h5"/></svg></i>
+  <span>Editorial Content</span>
+</a>
+<a href="{% url 'admin_panel_comments' %}">
+  <i><svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></i>
+  <span>Moderation Queue</span>
+</a>
+<a href="{% url 'admin_panel_sponsors' %}">
+  <i><svg viewBox="0 0 24 24"><path d="M4 12V7a2 2 0 0 1 2-2h12l2 3v9a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2v-5zM4 12h16"/></svg></i>
+  <span>Sponsor Campaigns</span>
+</a>
+<a href="{% url 'admin_panel_payouts' %}">
+  <i><svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 10h18M7 15h3"/></svg></i>
+  <span>Payout Review</span>
+</a>
+<a href="{% url 'admin_panel_users' %}">
+  <i><svg viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg></i>
+  <span>User Directory</span>
+</a>
+
+<div class="dashboard-nav__group-title">PORTAL</div>
+<a href="{% url 'dashboard' %}">
+  <i><svg viewBox="0 0 24 24"><path d="M12 20h9M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg></i>
+  <span>Switch to Creator View</span>
+</a>
+<a href="{% url 'home' %}">
+  <i><svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></i>
+  <span>View Live Site</span>
+</a>
+{% endblock %}
+
+{% block dashboard_action %}
+<a class="dashboard-new" href="{% url 'admin_panel_post_new' %}">
+  <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>
+  <span>Publish Post</span>
+</a>
+{% endblock %}
+
+{% block dashboard_tabs %}
+<nav class="dashboard-tabs" aria-label="Admin sections">
+  <div class="dashboard-tabs__inner">
+    <a href="{% url 'admin_panel' %}">Overview</a>
+    <a class="is-active" href="{% url 'admin_panel_posts' %}">Editorial Posts</a>
+    <a href="{% url 'admin_panel_comments' %}">Comments Moderation</a>
+    <a href="{% url 'admin_panel_sponsors' %}">Sponsor Ads</a>
+    <a href="{% url 'admin_panel_payouts' %}">Payouts</a>
+    <a href="{% url 'admin_panel_users' %}">Users</a>
+  </div>
+</nav>
+{% endblock %}
 
 {% block content %}
-<div class="mad-body">
-  <div class="mad-panel" style="max-width:1100px;margin:0 auto">
-    <div class="flex justify-between items-center mb-4">
-      <h1 class="mad-title glow">Blog posts</h1>
-      <a href="{% url 'admin_panel_post_new' %}" class="mad-btn">+ New post — gets published on the site immediately</a>
+<div class="dash-studio">
+  <div class="dash-stories-panel">
+    <header class="dash-stories-panel__header">
+      <div>
+        <span class="card-eyebrow">EDITORIAL DESK</span>
+        <h2 class="card-title">All Site Stories</h2>
+      </div>
+      <div class="dash-stories-panel__actions">
+        <a href="{% url 'admin_panel_post_new' %}" class="dash-btn primary sm">
+          <svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>
+          <span>New Article</span>
+        </a>
+      </div>
+    </header>
+
+    <!-- Search Form -->
+    <div class="dash-search-bar">
+      <form method="get" class="search-form">
+        <div class="search-input-group">
+          <svg viewBox="0 0 24 24" class="search-icon"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+          <input type="text" name="q" value="{{ q }}" placeholder="Search by story title or keywords..." class="search-input">
+        </div>
+        <button class="dash-btn ghost sm" type="submit">Filter Stories</button>
+        {% if q %}
+        <a href="{% url 'admin_panel_posts' %}" class="dash-btn ghost sm">Clear</a>
+        {% endif %}
+      </form>
     </div>
 
-    <form class="mb-4" method="get">
-      <div class="flex gap-2">
-        <input type="text" name="q" value="{{ q }}" placeholder="Search posts..." class="field" style="max-width:320px">
-        <button class="mad-btn" type="submit">Search</button>
-      </form>
-    </form>
+    {% if posts %}
+    <div class="dash-table-container">
+      <table class="dash-table">
+        <thead>
+          <tr>
+            <th>Story Title / Author</th>
+            <th>Category</th>
+            <th>Status</th>
+            <th>Spotlight</th>
+            <th class="text-right">Impressions</th>
+            <th class="text-right">Est. Earned</th>
+            <th class="text-right">Administrative Controls</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for p in posts %}
+          <tr>
+            <td class="col-title">
+              <a href="{% url 'blog_detail' p.slug %}" class="story-link" target="_blank" rel="noopener">
+                {{ p.title }}
+              </a>
+              <small class="story-author">{% if p.author %}{{ p.author.get_full_name|default:p.author.username }}{% else %}TNE Editorial{% endif %}</small>
+            </td>
+            <td>
+              <span class="dash-chip cat">{{ p.get_category_display }}</span>
+            </td>
+            <td>
+              <span class="dash-chip {{ p.status }} dot">{{ p.status|title }}</span>
+            </td>
+            <td>
+              {% if p.is_featured %}
+              <span class="dash-chip featured">★ Featured</span>
+              {% else %}
+              <span class="dash-chip standard">Standard</span>
+              {% endif %}
+            </td>
+            <td class="text-right font-num">
+              <strong>{{ p.views|intcomma }}</strong>
+            </td>
+            <td class="text-right font-num accent-green">
+              ₦{{ p.estimated_earnings|floatformat:0|intcomma }}
+            </td>
+            <td class="text-right col-actions">
+              <div class="dash-action-group">
+                <a class="dash-btn ghost sm" href="{% url 'admin_panel_post_edit' p.pk %}" title="Edit article">Edit</a>
+                <form method="post" action="{% url 'admin_panel_toggle_publish' p.pk %}" style="display:inline">
+                  {% csrf_token %}
+                  <button type="submit" class="dash-btn sm" title="Toggle publish status">
+                    {{ p.status|upper }}
+                  </button>
+                </form>
+                <form method="post" action="{% url 'admin_panel_toggle_featured' p.pk %}" style="display:inline">
+                  {% csrf_token %}
+                  <button type="submit" class="dash-btn sm" title="Toggle featured state">
+                    {% if p.is_featured %}Unfeature{% else %}Feature{% endif %}
+                  </button>
+                </form>
+                <form method="post" action="{% url 'admin_panel_post_delete' p.pk %}" style="display:inline" onsubmit="return confirm('Permanently delete this story?')">
+                  {% csrf_token %}
+                  <button type="submit" class="dash-btn danger sm" title="Delete article">Delete</button>
+                </form>
+              </div>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
 
-    <table class="mad-table">
-      <thead><tr><th>Title / author</th><th>Category</th><th>Status</th><th>Featured</th><th>Views</th><th>Est. earnings</th><th>Controls</th></tr></thead>
-      <tbody>
-        {% for p in posts %}
-        <tr>
-          <td><a href="{% url 'blog_detail' p.slug %}" style="color:var(--mad-text);text-decoration:none">{{ p.title|truncatechars:46 }}</a><small style="display:block;margin-top:4px;color:var(--dash-muted)">{{ p.author|default:"TNE Editorial" }}</small></td>
-          <td><span class="mad-chip cat">{{ p.get_category_display }}</span></td>
-          <td><span class="mad-chip {{ p.status }}">{{ p.status }}</span></td>
-          <td><span class="mad-chip {% if p.is_featured %}cat{% endif %}">{% if p.is_featured %}Featured{% else %}Standard{% endif %}</span></td>
-          <td style="font-variant-numeric:tabular-nums">{{ p.views }}</td>
-          <td style="font-variant-numeric:tabular-nums">{{ p.estimated_earnings|floatformat:0 }}</td>
-          <td style="white-space:nowrap">
-            <a class="mad-btn sm" href="{% url 'admin_panel_post_edit' p.pk %}">Edit</a>
-            <form method="post" action="{% url 'admin_panel_toggle_publish' p.pk %}" style="display:inline">{% csrf_token %}<button class="mad-btn sm" style="padding:6px 14px">{{ p.status|upper }}</button></form>
-            <form method="post" action="{% url 'admin_panel_toggle_featured' p.pk %}" style="display:inline">{% csrf_token %}<button class="mad-btn sm" style="padding:6px 14px">{% if p.is_featured %}Unfeature{% else %}Feature{% endif %}</button></form>
-            <form method="post" action="{% url 'admin_panel_post_delete' p.pk %}" style="display:inline" onsubmit="return confirm('Delete this post?')">{% csrf_token %}<button class="mad-btn sm danger">Delete</button></form>
-          </td>
-        </tr>
-        {% endfor %}
-      </tbody>
-    </table>
-    {% if page_obj.paginator.num_pages > 1 %}<nav class="dashboard-pagination" aria-label="Post pages">{% if page_obj.has_previous %}<a href="?q={{ q|urlencode }}&page={{ page_obj.previous_page_number }}">← Previous</a>{% endif %}<span>Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}</span>{% if page_obj.has_next %}<a href="?q={{ q|urlencode }}&page={{ page_obj.next_page_number }}">Next →</a>{% endif %}</nav>{% endif %}
-    {% if not posts %}<p class="mad-empty"><b>Nothing published yet</b><p class="mad-muted">Start with the <a href="{% url 'admin_panel_post_new' %}" style="color:var(--mad-neon)">new post</a> — it appears on the home and category pages instantly.</p>{% endif %}
+    {% if page_obj.paginator.num_pages > 1 %}
+    <nav class="dashboard-pagination" aria-label="Post pagination">
+      {% if page_obj.has_previous %}
+      <a href="?q={{ q|urlencode }}&page={{ page_obj.previous_page_number }}" class="dash-btn ghost sm">&larr; Previous</a>
+      {% endif %}
+      <span class="pagination-info">Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}</span>
+      {% if page_obj.has_next %}
+      <a href="?q={{ q|urlencode }}&page={{ page_obj.next_page_number }}" class="dash-btn ghost sm">Next &rarr;</a>
+      {% endif %}
+    </nav>
+    {% endif %}
+
+    {% else %}
+    <div class="dash-empty-state">
+      <div class="empty-icon">📰</div>
+      <h3>No matching stories found</h3>
+      <p class="dash-muted">No posts match your search query. Try another term or publish a new article.</p>
+      <a href="{% url 'admin_panel_post_new' %}" class="dash-btn primary">
+        <span>Publish New Story</span>
+      </a>
+    </div>
+    {% endif %}
   </div>
 </div>
 {% endblock %}

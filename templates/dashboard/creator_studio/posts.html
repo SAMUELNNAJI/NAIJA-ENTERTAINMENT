@@ -1,11 +1,91 @@
 {% extends "dashboard_base.html" %}
-{% block title %}My posts — Creator Studio{% endblock %}
-{% block dashboard_heading %}My posts{% endblock %}
+{% load static humanize %}
+
+{% block title %}My Stories — Creator Studio — TNE{% endblock %}
+{% block dashboard_heading %}My Stories{% endblock %}
+
+{% block dashboard_tabs %}
+<nav class="dashboard-tabs" aria-label="Creator sections">
+  <div class="dashboard-tabs__inner">
+    <a href="{% url 'dashboard' %}">Overview</a>
+    <a class="is-active" href="{% url 'dashboard_posts' %}">My Stories</a>
+    <a href="{% url 'dashboard_post_new' %}">Write Story</a>
+    <a href="{% url 'payouts' %}">Earnings &amp; Payouts</a>
+  </div>
+</nav>
+{% endblock %}
+
 {% block content %}
-<div class="mad-body">
-  <section class="mad-panel">
-    <div class="mad-panel__head"><div><span class="mad-eyebrow">Your publishing desk</span><h1 class="mad-title">Every story, <em>in one place.</em></h1></div><a class="mad-btn" href="{% url 'dashboard_post_new' %}">Write a post</a></div>
-    {% if posts %}<table class="mad-table"><thead><tr><th>Story</th><th>Status</th><th>Views</th><th>Updated</th><th></th></tr></thead><tbody>{% for post in posts %}<tr><td><a href="{% url 'blog_detail' post.slug %}" style="color:var(--db-ink);font-weight:800;text-decoration:none">{{ post.title }}</a><small style="display:block;color:var(--db-dim);margin-top:5px">{{ post.get_category_display }}</small></td><td><span class="mad-chip {{ post.status }}">{{ post.get_status_display }}</span></td><td>{{ post.views }}</td><td>{{ post.updated_at|date:"M d, Y" }}</td><td><a class="mad-btn sm" href="{% url 'dashboard_post_edit' post.pk %}">Edit</a></td></tr>{% endfor %}</tbody></table>{% else %}<div class="mad-empty"><b>Your desk is ready.</b><p class="mad-muted">Write your first story and it will appear here.</p><a class="mad-btn" href="{% url 'dashboard_post_new' %}">Write your first post</a></div>{% endif %}
-  </section>
+<div class="dash-studio">
+  <div class="dash-stories-panel">
+    <header class="dash-stories-panel__header">
+      <div>
+        <span class="card-eyebrow">CREATOR PORTFOLIO</span>
+        <h2 class="card-title">All Your Published &amp; Draft Stories</h2>
+      </div>
+      <div class="dash-stories-panel__actions">
+        <a class="dash-btn primary sm" href="{% url 'dashboard_post_new' %}">
+          <svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>
+          <span>Write Story</span>
+        </a>
+      </div>
+    </header>
+
+    {% if posts %}
+    <div class="dash-table-container">
+      <table class="dash-table">
+        <thead>
+          <tr>
+            <th>Story Title</th>
+            <th>Category</th>
+            <th>Status</th>
+            <th class="text-right">Impressions</th>
+            <th class="text-right">Updated</th>
+            <th class="text-right">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for post in posts %}
+          <tr>
+            <td class="col-title">
+              <a href="{% url 'blog_detail' post.slug %}" class="story-link" target="_blank" rel="noopener">
+                {{ post.title }}
+              </a>
+            </td>
+            <td>
+              <span class="dash-chip cat">{{ post.get_category_display }}</span>
+            </td>
+            <td>
+              <span class="dash-chip {{ post.status }} dot">{{ post.get_status_display }}</span>
+            </td>
+            <td class="text-right font-num">
+              <strong>{{ post.views|intcomma }}</strong>
+            </td>
+            <td class="text-right font-num text-muted">
+              {{ post.updated_at|date:"M d, Y" }}
+            </td>
+            <td class="text-right col-actions">
+              <div class="dash-action-group">
+                <a class="dash-btn ghost sm" href="{% url 'dashboard_post_edit' post.pk %}" title="Edit story">Edit</a>
+                <form method="post" action="{% url 'dashboard_post_delete' post.pk %}" style="display:inline;margin:0" onsubmit="return confirm('Permanently delete this story?')">
+                  {% csrf_token %}
+                  <button type="submit" class="dash-btn danger sm" title="Delete story">Delete</button>
+                </form>
+              </div>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+    {% else %}
+    <div class="dash-empty-state">
+      <div class="empty-icon">✍️</div>
+      <h3>Your portfolio is waiting for its first story</h3>
+      <p class="dash-muted">Draft a story, add rich content, and publish straight to The Nigerian Entrepreneur.</p>
+      <a class="dash-btn primary" href="{% url 'dashboard_post_new' %}">Write your first post</a>
+    </div>
+    {% endif %}
+  </div>
 </div>
 {% endblock %}

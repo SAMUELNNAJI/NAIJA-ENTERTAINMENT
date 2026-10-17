@@ -1,31 +1,78 @@
 /**
- * Shared Chart.js helper.
- * Each chart canvas gets data-chart="line|bar|doughnut" and data-labels +
- * data-datasets JSON attributes.
+ * Shared Chart.js helper for Creator Studio & Admin Command Center.
+ * Reads JSON configuration from <script type="application/json"> data sources.
  */
 (function () {
   const CTX = window.Chart || null;
 
-  function safeParse(str) {
-    try { return JSON.parse(str); } catch (e) { return null; }
-  }
-
   function render(id, type, labels, datasets) {
     const ctx = document.getElementById(id);
-    if (!ctx) return;
+    if (!ctx || !CTX) return;
+
+    const isDark = document.documentElement.getAttribute("data-theme") !== "light";
+    const textColor = isDark ? "#94a3b8" : "#64748b";
+    const gridColor = isDark ? "rgba(255, 255, 255, 0.05)" : "rgba(15, 23, 42, 0.06)";
+
+    const options = {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: {
+          display: type === "doughnut" || type === "pie",
+          position: "bottom",
+          labels: {
+            color: textColor,
+            font: { family: "'Plus Jakarta Sans', sans-serif", size: 11, weight: "600" },
+            padding: 14,
+            usePointStyle: true,
+            boxWidth: 8,
+          },
+        },
+        tooltip: {
+          backgroundColor: isDark ? "rgba(13, 20, 36, 0.95)" : "rgba(255, 255, 255, 0.95)",
+          titleColor: isDark ? "#f8fafc" : "#0f172a",
+          bodyColor: isDark ? "#cbd5e1" : "#334155",
+          borderColor: isDark ? "rgba(255, 255, 255, 0.1)" : "rgba(15, 23, 42, 0.1)",
+          borderWidth: 1,
+          padding: 10,
+          cornerRadius: 10,
+          boxPadding: 4,
+          usePointStyle: true,
+        },
+      },
+    };
+
+    if (type !== "doughnut" && type !== "pie") {
+      options.scales = {
+        x: {
+          ticks: {
+            color: textColor,
+            font: { family: "'Plus Jakarta Sans', sans-serif", size: 10.5, weight: "600" },
+            maxRotation: 0,
+            autoSkip: true,
+            maxTicksLimit: 7,
+          },
+          grid: { color: gridColor },
+        },
+        y: {
+          ticks: {
+            color: textColor,
+            font: { family: "'Plus Jakarta Sans', sans-serif", size: 10.5, weight: "600" },
+            precision: 0,
+          },
+          grid: { color: gridColor },
+          beginAtZero: true,
+        },
+      };
+    } else {
+      options.cutout = "68%";
+    }
+
     try {
       new CTX(ctx, {
         type: type,
         data: { labels: labels || [], datasets: datasets || [] },
-        options: {
-          responsive: true,
-          maintainAspectRatio: false,
-          plugins: { legend: { position: "bottom", labels: { color: "#e8e8f0", font: { size: 11 } } } },
-          scales: {
-            x: { ticks: { color: "#9a9ab0" }, grid: { color: "rgba(255,255,255,0.06)" } },
-            y: { ticks: { color: "#9a9ab0" }, grid: { color: "rgba(255,255,255,0.06)" } },
-          },
-        },
+        options: options,
       });
     } catch (e) {
       console.warn("Chart render failed for", id, e);

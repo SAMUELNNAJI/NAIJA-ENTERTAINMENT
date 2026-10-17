@@ -1,4 +1,87 @@
 {% extends "dashboard_base.html" %}
-{% block title %}Edit sponsor — Admin Studio{% endblock %}
-{% block dashboard_heading %}Edit sponsor banner{% endblock %}
-{% block content %}<div class="mad-body"><section class="mad-panel"><div class="mad-panel__head"><div><span class="mad-eyebrow">Sponsor campaign</span><h1 class="mad-title">Edit {{ ad.title }}</h1></div><a href="{% url 'admin_panel_sponsors' %}" class="mad-btn ghost">Back to campaigns</a></div><form method="post" class="mad-form" style="max-width:760px">{% csrf_token %}{% for field in form %}<div class="dashboard-field"><label for="{{ field.id_for_label }}">{{ field.label }}</label>{{ field }}{% for error in field.errors %}<small>{{ error }}</small>{% endfor %}</div>{% endfor %}<button class="mad-btn" type="submit">Save changes</button></form></section></div>{% endblock %}
+{% load static humanize %}
+
+{% block title %}Edit Sponsor — Admin — TNE{% endblock %}
+
+{% block dashboard_brand %}
+<a class="dashboard-brand" href="{% url 'admin_panel' %}">
+  <span class="dashboard-brand__mark dashboard-brand__mark--admin">TN</span>
+  <div class="dashboard-brand__meta">
+    <strong>Command Center</strong>
+    <small>Administrative Studio</small>
+  </div>
+</a>
+{% endblock %}
+
+{% block dashboard_heading %}Edit Sponsor Banner{% endblock %}
+
+{% block dashboard_nav %}
+<div class="dashboard-nav__group-title">ADMINISTRATION</div>
+<a href="{% url 'admin_panel' %}">
+  <i><svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg></i>
+  <span>Command Center</span>
+</a>
+<a href="{% url 'admin_panel_posts' %}">
+  <i><svg viewBox="0 0 24 24"><path d="M4 5h16v14H4z"/><path d="M8 9h8M8 13h5"/></svg></i>
+  <span>Editorial Content</span>
+</a>
+<a href="{% url 'admin_panel_comments' %}">
+  <i><svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></i>
+  <span>Moderation Queue</span>
+</a>
+<a href="{% url 'admin_panel_sponsors' %}" class="is-active">
+  <i><svg viewBox="0 0 24 24"><path d="M4 12V7a2 2 0 0 1 2-2h12l2 3v9a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2v-5zM4 12h16"/></svg></i>
+  <span>Sponsor Campaigns</span>
+</a>
+<a href="{% url 'admin_panel_payouts' %}">
+  <i><svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 10h18M7 15h3"/></svg></i>
+  <span>Payout Review</span>
+</a>
+<a href="{% url 'admin_panel_users' %}">
+  <i><svg viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg></i>
+  <span>User Directory</span>
+</a>
+
+<div class="dashboard-nav__group-title">PORTAL</div>
+<a href="{% url 'dashboard' %}">
+  <i><svg viewBox="0 0 24 24"><path d="M12 20h9M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg></i>
+  <span>Switch to Creator View</span>
+</a>
+<a href="{% url 'home' %}">
+  <i><svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></i>
+  <span>View Live Site</span>
+</a>
+{% endblock %}
+
+{% block content %}
+<div class="dash-studio">
+  <div class="dash-form-card" style="max-width: 760px; margin: 0 auto;">
+    <header class="dash-form-card__header">
+      <div class="card-icon">✏️</div>
+      <div>
+        <span class="card-eyebrow">CAMPAIGN MODIFICATION</span>
+        <h2 class="card-title">Edit {{ ad.title }}</h2>
+      </div>
+      <a href="{% url 'admin_panel_sponsors' %}" class="dash-btn ghost sm" style="margin-left: auto;">Back to campaigns</a>
+    </header>
+    <div class="dash-form-card__body">
+      <form method="post" class="dash-styled-form">
+        {% csrf_token %}
+        <div class="dashboard-fields">
+          {% for field in form %}
+          <div class="dash-field">
+            <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+            {{ field }}
+            {% for error in field.errors %}<small class="field-error">{{ error }}</small>{% endfor %}
+          </div>
+          {% endfor %}
+        </div>
+        <div style="display: flex; gap: 12px; margin-top: 14px;">
+          <button class="dash-btn primary" type="submit">Save Changes</button>
+          <a href="{% url 'admin_panel_sponsors' %}" class="dash-btn ghost">Cancel</a>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock %}

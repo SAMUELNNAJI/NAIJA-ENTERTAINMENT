@@ -1,11 +1,175 @@
 {% extends "dashboard_base.html" %}
-{% block title %}Sponsor campaigns — Admin{% endblock %}
-{% block dashboard_heading %}Sponsor campaigns{% endblock %}
-{% block dashboard_brand %}<a class="dashboard-brand" href="{% url 'admin_panel' %}"><span>TN</span><strong>Command<br>Center</strong></a>{% endblock %}
-{% block dashboard_nav %}<a href="{% url 'admin_panel' %}"><i><svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg></i> Overview</a><a href="{% url 'admin_panel_posts' %}"><i><svg viewBox="0 0 24 24"><path d="M4 5h16v14H4zM8 9h8M8 13h5"/></svg></i> All posts</a><a href="{% url 'admin_panel_comments' %}"><i><svg viewBox="0 0 24 24"><path d="M20 15a4 4 0 0 1-4 4H8l-4 3v-7a4 4 0 0 1-2-3.5v-5A4 4 0 0 1 6 3h10a4 4 0 0 1 4 4z"/></svg></i> Comments</a><a href="{% url 'admin_panel_sponsors' %}" class="is-active"><i><svg viewBox="0 0 24 24"><path d="M4 12V7a2 2 0 0 1 2-2h12l2 3v9a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2v-5zM4 12h16"/></svg></i> Sponsor ads</a><a href="{% url 'admin_panel_payouts' %}"><i><svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 10h18M7 15h3"/></svg></i> Payouts</a></nav>{% endblock %}
-{% block dashboard_tabs %}<nav class="dashboard-tabs"><a href="{% url 'admin_panel' %}">Overview</a><a href="{% url 'admin_panel_posts' %}">All posts</a><a class="is-active" href="{% url 'admin_panel_sponsors' %}">Sponsor ads</a><a href="{% url 'admin_panel_payouts' %}">Payouts</a></nav>{% endblock %}
+{% load static humanize %}
+
+{% block title %}Sponsor Campaigns — Admin — TNE{% endblock %}
+
+{% block dashboard_brand %}
+<a class="dashboard-brand" href="{% url 'admin_panel' %}">
+  <span class="dashboard-brand__mark dashboard-brand__mark--admin">TN</span>
+  <div class="dashboard-brand__meta">
+    <strong>Command Center</strong>
+    <small>Administrative Studio</small>
+  </div>
+</a>
+{% endblock %}
+
+{% block dashboard_heading %}Sponsor Campaigns{% endblock %}
+
+{% block dashboard_nav %}
+<div class="dashboard-nav__group-title">ADMINISTRATION</div>
+<a href="{% url 'admin_panel' %}">
+  <i><svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg></i>
+  <span>Command Center</span>
+</a>
+<a href="{% url 'admin_panel_posts' %}">
+  <i><svg viewBox="0 0 24 24"><path d="M4 5h16v14H4z"/><path d="M8 9h8M8 13h5"/></svg></i>
+  <span>Editorial Content</span>
+</a>
+<a href="{% url 'admin_panel_comments' %}">
+  <i><svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></i>
+  <span>Moderation Queue</span>
+</a>
+<a href="{% url 'admin_panel_sponsors' %}" class="is-active">
+  <i><svg viewBox="0 0 24 24"><path d="M4 12V7a2 2 0 0 1 2-2h12l2 3v9a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2v-5zM4 12h16"/></svg></i>
+  <span>Sponsor Campaigns</span>
+</a>
+<a href="{% url 'admin_panel_payouts' %}">
+  <i><svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 10h18M7 15h3"/></svg></i>
+  <span>Payout Review</span>
+</a>
+<a href="{% url 'admin_panel_users' %}">
+  <i><svg viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg></i>
+  <span>User Directory</span>
+</a>
+
+<div class="dashboard-nav__group-title">PORTAL</div>
+<a href="{% url 'dashboard' %}">
+  <i><svg viewBox="0 0 24 24"><path d="M12 20h9M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg></i>
+  <span>Switch to Creator View</span>
+</a>
+<a href="{% url 'home' %}">
+  <i><svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></i>
+  <span>View Live Site</span>
+</a>
+{% endblock %}
+
+{% block dashboard_tabs %}
+<nav class="dashboard-tabs" aria-label="Admin sections">
+  <div class="dashboard-tabs__inner">
+    <a href="{% url 'admin_panel' %}">Overview</a>
+    <a href="{% url 'admin_panel_posts' %}">Editorial Posts</a>
+    <a href="{% url 'admin_panel_comments' %}">Comments Moderation</a>
+    <a class="is-active" href="{% url 'admin_panel_sponsors' %}">Sponsor Ads</a>
+    <a href="{% url 'admin_panel_payouts' %}">Payouts</a>
+    <a href="{% url 'admin_panel_users' %}">Users</a>
+  </div>
+</nav>
+{% endblock %}
+
 {% block content %}
-<div class="mad-body"><section class="mad-panel"><div class="mad-panel__head"><div><span class="mad-eyebrow">Site-wide advertising</span><h1 class="mad-title">Sponsor banners</h1><p class="mad-muted">Active banners rotate for visitors and can be dismissed per browser.</p></div></div>
-<form method="post" class="mad-form" style="max-width:760px">{% csrf_token %}<div class="dashboard-fields">{% for field in form %}<div class="dashboard-field{% if field.name == 'title' or field.name == 'image_url' or field.name == 'redirect_url' %} dashboard-field--wide{% endif %}"><label for="{{ field.id_for_label }}">{{ field.label }}</label>{{ field }}{% for error in field.errors %}<small>{{ error }}</small>{% endfor %}</div>{% endfor %}</div><button class="mad-btn" type="submit">Save sponsor banner</button></form></section>
-<section class="mad-panel" style="margin-top:20px"><h3 class="mad-kicker">All campaigns</h3><table class="mad-table"><thead><tr><th>Campaign</th><th>Redirect</th><th>Status</th><th></th></tr></thead><tbody>{% for ad in ads %}<tr><td>{{ ad.title }}</td><td><a href="{{ ad.redirect_url }}" target="_blank" rel="noopener" style="color:var(--db-cyan)">{{ ad.redirect_url|truncatechars:46 }}</a></td><td>{{ ad.is_active|yesno:"Active,Paused" }}</td><td><a class="mad-btn sm" href="{% url 'admin_panel_sponsor_edit' ad.pk %}">Edit</a> <form method="post" action="{% url 'admin_panel_sponsor_toggle' ad.pk %}" style="display:inline">{% csrf_token %}<button class="mad-btn sm" type="submit">{{ ad.is_active|yesno:"Pause,Activate" }}</button></form></td></tr>{% empty %}<tr><td colspan="4">No sponsor campaigns yet.</td></tr>{% endfor %}</tbody></table>{% if page_obj.paginator.num_pages > 1 %}<nav class="dashboard-pagination">{% if page_obj.has_previous %}<a href="?page={{ page_obj.previous_page_number }}">← Previous</a>{% endif %}<span>Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}</span>{% if page_obj.has_next %}<a href="?page={{ page_obj.next_page_number }}">Next →</a>{% endif %}</nav>{% endif %}</section></div>
+<div class="dash-studio">
+  <!-- Create / Edit Campaign Card -->
+  <div class="dash-form-card" style="margin-bottom: 24px;">
+    <header class="dash-form-card__header">
+      <div class="card-icon">📢</div>
+      <div>
+        <span class="card-eyebrow">SITE-WIDE ADVERTISING</span>
+        <h2 class="card-title">Launch Sponsor Banner</h2>
+        <p class="dash-muted" style="margin-top: 4px;">Active banners rotate dynamically across the platform header and article pages.</p>
+      </div>
+    </header>
+    <div class="dash-form-card__body">
+      <form method="post" class="dash-styled-form">
+        {% csrf_token %}
+        <div class="dashboard-fields">
+          {% for field in form %}
+          <div class="dash-field{% if field.name == 'title' or field.name == 'image_url' or field.name == 'redirect_url' %} dash-field--wide{% endif %}">
+            <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+            {{ field }}
+            {% for error in field.errors %}<small class="field-error">{{ error }}</small>{% endfor %}
+          </div>
+          {% endfor %}
+        </div>
+        <button class="dash-btn primary" type="submit">
+          <span>Save Campaign Banner</span>
+          <svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Campaigns Table -->
+  <section class="dash-stories-panel">
+    <header class="dash-stories-panel__header">
+      <div>
+        <span class="card-eyebrow">CAMPAIGN INVENTORY</span>
+        <h2 class="card-title">All Sponsor Campaigns</h2>
+      </div>
+    </header>
+
+    {% if ads %}
+    <div class="dash-table-container">
+      <table class="dash-table">
+        <thead>
+          <tr>
+            <th>Campaign Title</th>
+            <th>Redirect Destination</th>
+            <th>Status</th>
+            <th class="text-right">Controls</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for ad in ads %}
+          <tr>
+            <td>
+              <strong>{{ ad.title }}</strong>
+            </td>
+            <td>
+              <a href="{{ ad.redirect_url }}" target="_blank" rel="noopener" style="color:var(--dash-cyan)">
+                {{ ad.redirect_url|truncatechars:46 }}
+              </a>
+            </td>
+            <td>
+              <span class="dash-chip {{ ad.is_active|yesno:'live,draft' }} dot">
+                {{ ad.is_active|yesno:"Active,Paused" }}
+              </span>
+            </td>
+            <td class="text-right col-actions">
+              <div class="dash-action-group">
+                <a class="dash-btn ghost sm" href="{% url 'admin_panel_sponsor_edit' ad.pk %}">Edit</a>
+                <form method="post" action="{% url 'admin_panel_sponsor_toggle' ad.pk %}" style="display:inline">
+                  {% csrf_token %}
+                  <button class="dash-btn sm {% if ad.is_active %}ghost{% else %}primary{% endif %}" type="submit">
+                    {{ ad.is_active|yesno:"Pause,Activate" }}
+                  </button>
+                </form>
+              </div>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+
+    {% if page_obj.paginator.num_pages > 1 %}
+    <nav class="dashboard-pagination" aria-label="Campaign pagination">
+      {% if page_obj.has_previous %}
+      <a href="?page={{ page_obj.previous_page_number }}" class="dash-btn ghost sm">&larr; Previous</a>
+      {% endif %}
+      <span class="pagination-info">Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}</span>
+      {% if page_obj.has_next %}
+      <a href="?page={{ page_obj.next_page_number }}" class="dash-btn ghost sm">Next &rarr;</a>
+      {% endif %}
+    </nav>
+    {% endif %}
+
+    {% else %}
+    <div class="dash-empty-state">
+      <div class="empty-icon">🎯</div>
+      <h3>No campaigns created yet</h3>
+      <p class="dash-muted">Launch your first sponsor banner campaign using the form above.</p>
+    </div>
+    {% endif %}
+  </section>
+</div>
 {% endblock %}

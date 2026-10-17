@@ -1,53 +1,81 @@
-
 {% extends "dashboard_base.html" %}
-{% load static %}
-{% block title %}Become a creator — TNE{% endblock %}
-{% block extra_head %}
-<link rel="stylesheet" href="{% static 'css/mad.css' %}">
-{% endblock %}
+{% load static humanize %}
+
+{% block title %}Claim Creator Studio — TNE{% endblock %}
+{% block dashboard_heading %}Claim Studio{% endblock %}
 
 {% block content %}
-<div class="mad-body">
-  <header class="mad-hero" style="margin-bottom:26px">
-    <div class="mad-hero__kicker"><b></b> Join the creator studio</div>
-    <h1 class="mad-title glow">Claim your creator studio <span class="mad-em">🎨</span></h1>
-    <p class="mad-hero__sub">This dashboard is where you'll write posts, track views, and collect ad earnings. Publish straight to the site.</p>
-  </header>
-
-  <div class="mad-bento" style="margin-bottom:26px">
-    <div class="mad-stat accent-neon">
-      <div class="mad-stat__badge">🆓</div>
-      <div class="mad-stat__label">Creator fee</div>
-      <div class="mad-stat__value">Free</div>
-      <div class="mad-stat__delta">No paywalls, no ads on the dashboard</div>
+<div class="dash-studio">
+  <section class="dash-hero">
+    <div class="dash-hero__badge">
+      <span class="live-dot"></span>
+      <span>FREE CREATOR ACCESS</span>
     </div>
-    <div class="mad-stat accent-aqua">
-      <div class="mad-stat__badge">💸</div>
-      <div class="mad-stat__label">Ad share</div>
-      <div class="mad-stat__value">{{ creator.rpm }} NGN</div>
-      <div class="mad-stat__delta">per 1,000 views</div>
+    <div class="dash-hero__main">
+      <div class="dash-hero__text">
+        <h1 class="dash-hero__title">
+          Activate Your <em>Creator Studio</em>
+        </h1>
+        <p class="dash-hero__subtitle">
+          Write stories, earn reader impression royalties in Nigerian Naira, and join a curated collective of business writers.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Bento Highlights -->
+  <div class="dash-bento" style="margin-top: 24px;">
+    <div class="dash-stat-card theme-lime">
+      <div class="dash-stat-card__top">
+        <span class="dash-stat-card__label">Setup Fee</span>
+        <div class="dash-stat-card__icon">🎁</div>
+      </div>
+      <div class="dash-stat-card__value">100% Free</div>
+      <div class="dash-stat-card__meta"><span>Zero hidden fees or subscriptions</span></div>
+    </div>
+
+    <div class="dash-stat-card theme-cyan">
+      <div class="dash-stat-card__top">
+        <span class="dash-stat-card__label">Ad Royalty Share</span>
+        <div class="dash-stat-card__icon">💸</div>
+      </div>
+      <div class="dash-stat-card__value">₦{{ creator.rpm|default:"2500"|floatformat:0 }} RPM</div>
+      <div class="dash-stat-card__meta"><span>Earned per 1,000 story impressions</span></div>
+    </div>
+
+    <div class="dash-stat-card theme-violet">
+      <div class="dash-stat-card__top">
+        <span class="dash-stat-card__label">Direct Payouts</span>
+        <div class="dash-stat-card__icon">🏦</div>
+      </div>
+      <div class="dash-stat-card__value">NGN Banks</div>
+      <div class="dash-stat-card__meta"><span>Withdrawals straight to your Nigerian bank</span></div>
     </div>
   </div>
 
-  <form method="post" action="{% url 'dashboard' %}" class="mad-form" style="max-width:560px;margin-bottom:26px">
-    {% csrf_token %}
-    <div class="dashboard-editor__actions" style="gap:12px">
-      <button class="mad-btn" type="submit">Activate creator account — it's free</button>
-      <a href="{% url 'login' %}" class="mad-btn ghost">I already have an account</a>
+  <div class="dash-form-card" style="margin-top: 24px;">
+    <header class="dash-form-card__header">
+      <div class="card-icon">⚡</div>
+      <div>
+        <span class="card-eyebrow">ONE-CLICK ACTIVATION</span>
+        <h2 class="card-title">Launch Your Author Workspace</h2>
+      </div>
+    </header>
+    <div class="dash-form-card__body">
+      <form method="post" action="{% url 'dashboard' %}" class="dash-styled-form">
+        {% csrf_token %}
+        <p class="dash-muted" style="margin-bottom: 20px;">
+          Activating grants you instant access to the rich editorial studio, live readership analytics, and monthly monetization.
+        </p>
+        <div style="display:flex;gap:14px;flex-wrap:wrap">
+          <button class="dash-btn primary" type="submit">
+            <span>Activate Creator Studio</span>
+            <svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          </button>
+          <a href="{% url 'home' %}" class="dash-btn ghost">Return Home</a>
+        </div>
+      </form>
     </div>
-  </form>
-
-  <div class="mad-panel" style="max-width:620px">
-    <div class="mad-panel__head">
-      <h4 class="mad-kicker mb-2" style="margin:0">What you get</h4>
-    </div>
-    <ul class="mad-muted" style="padding-left:22px;margin-top:10px">
-      <li>✅ A fully styled blog post editor</li>
-      <li>✅ Views and earnings dashboard with live charts</li>
-      <li>✅ Your own ad revenue share (per post)</li>
-      <li>✅ Edit, delete and moderate comments on your posts</li>
-      <li>✅ Featured spotlight on the home page</li>
-    </ul>
   </div>
 </div>
 {% endblock %}

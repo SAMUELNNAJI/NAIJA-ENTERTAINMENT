@@ -1,3 +1,145 @@
 {% extends "dashboard_base.html" %}
-{% block dashboard_heading %}Payouts & account{% endblock %}
-{% block content %}<div class="mad-body"><header class="mad-hero"><div><div class="mad-hero__kicker"><b></b> Creator earnings</div><h1 class="mad-title">Turn your work into <span class="mad-em">momentum.</span></h1><p class="mad-hero__sub">Available to request: <b style="color:var(--mad-neon)">₦{{ available|floatformat:2 }}</b></p></div></header><div class="mad-grid-2"><section class="mad-panel"><h3 class="mad-kicker">Payout account</h3><form method="post" class="dashboard-editor__form">{% csrf_token %}{{ account_form.as_p }}<button name="save_account" class="mad-btn">Save account <span>→</span></button></form></section><section class="mad-panel"><h3 class="mad-kicker">Request payout</h3><form method="post" class="dashboard-editor__form">{% csrf_token %}{{ request_form.as_p }}<button name="request_payout" class="mad-btn">Send request <span>→</span></button></form><p class="mad-muted">Requests are reviewed by an administrator before payment.</p></section></div><section class="mad-panel"><h3 class="mad-kicker">Request history</h3>{% for r in requests %}<p><b>₦{{ r.amount|floatformat:2 }}</b> — {{ r.get_status_display }} <span class="mad-muted">{{ r.created_at|date:"M d, Y" }}</span></p>{% empty %}<p class="mad-muted">No payout requests yet.</p>{% endfor %}</section></div>{% endblock %}
+{% load static humanize %}
+
+{% block title %}Earnings &amp; Payouts — Creator Studio — TNE{% endblock %}
+{% block dashboard_heading %}Earnings &amp; Payouts{% endblock %}
+
+{% block dashboard_tabs %}
+<nav class="dashboard-tabs" aria-label="Creator sections">
+  <div class="dashboard-tabs__inner">
+    <a href="{% url 'dashboard' %}">Overview</a>
+    <a href="{% url 'dashboard_posts' %}">My Stories</a>
+    <a href="{% url 'dashboard_post_new' %}">Write Story</a>
+    <a class="is-active" href="{% url 'payouts' %}">Earnings &amp; Payouts</a>
+  </div>
+</nav>
+{% endblock %}
+
+{% block content %}
+<div class="dash-studio">
+  <!-- Earnings Hero -->
+  <section class="dash-hero">
+    <div class="dash-hero__badge">
+      <span class="live-dot"></span>
+      <span>REVENUE &amp; DISBURSEMENTS</span>
+    </div>
+    <div class="dash-hero__main">
+      <div class="dash-hero__text">
+        <h1 class="dash-hero__title">
+          Creator <em>Payout Vault</em>
+        </h1>
+        <p class="dash-hero__subtitle">
+          Track your readership ad-revenue share, configure your local bank account, and request payouts straight to your Nigerian bank.
+        </p>
+      </div>
+      <div class="dash-balance-highlight">
+        <span class="highlight-label">AVAILABLE FOR WITHDRAWAL</span>
+        <div class="highlight-amount">₦{{ available|floatformat:2|intcomma }}</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Dual Forms Row -->
+  <div class="dash-grid-2">
+    <!-- Payout Account Form -->
+    <div class="dash-form-card">
+      <header class="dash-form-card__header">
+        <div class="card-icon">🏦</div>
+        <div>
+          <span class="card-eyebrow">DESTINATION ACCOUNT</span>
+          <h2 class="card-title">Bank Account Details</h2>
+        </div>
+      </header>
+      <div class="dash-form-card__body">
+        <form method="post" class="dash-styled-form">
+          {% csrf_token %}
+          <div class="form-fields-wrapper">
+            {{ account_form.as_p }}
+          </div>
+          <button type="submit" name="save_account" class="dash-btn primary">
+            <span>Save Bank Details</span>
+            <svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          </button>
+        </form>
+      </div>
+    </div>
+
+    <!-- Payout Request Form -->
+    <div class="dash-form-card">
+      <header class="dash-form-card__header">
+        <div class="card-icon">💸</div>
+        <div>
+          <span class="card-eyebrow">WITHDRAWAL REQUEST</span>
+          <h2 class="card-title">Request Disbursement</h2>
+        </div>
+      </header>
+      <div class="dash-form-card__body">
+        <form method="post" class="dash-styled-form">
+          {% csrf_token %}
+          <div class="form-fields-wrapper">
+            {{ request_form.as_p }}
+          </div>
+          <button type="submit" name="request_payout" class="dash-btn primary" {% if available <= 0 %}disabled{% endif %}>
+            <span>Submit Withdrawal Request</span>
+            <svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          </button>
+          <small class="form-disclaimer">
+            Withdrawal requests are processed and verified by the administration team within 24–48 hours.
+          </small>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Payout History Table -->
+  <section class="dash-stories-panel" style="margin-top: 24px;">
+    <header class="dash-stories-panel__header">
+      <div>
+        <span class="card-eyebrow">TRANSACTION LOG</span>
+        <h2 class="card-title">Disbursement History</h2>
+      </div>
+    </header>
+
+    {% if requests %}
+    <div class="dash-table-container">
+      <table class="dash-table">
+        <thead>
+          <tr>
+            <th>Requested Amount</th>
+            <th>Status</th>
+            <th>Date Requested</th>
+            <th class="text-right">Reference</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for r in requests %}
+          <tr>
+            <td class="font-num accent-green">
+              <strong>₦{{ r.amount|floatformat:2|intcomma }}</strong>
+            </td>
+            <td>
+              <span class="dash-chip {{ r.status|lower }} dot">
+                {{ r.get_status_display }}
+              </span>
+            </td>
+            <td class="font-num text-muted">
+              {{ r.created_at|date:"M d, Y · H:i" }}
+            </td>
+            <td class="text-right font-num text-muted">
+              #{{ r.pk }}
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+    {% else %}
+    <div class="dash-empty-state">
+      <div class="empty-icon">🪙</div>
+      <h3>No disbursement requests yet</h3>
+      <p class="dash-muted">Once you publish stories and generate views, your earnings accumulate here ready for withdrawal.</p>
+    </div>
+    {% endif %}
+  </section>
+</div>
+{% endblock %}

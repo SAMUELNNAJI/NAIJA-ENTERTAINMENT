@@ -1,133 +1,280 @@
-
 {% extends "dashboard_base.html" %}
 {% load static humanize %}
 
-{% block title %}Your creator studio — TNE{% endblock %}
+{% block title %}Creator Studio — The Nigerian Entrepreneur{% endblock %}
+
 {% block extra_head %}
-<link rel="stylesheet" href="{% static 'css/mad.css' %}">
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
 <script src="{% static 'js/charts.js' %}"></script>
 {% endblock %}
 
+{% block dashboard_heading %}Creator Studio{% endblock %}
+
 {% block dashboard_tabs %}
-<nav class="dashboard-tabs" aria-label="Creator studio sections"><a class="is-active" href="#overview">Overview</a><a href="#analytics">Analytics</a><a href="#posts">My posts</a></nav>
+<nav class="dashboard-tabs" aria-label="Creator studio sections">
+  <div class="dashboard-tabs__inner">
+    <a class="is-active" href="#overview">Overview</a>
+    <a href="#analytics">Performance &amp; Charts</a>
+    <a href="#stories">Recent Stories</a>
+    <a href="{% url 'payouts' %}">Earnings &amp; Payouts</a>
+  </div>
+</nav>
 {% endblock %}
 
 {% block content %}
-<div class="mad-body" id="overview">
-  <!-- Hero -->
-  <header class="mad-hero">
-    <div class="mad-hero__kicker"><b></b> Live from your studio</div>
-    <h1 class="mad-title glow">Your creator studio</h1>
-    <p class="mad-hero__sub">You&rsquo;re <b style="color:var(--mad-neon)">{{ creator.display_name|default:creator.user.get_username }}</b> &mdash; <strong>{{ total_posts }}</strong> post{{ total_posts|pluralize }} live so far.</p>
-    <div class="mad-hero__meta">
-      <div class="mad-pill"><span class="mad-pill__val">{{ total_views|intcomma }}</span> views</div>
-      <div class="mad-pill"><span class="mad-pill__val">{{ estimated_total|floatformat:0 }}</span> NGN earned</div>
-      <div class="mad-pill"><span class="mad-pill__val">{{ comment_total }}</span> comments</div>
-    </div>
-  </header>
+<div class="dash-studio" id="overview">
 
-  <!-- Bento stats -->
-  <div class="mad-bento">
-    <div class="mad-stat accent-neon" style="grid-column: 1 / 3;">
-      <div class="mad-stat__badge icon-badge"><svg viewBox="0 0 24 24"><path d="m13 2-9 12h7l-1 8 10-13h-7z"/></svg></div>
-      <div class="mad-stat__label">Posts published</div>
-      <div class="mad-stat__value">{{ published_count }}</div>
-      <div class="mad-stat__delta up">+{{ published_count }} since launch</div>
+  <!-- Hero Welcome Banner -->
+  <section class="dash-hero">
+    <div class="dash-hero__badge">
+      <span class="live-dot"></span>
+      <span>LIVE CREATOR COCKPIT</span>
     </div>
-    <div class="mad-stat accent-aqua">
-      <div class="mad-stat__badge icon-badge"><svg viewBox="0 0 24 24"><path d="M2 12s3.5-6 10-6 10 6 10 6-3.5 6-10 6S2 12 2 12z"/><circle cx="12" cy="12" r="2.5"/></svg></div>
-      <div class="mad-stat__label">Views this week</div>
-      <div class="mad-stat__value">{{ total_views|intcomma }}</div>
-      <div class="mad-stat__delta up">{{ total_views|floatformat:0 }} readers</div>
-    </div>
-    <div class="mad-stat accent-violet">
-      <div class="mad-stat__badge icon-badge"><svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 10h18M7 15h3"/></svg></div>
-      <div class="mad-stat__label">Ad earnings (est.)</div>
-      <div class="mad-stat__value">{{ estimated_total|floatformat:0 }}</div>
-      <div class="mad-stat__delta up">{{ creator.rpm|floatformat:0 }} NGN RPM</div>
-    </div>
-    <div class="mad-stat accent-pink">
-      <div class="mad-stat__badge icon-badge"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8"/><path d="M12 8v8m3-6c0-1-1.3-2-3-2s-3 1-3 2 1.3 2 3 2 3 1 3 2-1.3 2-3 2-3-1-3-2"/></svg></div>
-      <div class="mad-stat__label">Total ad balance</div>
-      <div class="mad-stat__value">{{ ad_balance|floatformat:0 }}</div>
-      <div class="mad-stat__delta">{{ comment_total }} comments</div>
-    </div>
-    <div class="mad-stat accent-neon" style="grid-column: 3 / 5;">
-      <div class="mad-stat__badge icon-badge"><svg viewBox="0 0 24 24"><path d="M4 20h4l11-11a3 3 0 0 0-4-4L4 16z"/><path d="m13 6 5 5"/></svg></div>
-      <div class="mad-stat__label">Drafts</div>
-      <div class="mad-stat__value">{{ draft_count }}</div>
-      <div class="mad-stat__delta">waiting to ship</div>
-    </div>
-  </div>
-
-  <!-- Charts -->
-  <div class="mad-grid-2" id="analytics">
-    <div class="mad-panel">
-      <div class="mad-panel__head">
-        <h3 class="mad-kicker"><span></span> Views &mdash; last 14 days</h3>
-        <span class="mad-pill" style="padding:6px 10px;font-size:11px;background:rgba(0,0,0,0.25)">Live</span>
+    <div class="dash-hero__main">
+      <div class="dash-hero__text">
+        <h1 class="dash-hero__title">
+          Welcome, <em>{{ creator.display_name|default:request.user.username }}</em>
+        </h1>
+        <p class="dash-hero__subtitle">
+          Your publishing desk is live. You have <strong>{{ published_count }}</strong> published stor{{ published_count|pluralize:"y,ies" }} reaching readers across Nigeria and the diaspora.
+        </p>
       </div>
-      <div class="mad-chart-wrap">
+      <div class="dash-hero__actions">
+        <a href="{% url 'dashboard_post_new' %}" class="dash-btn primary">
+          <svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>
+          <span>Write New Story</span>
+        </a>
+        <a href="{% url 'payouts' %}" class="dash-btn ghost">
+          <svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 10h18M7 15h3"/></svg>
+          <span>View Balance</span>
+        </a>
+      </div>
+    </div>
+
+    <!-- Hero KPI Pill Strip -->
+    <div class="dash-hero__pills">
+      <div class="dash-hero__pill">
+        <span class="pill-label">Total Impressions</span>
+        <span class="pill-value">{{ total_views|intcomma }}</span>
+      </div>
+      <div class="dash-hero__pill">
+        <span class="pill-label">Est. Revenue</span>
+        <span class="pill-value">₦{{ estimated_total|floatformat:0|intcomma }}</span>
+      </div>
+      <div class="dash-hero__pill">
+        <span class="pill-label">Live Ad Balance</span>
+        <span class="pill-value accent-green">₦{{ ad_balance|floatformat:0|intcomma }}</span>
+      </div>
+      <div class="dash-hero__pill">
+        <span class="pill-label">Community Comments</span>
+        <span class="pill-value">{{ comment_total }}</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- Bento Stats Grid -->
+  <section class="dash-bento">
+    <!-- Stat 1: Published Posts -->
+    <div class="dash-stat-card theme-lime">
+      <div class="dash-stat-card__top">
+        <span class="dash-stat-card__label">Published Stories</span>
+        <div class="dash-stat-card__icon">
+          <svg viewBox="0 0 24 24"><path d="m13 2-9 12h7l-1 8 10-13h-7z"/></svg>
+        </div>
+      </div>
+      <div class="dash-stat-card__value">{{ published_count }}</div>
+      <div class="dash-stat-card__meta">
+        <span class="tag-trend up">Live</span>
+        <span>out of {{ total_posts }} total drafted</span>
+      </div>
+    </div>
+
+    <!-- Stat 2: Total Views -->
+    <div class="dash-stat-card theme-cyan">
+      <div class="dash-stat-card__top">
+        <span class="dash-stat-card__label">Audience Impressions</span>
+        <div class="dash-stat-card__icon">
+          <svg viewBox="0 0 24 24"><path d="M2 12s3.5-6 10-6 10 6 10 6-3.5 6-10 6S2 12 2 12z"/><circle cx="12" cy="12" r="2.5"/></svg>
+        </div>
+      </div>
+      <div class="dash-stat-card__value">{{ total_views|intcomma }}</div>
+      <div class="dash-stat-card__meta">
+        <span class="tag-trend up">Active</span>
+        <span>Across all categories</span>
+      </div>
+    </div>
+
+    <!-- Stat 3: Estimated Earnings -->
+    <div class="dash-stat-card theme-violet">
+      <div class="dash-stat-card__top">
+        <span class="dash-stat-card__label">Estimated Earnings</span>
+        <div class="dash-stat-card__icon">
+          <svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 10h18M7 15h3"/></svg>
+        </div>
+      </div>
+      <div class="dash-stat-card__value">₦{{ estimated_total|floatformat:0|intcomma }}</div>
+      <div class="dash-stat-card__meta">
+        <span class="tag-trend up">₦{{ creator.rpm|floatformat:0 }} RPM</span>
+        <span>Rate per 1k views</span>
+      </div>
+    </div>
+
+    <!-- Stat 4: Ad Balance -->
+    <div class="dash-stat-card theme-amber">
+      <div class="dash-stat-card__top">
+        <span class="dash-stat-card__label">Withdrawable Balance</span>
+        <div class="dash-stat-card__icon">
+          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8"/><path d="M12 8v8m3-6c0-1-1.3-2-3-2s-3 1-3 2 1.3 2 3 2 3 1 3 2-1.3 2-3 2-3-1-3-2"/></svg>
+        </div>
+      </div>
+      <div class="dash-stat-card__value">₦{{ ad_balance|floatformat:0|intcomma }}</div>
+      <div class="dash-stat-card__meta">
+        <a href="{% url 'payouts' %}" class="dash-card-link">Request Payout &rarr;</a>
+      </div>
+    </div>
+
+    <!-- Stat 5: In Pipeline -->
+    <div class="dash-stat-card theme-pink">
+      <div class="dash-stat-card__top">
+        <span class="dash-stat-card__label">Story Pipeline</span>
+        <div class="dash-stat-card__icon">
+          <svg viewBox="0 0 24 24"><path d="M4 20h4l11-11a3 3 0 0 0-4-4L4 16z"/><path d="m13 6 5 5"/></svg>
+        </div>
+      </div>
+      <div class="dash-stat-card__value">{{ draft_count }}</div>
+      <div class="dash-stat-card__meta">
+        <span>Draft{{ draft_count|pluralize }} ready to finish</span>
+      </div>
+    </div>
+
+    <!-- Stat 6: Comments -->
+    <div class="dash-stat-card theme-teal">
+      <div class="dash-stat-card__top">
+        <span class="dash-stat-card__label">Reader Discussions</span>
+        <div class="dash-stat-card__icon">
+          <svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+        </div>
+      </div>
+      <div class="dash-stat-card__value">{{ comment_total }}</div>
+      <div class="dash-stat-card__meta">
+        <span>Thoughts left by audience</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- Analytics & Visual Charts -->
+  <section class="dash-analytics-grid" id="analytics">
+    <!-- Chart 1: Daily views trajectory -->
+    <div class="dash-chart-card">
+      <header class="dash-chart-card__header">
+        <div>
+          <span class="card-eyebrow">READERSHIP TRAJECTORY</span>
+          <h2 class="card-title">Views (Last 14 Days)</h2>
+        </div>
+        <span class="dash-badge live">Live Telemetry</span>
+      </header>
+      <div class="dash-chart-wrapper">
         <canvas class="mad-chart" data-chart="line" data-from="creator-views-json"></canvas>
       </div>
       <script id="creator-views-json" type="application/json">
-        {"labels":{{ chart_labels|tojson }},"datasets":[{"label":"Views","data":{{ chart_views|tojson }},"borderColor":"#38f9d7","backgroundColor":"rgba(56,249,215,0.10)","fill":true,"pointRadius":0,"pointHitRadius":6,"tension":0.4,"borderWidth":3}]}
+        {"labels":{{ chart_labels|tojson }},"datasets":[{"label":"Daily Views","data":{{ chart_views|tojson }},"borderColor":"#10b981","backgroundColor":"rgba(16, 185, 129, 0.12)","fill":true,"pointRadius":3,"pointHoverRadius":6,"tension":0.35,"borderWidth":3}]}
       </script>
     </div>
-    <div class="mad-panel">
-      <div class="mad-panel__head">
-        <h3 class="mad-kicker"><span></span> Posts by category</h3>
-      </div>
-      <div class="mad-chart-wrap" style="height:300px;display:flex;align-items:center;justify-content:center;">
+
+    <!-- Chart 2: Category distribution -->
+    <div class="dash-chart-card">
+      <header class="dash-chart-card__header">
+        <div>
+          <span class="card-eyebrow">TOPIC DIVERSITY</span>
+          <h2 class="card-title">Stories by Category</h2>
+        </div>
+      </header>
+      <div class="dash-chart-wrapper dash-chart-wrapper--doughnut">
         <canvas class="mad-chart" data-chart="doughnut" data-from="creator-categories-json"></canvas>
       </div>
       <script id="creator-categories-json" type="application/json">
-        {"labels":{{ chart_categories|tojson }},"datasets":[{"data":{{ chart_category_counts|tojson }},"backgroundColor":["#b9ff3d","#38f9d7","#ff5edb","#7c6cff","#ffb020","#ff5470"],"borderWidth":0,"hoverOffset":24}]}
+        {"labels":{{ chart_categories|tojson }},"datasets":[{"data":{{ chart_category_counts|tojson }},"backgroundColor":["#10b981","#06b6d4","#8b5cf6","#ec4899","#f59e0b","#3b82f6"],"borderWidth":0,"hoverOffset":12}]}
       </script>
     </div>
-  </div>
+  </section>
 
-  <!-- Recent posts -->
-  <div class="mad-panel" id="posts">
-    <div class="mad-panel__head">
-      <h3 class="mad-kicker"><span></span> Recent posts</h3>
-      <a href="{% url 'dashboard_post_new' %}" class="mad-btn">+ New post <span>&rarr;</span></a>
-    </div>
+  <!-- Recent Stories Desk -->
+  <section class="dash-stories-panel" id="stories">
+    <header class="dash-stories-panel__header">
+      <div>
+        <span class="card-eyebrow">PUBLISHING DESK</span>
+        <h2 class="card-title">Your Recent Stories</h2>
+      </div>
+      <div class="dash-stories-panel__actions">
+        <a href="{% url 'dashboard_posts' %}" class="dash-btn ghost sm">View All Stories</a>
+        <a href="{% url 'dashboard_post_new' %}" class="dash-btn primary sm">
+          <svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>
+          <span>New Story</span>
+        </a>
+      </div>
+    </header>
+
     {% if posts %}
-    <table class="mad-table">
-      <thead>
-        <tr>
-          <th>Title</th><th>Category</th><th>Status</th><th style="text-align:right">Views</th><th style="text-align:right">Earnings</th><th style="width:210px">Actions</th>
-        </tr>
-      </thead>
-      <tbody>
-        {% for p in posts %}
-        <tr>
-          <td>
-            <div style="display:flex;align-items:center;gap:10px">
-              <a href="{% url 'blog_detail' p.slug %}" style="color:var(--mad-text);text-decoration:none;font-weight:800">{{ p.title|truncatechars:40 }}</a>
-            </div>
-          </td>
-          <td><span class="mad-chip cat">{{ p.get_category_display }}</span></td>
-          <td><span class="mad-chip {{ p.status }}">{{ p.status }}</span></td>
-          <td style="font-variant-numeric:tabular-nums;color:var(--dash-muted)">{{ p.views }}</td>
-          <td style="font-variant-numeric:tabular-nums;color:var(--dash-muted)">{{ p.estimated_earnings|floatformat:0 }}</td>
-          <td style="white-space:nowrap;display:flex;gap:8px;align-items:center">
-            <a href="{% url 'dashboard_post_edit' p.pk %}" class="mad-btn sm">Edit</a>
-            <form method="post" action="{% url 'dashboard_post_delete' p.pk %}" style="display:inline;margin:0" onsubmit="return confirm(&#39;Delete this post permanently?&#39;)">{% csrf_token %}<button class="mad-btn sm danger">Delete</button></form>
-          </td>
-        </tr>
-        {% endfor %}
-      </tbody>
-    </table>
+    <div class="dash-table-container">
+      <table class="dash-table">
+        <thead>
+          <tr>
+            <th>Story Title</th>
+            <th>Category</th>
+            <th>Status</th>
+            <th class="text-right">Views</th>
+            <th class="text-right">Est. Earned</th>
+            <th class="text-right">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for p in posts %}
+          <tr>
+            <td class="col-title">
+              <a href="{% url 'blog_detail' p.slug %}" class="story-link" target="_blank" rel="noopener">
+                {{ p.title }}
+              </a>
+            </td>
+            <td>
+              <span class="dash-chip cat">{{ p.get_category_display }}</span>
+            </td>
+            <td>
+              <span class="dash-chip {{ p.status }} dot">{{ p.get_status_display|default:p.status }}</span>
+            </td>
+            <td class="text-right font-num">
+              <strong>{{ p.views|intcomma }}</strong>
+            </td>
+            <td class="text-right font-num accent-green">
+              ₦{{ p.estimated_earnings|floatformat:0|intcomma }}
+            </td>
+            <td class="text-right col-actions">
+              <div class="dash-action-group">
+                <a href="{% url 'dashboard_post_edit' p.pk %}" class="dash-btn ghost sm" title="Edit story">
+                  Edit
+                </a>
+                <form method="post" action="{% url 'dashboard_post_delete' p.pk %}" style="display:inline;margin:0" onsubmit="return confirm('Delete this post permanently?')">
+                  {% csrf_token %}
+                  <button type="submit" class="dash-btn danger sm" title="Delete story">Delete</button>
+                </form>
+              </div>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
     {% else %}
-    <div class="mad-empty">
-      <b>No posts yet</b>
-      <p class="mad-muted" style="margin-top:6px">Your first creator post goes here. Hit the button below and ship it.</p>
-      <a class="mad-btn mt-2" href="{% url 'dashboard_post_new' %}">Write your first post <span>&rarr;</span></a>
+    <div class="dash-empty-state">
+      <div class="empty-icon">✍️</div>
+      <h3>Your story begins right here</h3>
+      <p>Share your entrepreneurial journey, business breakdown, or investment insights with thousands of Nigerian readers.</p>
+      <a href="{% url 'dashboard_post_new' %}" class="dash-btn primary">
+        <span>Write your first story</span>
+        <svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </a>
     </div>
     {% endif %}
-  </div>
+  </section>
+
 </div>
 {% endblock %}
