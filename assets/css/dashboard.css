@@ -1000,6 +1000,21 @@ html[data-theme="light"] .dashboard-theme .icon-moon { display: block; }
   display: grid;
   place-items: center;
 }
+.dash-analytics-grid,
+.dash-chart-card,
+.dash-chart-wrapper {
+  min-width: 0;
+}
+.dash-chart-wrapper {
+  max-width: 100%;
+  margin-inline: auto;
+  overflow: hidden;
+}
+.dash-chart-wrapper canvas {
+  display: block !important;
+  max-width: 100% !important;
+  margin-inline: auto;
+}
 
 /* ── 11. Publishing Stories Panel & Tables ───────────────────────────────── */
 .dash-stories-panel {
@@ -1593,6 +1608,16 @@ html[data-theme="light"] .dashboard-theme .icon-moon { display: block; }
   border-color: var(--dash-cyan);
   box-shadow: 0 0 0 3px rgba(6, 182, 212, 0.16);
 }
+.dash-styled-form input[type="checkbox"],
+.dash-field input[type="checkbox"] {
+  align-self: start;
+  width: 18px;
+  min-height: 18px;
+  height: 18px;
+  margin: 0;
+  padding: 0;
+  accent-color: var(--dash-cyan);
+}
 .form-disclaimer {
   display: block;
   font-size: 11.5px;
@@ -1705,6 +1730,14 @@ html[data-theme="light"] .dashboard-theme .icon-moon { display: block; }
   }
   .dashboard-content {
     padding: 18px 14px 44px;
+  }
+  .dash-chart-card {
+    width: 100%;
+    padding: 18px 14px;
+  }
+  .dash-chart-wrapper {
+    height: 240px;
+    min-height: 0;
   }
 
   .dash-hero {
