@@ -200,6 +200,32 @@ class PayoutRequestForm(BootstrapFormMixin, forms.ModelForm):
 
 
 class SponsorAdForm(BootstrapFormMixin, forms.ModelForm):
+    cover_upload = forms.FileField(
+        required=False,
+        label="Banner image upload",
+        help_text="JPG, PNG, GIF or WebP up to 5 MB. Overrides the banner URL when provided.",
+    )
+
     class Meta:
         model = SponsorAd
         fields = ("title", "image_url", "redirect_url", "is_active")
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields["image_url"].required = False
+
+    def clean_cover_upload(self):
+        upload = self.cleaned_data.get("cover_upload")
+        if upload:
+            if upload.size > 5 * 1024 * 1024:
+                raise forms.ValidationError("Banner images must be 5 MB or smaller.")
+            ext = upload.name.rsplit(".", 1)[-1].lower()
+            if ext not in ("jpg", "jpeg", "png", "gif", "webp"):
+                raise forms.ValidationError("Use a JPG, PNG, GIF or WebP image.")
+        return upload
+
+    def clean(self):
+        cleaned = super().clean()
+        if not (cleaned.get("image_url") or "").strip() and not cleaned.get("cover_upload"):
+            self.add_error("image_url", "Add an image URL or upload a banner image.")
+        return cleaned

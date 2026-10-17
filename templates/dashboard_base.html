@@ -39,10 +39,10 @@
 
     {% if request.user.is_staff %}
     <div class="dashboard-role-badge">
-      <span class="role-pill">Staff Command</span>
+      <span class="role-pill">Staff Access</span>
       <div class="role-switch">
-        <a href="{% url 'dashboard' %}" class="{% if not '/admin-panel' in request.path %}active{% endif %}">Creator</a>
-        <a href="{% url 'admin_panel' %}" class="{% if '/admin-panel' in request.path %}active{% endif %}">Admin</a>
+        <a href="{% url 'dashboard' %}?view=creator" class="{% if not '/panel/' in request.path and request.session.dashboard_view == 'creator' %}active{% endif %}">Creator</a>
+        <a href="{% url 'admin_panel' %}?view=admin" class="{% if '/panel/' in request.path or request.session.dashboard_view != 'creator' %}active{% endif %}">Admin</a>
       </div>
     </div>
     {% endif %}
@@ -68,6 +68,12 @@
       </a>
 
       <div class="dashboard-nav__group-title">PORTAL</div>
+      {% if request.user.is_staff %}
+      <a href="{% url 'admin_panel' %}?view=admin">
+        <i><svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg></i>
+        <span>Switch to Admin Panel</span>
+      </a>
+      {% endif %}
       <a href="{% url 'home' %}">
         <i><svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></i>
         <span>View Live Site</span>

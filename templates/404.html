@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+
+{% block title %}Page Not Found (404) — The Nigerian Entrepreneur{% endblock %}
+{% block meta_description %}The page you are looking for could not be found. Go back home or search the site.{% endblock %}
+{% block page_id %}404{% endblock %}
+
+{% block content %}
+<div class="container nf" style="padding: clamp(48px, 8vw, 96px) 20px; text-align: center; max-width: 820px; margin: 0 auto;">
+  <div class="nf__code" style="font-size: clamp(5rem, 14vw, 10rem); font-weight: 900; line-height: 0.9; letter-spacing: -0.06em; background: linear-gradient(135deg, #10b981, #06b6d4); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 16px;">
+    404
+  </div>
+  <h1 style="font-size: clamp(1.8rem, 3.5vw, 2.6rem); font-weight: 900; letter-spacing: -0.03em; margin: 0 0 14px; color: var(--ink);">Lost in the Ecosystem?</h1>
+  <p style="font-size: 16px; color: var(--muted); line-height: 1.65; max-width: 580px; margin: 0 auto 28px;">The page you’re looking for might have been moved, renamed, or it may no longer exist. Head back to familiar ground or explore our latest stories.</p>
+  
+  <div style="display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; margin-bottom: 36px;">
+    <a class="btn btn--primary" href="{% url 'home' %}">Return to Homepage</a>
+    <a class="btn btn--ghost" href="{% url 'page' 'contact' %}">Contact Editorial Desk</a>
+  </div>
+
+  <form action="{% url 'search' %}" method="get" style="display: flex; max-width: 500px; margin: 0 auto 48px; gap: 8px;">
+    <input type="search" name="q" placeholder="Search business, crypto, finance stories…" aria-label="Search the site" style="flex: 1; min-height: 48px; padding: 0 16px; border-radius: 12px; border: 1px solid var(--line); background: var(--panel); color: var(--ink); font-size: 14px;">
+    <button class="btn btn--primary" type="submit" style="padding: 0 20px;">Search</button>
+  </form>
+
+  <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; text-align: left;">
+    <a href="{% url 'category' 'business' %}" style="display: block; padding: 20px; border-radius: 16px; border: 1px solid var(--line); background: var(--panel); text-decoration: none; color: inherit; transition: transform 0.2s;">
+      <span style="font-size: 11px; font-weight: 800; text-transform: uppercase; color: #10b981; letter-spacing: 0.08em;">Category</span>
+      <strong style="display: block; font-size: 17px; margin-top: 6px; color: var(--ink);">Business &amp; SME Guides →</strong>
+    </a>
+    <a href="{% url 'category' 'finance' %}" style="display: block; padding: 20px; border-radius: 16px; border: 1px solid var(--line); background: var(--panel); text-decoration: none; color: inherit; transition: transform 0.2s;">
+      <span style="font-size: 11px; font-weight: 800; text-transform: uppercase; color: #06b6d4; letter-spacing: 0.08em;">Category</span>
+      <strong style="display: block; font-size: 17px; margin-top: 6px; color: var(--ink);">Finance &amp; Banking →</strong>
+    </a>
+    <a href="{% url 'category' 'crypto' %}" style="display: block; padding: 20px; border-radius: 16px; border: 1px solid var(--line); background: var(--panel); text-decoration: none; color: inherit; transition: transform 0.2s;">
+      <span style="font-size: 11px; font-weight: 800; text-transform: uppercase; color: #8b5cf6; letter-spacing: 0.08em;">Category</span>
+      <strong style="display: block; font-size: 17px; margin-top: 6px; color: var(--ink);">Crypto &amp; Web 3.0 →</strong>
+    </a>
+  </div>
+</div>
+{% endblock %}

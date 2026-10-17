@@ -58,12 +58,12 @@
         <span class="pill-value">{{ total_views|intcomma }}</span>
       </div>
       <div class="dash-hero__pill">
-        <span class="pill-label">Est. Revenue</span>
-        <span class="pill-value">₦{{ estimated_total|floatformat:0|intcomma }}</span>
+        <span class="pill-label">Total Amount Earned</span>
+        <span class="pill-value accent-green">₦{{ total_earned|floatformat:2|intcomma }}</span>
       </div>
       <div class="dash-hero__pill">
         <span class="pill-label">Live Ad Balance</span>
-        <span class="pill-value accent-green">₦{{ ad_balance|floatformat:0|intcomma }}</span>
+        <span class="pill-value">₦{{ ad_balance|floatformat:2|intcomma }}</span>
       </div>
       <div class="dash-hero__pill">
         <span class="pill-label">Community Comments</span>
@@ -99,23 +99,23 @@
       </div>
       <div class="dash-stat-card__value">{{ total_views|intcomma }}</div>
       <div class="dash-stat-card__meta">
-        <span class="tag-trend up">Active</span>
-        <span>Across all categories</span>
+        <span class="tag-trend up">Reads</span>
+        <span>Across all stories</span>
       </div>
     </div>
 
-    <!-- Stat 3: Estimated Earnings -->
-    <div class="dash-stat-card theme-violet">
+    <!-- Stat 3: Total Amount Earned -->
+    <div class="dash-stat-card theme-lime">
       <div class="dash-stat-card__top">
-        <span class="dash-stat-card__label">Estimated Earnings</span>
+        <span class="dash-stat-card__label">Total Amount Earned</span>
         <div class="dash-stat-card__icon">
           <svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 10h18M7 15h3"/></svg>
         </div>
       </div>
-      <div class="dash-stat-card__value">₦{{ estimated_total|floatformat:0|intcomma }}</div>
+      <div class="dash-stat-card__value">₦{{ total_earned|floatformat:2|intcomma }}</div>
       <div class="dash-stat-card__meta">
-        <span class="tag-trend up">₦{{ creator.rpm|floatformat:0 }} RPM</span>
-        <span>Rate per 1k views</span>
+        <span class="tag-trend up">100 views = ₦10</span>
+        <span>Impressions payout</span>
       </div>
     </div>
 

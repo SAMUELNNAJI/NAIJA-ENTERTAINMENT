@@ -129,9 +129,9 @@ class Post(models.Model):
 
     @property
     def estimated_earnings(self):
-        """NGN estimate: views/1000 × the author's RPM."""
-        rpm = self.author_creator.rpm if self.author_creator else 950
-        return (self.views / 1000) * float(rpm)
+        """100 views/impression is 10 Naira (0.10 NGN per view/impression)."""
+        return (self.views / 100.0) * 10.0
+
 
     @property
     def comment_count(self) -> int:

@@ -49,11 +49,35 @@ def _apply_cover_upload(post, upload):
     post.image_url = settings.MEDIA_URL + default_storage.save(name, upload)
 
 
+def _apply_ad_cover_upload(sponsor, upload):
+    """Persist an uploaded banner under MEDIA_ROOT and point *sponsor* at it."""
+    if not upload:
+        return
+    ext = upload.name.rsplit(".", 1)[-1].lower()
+    name = f"covers/{timezone.now():%Y%m%d}-{uuid.uuid4().hex[:8]}.{ext}"
+    # Drop the previous banner when a new upload replaces it.
+    if sponsor.image_url.startswith(settings.MEDIA_URL):
+        try:
+            default_storage.delete(sponsor.image_url[len(settings.MEDIA_URL):])
+        except FileNotFoundError:
+            pass
+    sponsor.image_url = settings.MEDIA_URL + default_storage.save(name, upload)
+
+
+def _is_creator_mode(request):
+    """Check if the user has chosen creator mode in their session."""
+    view_param = request.GET.get("view")
+    if view_param in ("creator", "admin"):
+        request.session["dashboard_view"] = view_param
+    return request.session.get("dashboard_view") == "creator"
+
+
 # ------------------------------------------------------ creator studio ----
 
 @login_required
 def dashboard(request):
-    if request.user.is_staff:
+    is_creator = _is_creator_mode(request)
+    if request.user.is_staff and not is_creator:
         return redirect("admin_panel")
     creator = _creator_or_none(request.user)
     if creator is None:
@@ -84,15 +108,20 @@ def dashboard(request):
         published.values("category").annotate(n=Count("id")).order_by("-n")
     )
 
+    total_views = sum(p.views for p in posts)
+    # 100 views/impression is 10 Naira
+    total_earned = (total_views / 100.0) * 10.0
+
     ctx = {
         "nav_active": "dashboard",
         "creator": creator,
         "total_posts": posts.count(),
         "published_count": published.count(),
         "draft_count": posts.filter(status="draft").count(),
-        "total_views": sum(p.views for p in posts),
+        "total_views": total_views,
+        "total_earned": total_earned,
         "ad_balance": creator.ad_balance,
-        "estimated_total": sum(p.estimated_earnings for p in published),
+        "estimated_total": total_earned,
         "comment_total": Comment.objects.filter(post__author=request.user).count(),
         "posts": posts[:10],
         "chart_labels": [d.strftime("%b %d") for d in days],
@@ -108,14 +137,13 @@ def dashboard(request):
 
 @login_required
 def dashboard_post_new(request):
-    if request.user.is_staff:
+    is_creator = _is_creator_mode(request)
+    if request.user.is_staff and not is_creator:
         return redirect("admin_panel_post_new")
-    creator = _creator_or_none(request.user)
-    if creator is None:
-        creator = CreatorProfile.objects.create(
-            user=request.user,
-            display_name=request.user.first_name or request.user.username,
-        )
+    creator, _created = CreatorProfile.objects.get_or_create(
+        user=request.user,
+        defaults={"display_name": request.user.first_name or request.user.username},
+    )
     form = PostForm(request.POST or None, request.FILES or None, user=request.user)
     if request.method == "POST" and form.is_valid():
         post = form.save(commit=False)
@@ -134,7 +162,8 @@ def dashboard_post_new(request):
 @login_required
 def dashboard_posts(request):
     """A full, dedicated list of the signed-in creator's stories."""
-    if request.user.is_staff:
+    is_creator = _is_creator_mode(request)
+    if request.user.is_staff and not is_creator:
         return redirect("admin_panel_posts")
     creator, _created = CreatorProfile.objects.get_or_create(
         user=request.user,
@@ -150,7 +179,8 @@ def dashboard_posts(request):
 
 @login_required
 def dashboard_post_edit(request, pk):
-    if request.user.is_staff:
+    is_creator = _is_creator_mode(request)
+    if request.user.is_staff and not is_creator:
         return redirect("admin_panel_post_edit", pk=pk)
     post = get_object_or_404(Post, pk=pk)
     allowed = request.user.is_staff or post.author == request.user
@@ -187,11 +217,14 @@ def dashboard_post_delete(request, pk):
     if allowed and request.method == "POST":
         post.delete()
         messages.success(request, "Post deleted.")
+        return redirect("dashboard_posts")
+    return redirect("dashboard")
 
 
 @login_required
 def payouts(request):
-    if request.user.is_staff:
+    is_creator = _is_creator_mode(request)
+    if request.user.is_staff and not is_creator:
         return redirect("admin_panel_payouts")
     creator = _creator_or_none(request.user)
     if creator is None:
@@ -223,6 +256,12 @@ def _is_staff(user):
 
 @user_passes_test(_is_staff, login_url="login")
 def admin_panel(request):
+    view_param = request.GET.get("view")
+    if view_param in ("creator", "admin"):
+        request.session["dashboard_view"] = view_param
+    else:
+        request.session["dashboard_view"] = "admin"
+
     posts = Post.objects.all()
     comments = Comment.objects.all()
 
@@ -256,6 +295,10 @@ def admin_panel(request):
     )
     top_posts = sorted(posts, key=lambda p: p.views, reverse=True)[:6]
 
+    total_platform_views = sum(p.views for p in posts)
+    # 100 views/impression is 10 Naira
+    total_platform_earned = (total_platform_views / 100.0) * 10.0
+
     ctx = {
         "nav_active": "admin",
         "stats": {
@@ -266,8 +309,11 @@ def admin_panel(request):
             "drafts": posts.filter(status="draft").count(),
             "comments": comments.count(),
             "pending_comments": comments.filter(is_approved=False).count(),
-            "total_views": sum(p.views for p in posts),
+            "total_views": total_platform_views,
+            "total_earned": total_platform_earned,
         },
+        "total_earned": total_platform_earned,
+        "total_views": total_platform_views,
         "posts": posts[:15],
         "pending_comments": comments.filter(is_approved=False)[:10],
         "chart_labels": [d.strftime("%b %d") for d in days],
@@ -362,9 +408,11 @@ def admin_panel_toggle_featured(request, pk):
 
 @user_passes_test(_is_staff, login_url="login")
 def admin_panel_sponsors(request):
-    form = SponsorAdForm(request.POST or None)
+    form = SponsorAdForm(request.POST or None, request.FILES or None)
     if request.method == "POST" and form.is_valid():
-        form.save()
+        ad = form.save(commit=False)
+        _apply_ad_cover_upload(ad, form.cleaned_data.get("cover_upload"))
+        ad.save()
         messages.success(request, "Sponsor banner saved and is now available for rotation.")
         return redirect("admin_panel_sponsors")
     page_obj = Paginator(SponsorAd.objects.all(), 10).get_page(request.GET.get("page"))
@@ -383,9 +431,11 @@ def admin_panel_sponsor_toggle(request, pk):
 @user_passes_test(_is_staff, login_url="login")
 def admin_panel_sponsor_edit(request, pk):
     ad = get_object_or_404(SponsorAd, pk=pk)
-    form = SponsorAdForm(request.POST or None, instance=ad)
+    form = SponsorAdForm(request.POST or None, request.FILES or None, instance=ad)
     if request.method == "POST" and form.is_valid():
-        form.save()
+        ad = form.save(commit=False)
+        _apply_ad_cover_upload(ad, form.cleaned_data.get("cover_upload"))
+        ad.save()
         messages.success(request, "Sponsor banner updated.")
         return redirect("admin_panel_sponsors")
     return render(request, "dashboard/admin_studio/sponsor_edit.html", {"form": form, "ad": ad, "nav_active": "admin"})

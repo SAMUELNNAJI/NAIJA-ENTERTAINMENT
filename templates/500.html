@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Server Error (500) — The Nigerian Entrepreneur</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #070a13;
+      --card: rgba(18, 27, 48, 0.75);
+      --border: rgba(255, 255, 255, 0.08);
+      --ink: #f8fafc;
+      --muted: #94a3b8;
+      --cyan: #06b6d4;
+      --lime: #10b981;
+      --red: #ef4444;
+    }
+    @media (prefers-color-scheme: light) {
+      :root {
+        --bg: #f8fafc;
+        --card: #ffffff;
+        --border: rgba(15, 23, 42, 0.1);
+        --ink: #0f172a;
+        --muted: #64748b;
+      }
+    }
+    *, *::before, *::after { box-sizing: border-box; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: grid;
+      place-items: center;
+      background: radial-gradient(circle at 15% 20%, rgba(239, 68, 68, 0.08), transparent 30rem),
+                  radial-gradient(circle at 85% 80%, rgba(6, 182, 212, 0.07), transparent 30rem),
+                  var(--bg);
+      font-family: "Plus Jakarta Sans", system-ui, -apple-system, sans-serif;
+      color: var(--ink);
+      padding: 24px;
+      text-align: center;
+    }
+    .error-card {
+      max-width: 620px;
+      width: 100%;
+      padding: clamp(32px, 6vw, 64px) clamp(24px, 5vw, 48px);
+      border-radius: 28px;
+      background: var(--card);
+      border: 1px solid var(--border);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      box-shadow: 0 24px 60px rgba(0, 0, 0, 0.4);
+    }
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 14px;
+      border-radius: 999px;
+      background: rgba(239, 68, 68, 0.12);
+      border: 1px solid rgba(239, 68, 68, 0.3);
+      color: #f87171;
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      margin-bottom: 20px;
+    }
+    .code {
+      font-size: clamp(4.5rem, 12vw, 8rem);
+      font-weight: 900;
+      line-height: 0.95;
+      letter-spacing: -0.06em;
+      background: linear-gradient(135deg, var(--red), var(--cyan));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin: 0 0 16px;
+    }
+    h1 {
+      margin: 0 0 14px;
+      font-size: clamp(1.6rem, 3.2vw, 2.3rem);
+      font-weight: 900;
+      letter-spacing: -0.03em;
+    }
+    p {
+      margin: 0 0 32px;
+      color: var(--muted);
+      font-size: 15.5px;
+      line-height: 1.65;
+    }
+    .actions {
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 12px 24px;
+      border-radius: 12px;
+      font-size: 14px;
+      font-weight: 800;
+      text-decoration: none;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      font-family: inherit;
+    }
+    .btn-primary {
+      background: linear-gradient(110deg, var(--lime), var(--cyan));
+      color: #03140d;
+      border: none;
+      box-shadow: 0 8px 24px rgba(6, 182, 212, 0.35);
+    }
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 12px 30px rgba(6, 182, 212, 0.48);
+    }
+    .btn-ghost {
+      background: transparent;
+      border: 1px solid var(--border);
+      color: var(--ink);
+    }
+    .btn-ghost:hover {
+      background: rgba(255, 255, 255, 0.05);
+      border-color: var(--ink);
+    }
+    .meta {
+      margin-top: 32px;
+      padding-top: 24px;
+      border-top: 1px solid var(--border);
+      font-size: 12px;
+      color: var(--muted);
+    }
+  </style>
+</head>
+<body>
+  <div class="error-card">
+    <div class="badge">
+      <span>● System Interruption</span>
+    </div>
+    <div class="code">500</div>
+    <h1>Unexpected Server Anomaly</h1>
+    <p>Our telemetry system detected a momentary hiccup while processing this request. Our technical staff has been notified and is on it.</p>
+    <div class="actions">
+      <a href="/" class="btn btn-primary">Return to Safety (Home)</a>
+      <button onclick="window.location.reload()" class="btn btn-ghost">Retry Request</button>
+    </div>
+    <div class="meta">
+      The Nigerian Entrepreneur · Robust Independent Media Infrastructure
+    </div>
+  </div>
+</body>
+</html>

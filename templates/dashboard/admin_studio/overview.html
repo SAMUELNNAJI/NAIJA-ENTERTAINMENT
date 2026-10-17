@@ -51,7 +51,7 @@
 </a>
 
 <div class="dashboard-nav__group-title">PORTAL</div>
-<a href="{% url 'dashboard' %}">
+<a href="{% url 'dashboard' %}?view=creator">
   <i><svg viewBox="0 0 24 24"><path d="M12 20h9M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg></i>
   <span>Switch to Creator View</span>
 </a>
@@ -171,7 +171,22 @@
       </div>
     </div>
 
-    <!-- Stat 3: Moderation -->
+    <!-- Stat 3: Total Platform Amount Earned -->
+    <div class="dash-stat-card theme-lime">
+      <div class="dash-stat-card__top">
+        <span class="dash-stat-card__label">Total Amount Earned</span>
+        <div class="dash-stat-card__icon">
+          <svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 10h18M7 15h3"/></svg>
+        </div>
+      </div>
+      <div class="dash-stat-card__value">₦{{ total_earned|floatformat:2|intcomma }}</div>
+      <div class="dash-stat-card__meta">
+        <span class="tag-trend up">100 views = ₦10</span>
+        <span>Total platform payout</span>
+      </div>
+    </div>
+
+    <!-- Stat 4: Moderation -->
     <div class="dash-stat-card {% if stats.pending_comments > 0 %}theme-amber{% else %}theme-teal{% endif %}">
       <div class="dash-stat-card__top">
         <span class="dash-stat-card__label">Comments Moderation</span>
@@ -189,7 +204,7 @@
       </div>
     </div>
 
-    <!-- Stat 4: Users & Creators -->
+    <!-- Stat 5: Users & Creators -->
     <div class="dash-stat-card theme-violet">
       <div class="dash-stat-card__top">
         <span class="dash-stat-card__label">Community Network</span>

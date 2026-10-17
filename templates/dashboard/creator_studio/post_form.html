@@ -5,8 +5,12 @@
 {% block content %}
 <div class="dashboard-editor">
   <div class="dashboard-editor__intro">
+    {% if panel == 'admin' %}
+    <a href="{% url 'admin_panel_posts' %}" class="dashboard-back">← Back to editorial posts</a>
+    {% else %}
     <a href="{% url 'dashboard' %}" class="dashboard-back">← Back to studio</a>
-    <span class="mad-eyebrow">Story editor</span>
+    {% endif %}
+    <span class="mad-eyebrow">{% if panel == 'admin' %}Editorial Desk{% else %}Story editor{% endif %}</span>
     <h1>{{ mode }} your <em>next move.</em></h1>
     <p>Shape the idea, add the details, then send it into the world.</p>
   </div>
@@ -125,8 +129,12 @@
     </section>
 
     <div class="dashboard-editor__actions">
+      {% if panel == 'admin' %}
+      <a href="{% url 'admin_panel_posts' %}" class="mad-btn ghost">Discard changes</a>
+      {% else %}
       <a href="{% url 'dashboard' %}" class="mad-btn ghost">Discard changes</a>
-      <button class="mad-btn" type="submit">{{ mode }} post <span>→</span></button>
+      {% endif %}
+      <button class="mad-btn" type="submit">{{ mode }} <span>→</span></button>
     </div>
   </form>
 </div>
