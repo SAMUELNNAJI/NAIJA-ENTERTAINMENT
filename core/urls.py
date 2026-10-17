@@ -1,7 +1,10 @@
 from django.contrib.auth import views as auth_views
 from django.urls import path, re_path
 
-from . import views, views_dashboard, views_tools
+from django.contrib.sitemaps.views import sitemap
+from . import views, views_dashboard, views_seo, views_tools
+from .feeds import LatestPostsAtomFeed, LatestPostsFeed
+from .sitemaps import sitemaps
 
 from .forms import CustomPasswordResetForm, CustomSetPasswordForm
 
@@ -141,6 +144,12 @@ urlpatterns = [
     re_path(r"^category/(?P<slug>[\w-]+)/$", views.category, name="category"),
     # long-form articles: /article/<slug>/
     re_path(r"^article/(?P<slug>[\w-]+)/$", views.article, name="article"),
+    # SEO, Search Engine Crawlers & RSS Syndication
+    path("sitemap.xml", sitemap, {"sitemaps": sitemaps}, name="django.contrib.sitemaps.views.sitemap"),
+    path("robots.txt", views_seo.robots_txt, name="robots_txt"),
+    path("feed/", LatestPostsFeed(), name="posts_feed"),
+    path("rss/", LatestPostsFeed(), name="posts_rss"),
+    path("atom/", LatestPostsAtomFeed(), name="posts_atom"),
     # simple static pages: /about/, /contact/, /services/, /privacy-policy/
     re_path(r"^(?P<slug>[\w-]+)/$", views.page, name="page"),
 ]

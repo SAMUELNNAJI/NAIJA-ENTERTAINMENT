@@ -5,6 +5,73 @@
 {% block meta_description %}Starting a business in Nigeria has never been more accessible. Here are 10 profitable business ideas Nigerian founders can start in 2025.{% endblock %}
 {% block page_id %}article{% endblock %}
 
+{% block og_type %}article{% endblock %}
+{% block og_title %}10 Profitable Business Ideas Nigerian Founders Can Start in 2025{% endblock %}
+{% block og_description %}Starting a business in Nigeria has never been more accessible. Here are 10 profitable business ideas Nigerian founders can start in 2025.{% endblock %}
+{% block og_image %}{{ request.scheme }}://{{ request.get_host }}{% static 'img/photos/ideas.jpg' %}{% endblock %}
+{% block twitter_title %}10 Profitable Business Ideas Nigerian Founders Can Start in 2025{% endblock %}
+{% block twitter_description %}Starting a business in Nigeria has never been more accessible. Here are 10 profitable business ideas Nigerian founders can start in 2025.{% endblock %}
+{% block twitter_image %}{{ request.scheme }}://{{ request.get_host }}{% static 'img/photos/ideas.jpg' %}{% endblock %}
+
+{% block schema_json %}
+<meta property="article:published_time" content="2025-04-29T08:00:00+01:00">
+<meta property="article:section" content="Business Ideas">
+<meta property="article:author" content="Ngozi Eze">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Article",
+      "headline": "10 Profitable Business Ideas Nigerian Founders Can Start in 2025",
+      "description": "Starting a business in Nigeria has never been more accessible. Here are 10 profitable business ideas Nigerian founders can start in 2025.",
+      "image": "{{ request.scheme }}://{{ request.get_host }}{% static 'img/photos/ideas.jpg' %}",
+      "datePublished": "2025-04-29T08:00:00+01:00",
+      "dateModified": "2025-04-29T08:00:00+01:00",
+      "author": {
+        "@type": "Person",
+        "name": "Ngozi Eze"
+      },
+      "publisher": {
+        "@type": "NewsMediaOrganization",
+        "name": "The Nigerian Entrepreneur",
+        "url": "{{ request.scheme }}://{{ request.get_host }}/",
+        "logo": {
+          "@type": "ImageObject",
+          "url": "{{ request.scheme }}://{{ request.get_host }}{% static 'img/photos/LOgo.png' %}"
+        }
+      },
+      "mainEntityOfPage": "{{ request.build_absolute_uri }}"
+    },
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Home",
+          "item": "{{ request.scheme }}://{{ request.get_host }}/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Business",
+          "item": "{{ request.scheme }}://{{ request.get_host }}{% url 'category' 'business' %}"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "10 Profitable Business Ideas",
+          "item": "{{ request.build_absolute_uri }}"
+        }
+      ]
+    }
+  ]
+}
+</script>
+{% endblock %}
+
 {% block content %}
 <section class="container section" style="padding-top:18px">
   <nav class="crumbs"><a href="{% url 'home' %}">Home</a><span>›</span><a href="{% url 'category' 'business' %}">Business</a><span>›</span>Business Ideas</nav>

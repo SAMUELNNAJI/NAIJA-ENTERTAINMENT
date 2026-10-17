@@ -12,7 +12,7 @@ from django.db.models import Count, Q, Sum
 from django.shortcuts import get_object_or_404, redirect, render
 from django.utils import timezone
 
-from . import content
+from . import content, views_seo
 from .forms import PayoutAccountForm, PayoutRequestForm, PostForm, SponsorAdForm
 from .models import Comment, CreatorProfile, Notification, PayoutAccount, PayoutRequest, Post, PostDailyStat, SponsorAd
 
@@ -150,6 +150,8 @@ def dashboard_post_new(request):
         post.author = request.user
         _apply_cover_upload(post, form.cleaned_data.get("cover_upload"))
         post.save()
+        if post.status == "published":
+            views_seo.ping_search_engines(request, post)
         messages.success(request, f"“{post.title}” saved as {post.status}.")
         return redirect("dashboard")
     return render(
@@ -196,6 +198,8 @@ def dashboard_post_edit(request, pk):
         post = form.save(commit=False)
         _apply_cover_upload(post, form.cleaned_data.get("cover_upload"))
         post.save()
+        if post.status == "published":
+            views_seo.ping_search_engines(request, post)
         messages.success(request, "Post updated.")
         return redirect("dashboard")
     return render(
@@ -366,6 +370,8 @@ def admin_panel_post_new(request):
         post.author = request.user
         _apply_cover_upload(post, form.cleaned_data.get("cover_upload"))
         post.save()
+        if post.status == "published":
+            views_seo.ping_search_engines(request, post)
         messages.success(request, f"“{post.title}” published to the site.")
         return redirect("admin_panel_posts")
     return render(
@@ -388,6 +394,8 @@ def admin_panel_post_edit(request, pk):
         post = form.save(commit=False)
         _apply_cover_upload(post, form.cleaned_data.get("cover_upload"))
         post.save()
+        if post.status == "published":
+            views_seo.ping_search_engines(request, post)
         messages.success(request, "Post updated.")
         return redirect("admin_panel_posts")
     return render(request, "dashboard/admin_studio/post_form.html", {"form": form, "mode": "Edit blog post", "post": post, "panel": "admin", "filter_options": _filter_tag_options()})
@@ -403,6 +411,8 @@ def admin_panel_toggle_publish(request, pk):
         else:
             post.status = "published"
         post.save(update_fields=["status", "published_at"])
+        if post.status == "published":
+            views_seo.ping_search_engines(request, post)
         messages.success(
             request,
             f"“{post.title}” is now {post.status} — it {'replaces' if post.status == 'published' else 'is hidden from'} the site's article cards.",

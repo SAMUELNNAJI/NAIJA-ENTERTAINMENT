@@ -12,6 +12,80 @@
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <title>{% block title %}The Nigerian Entrepreneur — Real Business Insights, Greater Opportunities{% endblock %}</title>
 <meta name="description" content="{% block meta_description %}Business news, finance guides, startup stories, affiliate marketing and Crypto / Web3.0 insights for Nigerian entrepreneurs.{% endblock %}">
+<meta name="keywords" content="{% block meta_keywords %}Nigeria business news, entrepreneurship Nigeria, personal finance guides, tech startups Lagos, crypto Web3 Nigeria, SME funding, Nigeria investments{% endblock %}">
+<meta name="author" content="{% block meta_author %}The Nigerian Entrepreneur{% endblock %}">
+<meta name="robots" content="{% block meta_robots %}index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1{% endblock %}">
+<meta name="googlebot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
+<meta name="bingbot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
+
+<link rel="canonical" href="{% block canonical_url %}{{ request.build_absolute_uri }}{% endblock %}">
+<link rel="alternate" type="application/rss+xml" title="The Nigerian Entrepreneur RSS Feed" href="{% url 'posts_feed' %}">
+<link rel="alternate" type="application/atom+xml" title="The Nigerian Entrepreneur Atom Feed" href="{% url 'posts_atom' %}">
+
+<!-- OpenGraph / Facebook -->
+<meta property="og:site_name" content="The Nigerian Entrepreneur">
+<meta property="og:locale" content="en_NG">
+<meta property="og:type" content="{% block og_type %}website{% endblock %}">
+<meta property="og:title" content="{% block og_title %}{% block title_og %}{{ block.super }}{% endblock %}{% endblock %}">
+<meta property="og:description" content="{% block og_description %}Business news, finance guides, startup stories, affiliate marketing and Crypto / Web3.0 insights for Nigerian entrepreneurs.{% endblock %}">
+<meta property="og:url" content="{% block og_url %}{{ request.build_absolute_uri }}{% endblock %}">
+<meta property="og:image" content="{% block og_image %}{{ request.scheme }}://{{ request.get_host }}{% static 'img/photos/LOgo.png' %}{% endblock %}">
+<meta property="og:image:alt" content="The Nigerian Entrepreneur">
+
+<!-- Twitter Card -->
+<meta name="twitter:card" content="{% block twitter_card %}summary_large_image{% endblock %}">
+<meta name="twitter:site" content="@NigeriaEntrep">
+<meta name="twitter:creator" content="@NigeriaEntrep">
+<meta name="twitter:title" content="{% block twitter_title %}{% block title_tw %}{{ block.super }}{% endblock %}{% endblock %}">
+<meta name="twitter:description" content="{% block twitter_description %}Business news, finance guides, startup stories, affiliate marketing and Crypto / Web3.0 insights for Nigerian entrepreneurs.{% endblock %}">
+<meta name="twitter:image" content="{% block twitter_image %}{{ request.scheme }}://{{ request.get_host }}{% static 'img/photos/LOgo.png' %}{% endblock %}">
+
+<!-- Schema.org Global Structured Data (WebSite + Sitelinks Searchbox + NewsMediaOrganization) -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "WebSite",
+      "@id": "{{ request.scheme }}://{{ request.get_host }}/#website",
+      "url": "{{ request.scheme }}://{{ request.get_host }}/",
+      "name": "The Nigerian Entrepreneur",
+      "description": "Real Business Insights, Greater Opportunities",
+      "publisher": {
+        "@id": "{{ request.scheme }}://{{ request.get_host }}/#organization"
+      },
+      "potentialAction": [
+        {
+          "@type": "SearchAction",
+          "target": {
+            "@type": "EntryPoint",
+            "urlTemplate": "{{ request.scheme }}://{{ request.get_host }}/search/?q={search_term_string}"
+          },
+          "query-input": "required name=search_term_string"
+        }
+      ]
+    },
+    {
+      "@type": "NewsMediaOrganization",
+      "@id": "{{ request.scheme }}://{{ request.get_host }}/#organization",
+      "name": "The Nigerian Entrepreneur",
+      "url": "{{ request.scheme }}://{{ request.get_host }}/",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "{{ request.scheme }}://{{ request.get_host }}{% static 'img/photos/LOgo.png' %}",
+        "caption": "The Nigerian Entrepreneur Logo"
+      },
+      "sameAs": [
+        "https://twitter.com/NigeriaEntrep",
+        "https://facebook.com/NigeriaEntrep",
+        "https://instagram.com/NigeriaEntrep"
+      ]
+    }
+  ]
+}
+</script>
+{% block schema_json %}{% endblock %}
+
 <link rel="stylesheet" href="{% static 'css/style.css' %}">
 {% block extra_head %}{% endblock %}
 </head>

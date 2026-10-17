@@ -23,18 +23,81 @@
     });
   });
 
-  /* Sponsor campaigns rotate through active banners; dismissal lasts this browser session. */
+  /* Sponsor campaigns rotate through active banners; when closed, pops up again after 5 mins. */
   (function () {
     var banner = document.querySelector('[data-sponsor-banner]');
-    if (!banner || sessionStorage.getItem('tne-sponsor-closed')) return;
+    if (!banner) return;
     var slides = Array.prototype.slice.call(banner.querySelectorAll('[data-sponsor-slide]'));
     if (!slides.length) return;
-    banner.hidden = false;
+
     var index = Math.floor(Math.random() * slides.length);
-    function show(n) { slides.forEach(function (slide, i) { slide.hidden = i !== n; slide.classList.toggle('is-active', i === n); }); }
-    show(index);
-    if (slides.length > 1) setInterval(function () { index = (index + 1) % slides.length; show(index); }, 7000);
-    banner.querySelector('[data-sponsor-close]').addEventListener('click', function () { banner.hidden = true; sessionStorage.setItem('tne-sponsor-closed', '1'); });
+    var rotateInterval = null;
+    var reopenTimer = null;
+    var FIVE_MINUTES_MS = 5 * 60 * 1000; // 5 minutes (300,000 ms)
+
+    function showSlide(n) {
+      slides.forEach(function (slide, i) {
+        slide.hidden = i !== n;
+        slide.classList.toggle('is-active', i === n);
+      });
+    }
+
+    function startRotation() {
+      if (rotateInterval) clearInterval(rotateInterval);
+      if (slides.length > 1) {
+        rotateInterval = setInterval(function () {
+          index = (index + 1) % slides.length;
+          showSlide(index);
+        }, 7000);
+      }
+    }
+
+    function openBanner() {
+      banner.hidden = false;
+      banner.classList.add('is-visible');
+      showSlide(index);
+      startRotation();
+    }
+
+    function closeBanner() {
+      banner.hidden = true;
+      banner.classList.remove('is-visible');
+      if (rotateInterval) {
+        clearInterval(rotateInterval);
+        rotateInterval = null;
+      }
+      var reopenAt = Date.now() + FIVE_MINUTES_MS;
+      try {
+        localStorage.setItem('tne-sponsor-closed-until', String(reopenAt));
+      } catch (e) {}
+
+      if (reopenTimer) clearTimeout(reopenTimer);
+      reopenTimer = setTimeout(openBanner, FIVE_MINUTES_MS);
+    }
+
+    var closeBtn = banner.querySelector('[data-sponsor-close]');
+    if (closeBtn) {
+      closeBtn.addEventListener('click', function (e) {
+        e.preventDefault();
+        closeBanner();
+      });
+    }
+
+    // Check closed timestamp from localStorage
+    var closedUntil = 0;
+    try {
+      closedUntil = parseInt(localStorage.getItem('tne-sponsor-closed-until') || '0', 10);
+    } catch (e) {}
+
+    var now = Date.now();
+    if (closedUntil && now < closedUntil) {
+      var remaining = closedUntil - now;
+      banner.hidden = true;
+      if (reopenTimer) clearTimeout(reopenTimer);
+      reopenTimer = setTimeout(openBanner, remaining);
+    } else {
+      openBanner();
+    }
   })();
   $$('a[href="tel:+2348000000000"]').forEach(function (link) {
     link.href = 'tel:+2349040649218';
