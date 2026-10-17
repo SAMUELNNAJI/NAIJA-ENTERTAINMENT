@@ -33,21 +33,57 @@
     var index = Math.floor(Math.random() * slides.length);
     var rotateInterval = null;
     var reopenTimer = null;
+    var isWaitingForImage = false;
     var FIVE_MINUTES_MS = 5 * 60 * 1000; // 5 minutes (300,000 ms)
 
-    function showSlide(n) {
+    function activateSlide(n) {
       slides.forEach(function (slide, i) {
         slide.hidden = i !== n;
         slide.classList.toggle('is-active', i === n);
       });
+      index = n;
+    }
+
+    function showNextReadySlide(n, attempts) {
+      if (isWaitingForImage) return;
+      attempts = attempts || 0;
+      if (attempts >= slides.length) return;
+
+      var nextIndex = n % slides.length;
+      var image = slides[nextIndex].querySelector('img');
+      if (!image || image.dataset.sponsorImageFailed === 'true') {
+        showNextReadySlide(nextIndex + 1, attempts + 1);
+        return;
+      }
+
+      if (image.complete) {
+        if (image.naturalWidth > 0) {
+          activateSlide(nextIndex);
+        } else {
+          image.dataset.sponsorImageFailed = 'true';
+          showNextReadySlide(nextIndex + 1, attempts + 1);
+        }
+        return;
+      }
+
+      // Keep the current banner onscreen until the next image is usable.
+      isWaitingForImage = true;
+      image.addEventListener('load', function () {
+        isWaitingForImage = false;
+        activateSlide(nextIndex);
+      }, { once: true });
+      image.addEventListener('error', function () {
+        isWaitingForImage = false;
+        image.dataset.sponsorImageFailed = 'true';
+        showNextReadySlide(nextIndex + 1, attempts + 1);
+      }, { once: true });
     }
 
     function startRotation() {
       if (rotateInterval) clearInterval(rotateInterval);
       if (slides.length > 1) {
         rotateInterval = setInterval(function () {
-          index = (index + 1) % slides.length;
-          showSlide(index);
+          showNextReadySlide(index + 1);
         }, 7000);
       }
     }
@@ -55,7 +91,7 @@
     function openBanner() {
       banner.hidden = false;
       banner.classList.add('is-visible');
-      showSlide(index);
+      showNextReadySlide(index);
       startRotation();
     }
 

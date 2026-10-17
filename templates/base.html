@@ -311,7 +311,7 @@
 <aside class="sponsor-banner" data-sponsor-banner hidden aria-label="Sponsored message">
   {% for ad in sponsor_ads %}
   <a class="sponsor-banner__slide{% if forloop.first %} is-active{% endif %}" data-sponsor-slide href="{{ ad.redirect_url }}" target="_blank" rel="sponsored noopener"{% if not forloop.first %} hidden{% endif %}>
-    <img src="{% if ad.is_external_image %}{{ ad.image_url }}{% else %}{% static ad.image_url %}{% endif %}" alt="{{ ad.title }}" loading="eager" fetchpriority="high" decoding="async"><span><small>Sponsored</small><strong>{{ ad.title }}</strong></span>
+    <img src="{% if ad.is_external_image %}{{ ad.image_url }}{% else %}{% static ad.image_url %}{% endif %}" alt="{{ ad.title }}" loading="eager"{% if forloop.first %} fetchpriority="high"{% endif %} decoding="async"><span><small>Sponsored</small><strong>{{ ad.title }}</strong></span>
   </a>
   {% endfor %}
   <button type="button" class="sponsor-banner__close" data-sponsor-close aria-label="Close sponsor message">×</button>
