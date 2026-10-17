@@ -68,6 +68,13 @@
 
 {% block content %}
 <div class="dash-studio">
+  {% if created_ad %}
+  <section class="sponsor-success" aria-label="New sponsor campaign preview">
+    <div class="sponsor-success__flowers" aria-hidden="true"><i>🌸</i><i>🌼</i><i>🌺</i><i>🌷</i><i>🌸</i></div>
+    <img src="{% if created_ad.is_external_image %}{{ created_ad.image_url }}{% else %}{% static created_ad.image_url %}{% endif %}" alt="{{ created_ad.title }}" loading="eager" fetchpriority="high" decoding="async">
+    <div class="sponsor-success__copy"><span>Campaign launched</span><strong>{{ created_ad.title }}</strong></div>
+  </section>
+  {% endif %}
   <!-- Create / Edit Campaign Card -->
   <div class="dash-form-card" style="margin-bottom: 24px;">
     <header class="dash-form-card__header">

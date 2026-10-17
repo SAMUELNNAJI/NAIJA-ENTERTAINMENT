@@ -10,6 +10,7 @@ from django.core.files.storage import default_storage
 from django.core.paginator import Paginator
 from django.db.models import Count, Q, Sum
 from django.shortcuts import get_object_or_404, redirect, render
+from django.urls import reverse
 from django.utils import timezone
 
 from . import content, views_seo
@@ -438,9 +439,13 @@ def admin_panel_sponsors(request):
         _apply_ad_cover_upload(ad, form.cleaned_data.get("cover_upload"))
         ad.save()
         messages.success(request, "Sponsor banner saved and is now available for rotation.")
-        return redirect("admin_panel_sponsors")
+        return redirect(f"{reverse('admin_panel_sponsors')}?created={ad.pk}")
     page_obj = Paginator(SponsorAd.objects.all(), 10).get_page(request.GET.get("page"))
-    return render(request, "dashboard/admin_studio/sponsors.html", {"form": form, "ads": page_obj, "page_obj": page_obj, "nav_active": "admin"})
+    created_ad = None
+    created_pk = request.GET.get("created", "")
+    if created_pk.isdigit():
+        created_ad = SponsorAd.objects.filter(pk=created_pk).first()
+    return render(request, "dashboard/admin_studio/sponsors.html", {"form": form, "ads": page_obj, "page_obj": page_obj, "created_ad": created_ad, "nav_active": "admin"})
 
 
 @user_passes_test(_is_staff, login_url="login")
