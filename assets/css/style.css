@@ -33,6 +33,11 @@
 /* keeps the [hidden] attribute working even where a class sets display */
 [hidden] { display: none !important; }
 
+.sponsor-banner { position:fixed; z-index:100; right:clamp(14px,3vw,42px); bottom:clamp(14px,3vw,34px); width:min(620px,calc(100vw - 28px)); overflow:hidden; border:1px solid rgba(255,255,255,.3); border-radius:18px; background:#101827; box-shadow:0 22px 65px rgba(0,0,0,.45); }
+.sponsor-banner__slide { position:relative; display:block; min-height:150px; color:#fff; text-decoration:none; background:#192334; }
+.sponsor-banner__slide img { display:block; width:100%; height:190px; object-fit:cover; opacity:.7; transition:opacity .25s; }.sponsor-banner__slide:hover img { opacity:.88; }
+.sponsor-banner__slide span { position:absolute; inset:auto 0 0; display:grid; gap:3px; padding:28px 24px 20px; background:linear-gradient(transparent,rgba(5,9,17,.92)); }.sponsor-banner__slide small { color:#b8ff3d; font-size:10px; font-weight:900; letter-spacing:.13em; text-transform:uppercase; }.sponsor-banner__slide strong { font-size:clamp(16px,2vw,22px); }.sponsor-banner__close { position:absolute; z-index:2; top:10px; right:10px; width:32px; height:32px; border:1px solid rgba(255,255,255,.35); border-radius:50%; background:rgba(4,8,15,.68); color:#fff; cursor:pointer; font-size:23px; line-height:1; }
+
 html { scroll-behavior: smooth; overflow-x: hidden; }
 
 body {
@@ -275,6 +280,21 @@ p { margin: 0 0 1em; }
 .btn--block { width: 100%; }
 
 .nav-toggle { display: none; }
+
+/* inline search form (search results page) */
+.search-inline { display: flex; gap: 10px; margin: 4px 0 26px; max-width: 640px; }
+.search-inline input {
+  flex: 1;
+  height: 48px;
+  padding: 0 18px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: #fff;
+  color: var(--ink);
+  font: inherit;
+  font-size: 15px;
+}
+.search-inline input:focus { outline: none; border-color: var(--green-600); box-shadow: 0 0 0 3px var(--green-50); }
 
 /* search drawer */
 .search-panel {
@@ -572,6 +592,10 @@ p { margin: 0 0 1em; }
   padding: 6px 0 26px;
   align-items: start;
 }
+
+/* The spotlight spans two rows so the side column stacks two mini-cards
+   beside it — with a single card the tall feature left a big empty gap. */
+.cat-grid > .feature-card--spotlight { grid-row: span 2; }
 
 .feature-card {
   background: #fff;
@@ -1353,6 +1377,7 @@ p { margin: 0 0 1em; }
 
 @media (max-width: 940px) {
   .cat-grid { grid-template-columns: minmax(0, 1fr); }
+  .cat-grid > .feature-card--spotlight { grid-row: auto; }
   .service-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .split, .vision__grid { grid-template-columns: minmax(0, 1fr); }
 }
@@ -2278,6 +2303,10 @@ select:focus-visible, textarea:focus-visible, [tabindex]:focus-visible {
 .chip { border: 1px solid rgba(18, 163, 93, .18); transition: transform .2s var(--ease-luxe), box-shadow .2s, background-color .2s, color .2s, border-color .2s; }
 .chip:hover { transform: translateY(-2px); box-shadow: 0 8px 18px -12px rgba(4, 23, 15, .5); }
 .chip.is-active { background: var(--grad-emerald); color: #fff; border-color: transparent; box-shadow: 0 8px 20px -12px rgba(11, 107, 63, .8); }
+/* Chips on category pages are real links (?filter=<chip>), not buttons. */
+a.chip { text-decoration: none; }
+.filters__count { margin-left: auto; font-size: 12.5px; font-weight: 600; color: var(--muted, #6b7280); }
+.filter-empty { text-align: center; color: var(--muted, #6b7280); font-size: 14.5px; padding: 40px 0; }
 
 /* ---------- category cards (Explore by category) ---------- */
 .cat-card {

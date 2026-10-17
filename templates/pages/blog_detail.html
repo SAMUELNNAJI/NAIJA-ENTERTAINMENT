@@ -1,0 +1,47 @@
+
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}{{ post.title }} — TNE{% endblock %}
+{% block meta_description %}{{ post.excerpt }}{% endblock %}
+
+{% block extra_head %}
+<link rel="stylesheet" href="{% static 'css/mad.css' %}">
+{% endblock %}
+
+{% block scripts %}
+<script src="{% static 'js/comments.js' %}"></script>
+{% endblock %}
+
+{% block content %}
+<div class="mad-body mad-article-shell">
+  <article class="mad-article">
+    <header class="mad-article__hero">
+      <div class="mad-orbit mad-orbit--one" aria-hidden="true"></div><div class="mad-orbit mad-orbit--two" aria-hidden="true"></div>
+      <nav class="mad-breadcrumb" aria-label="Breadcrumb"><a href="{% url 'home' %}">Home</a><span>/</span><a href="{% url 'category' post.category %}">{{ post.get_category_display }}</a><span>/</span><span>Story</span></nav>
+      <div class="mad-article__meta"><span class="mad-category">{{ post.get_category_display }}</span>{% if post.is_featured %}<span class="mad-featured">✦ Featured read</span>{% endif %}</div>
+      <h1>{{ post.title }}</h1>
+      <p class="mad-article__dek">{{ post.excerpt }}</p>
+      <div class="mad-byline"><div class="mad-avatar">{{ post.author|default:"TNE"|slice:":2"|upper }}</div><div><strong>{{ post.author|default:"TNE Editorial" }}</strong><span>Published {{ post.published_at|date:"F j, Y" }}</span></div><span class="mad-reading">✦ {{ post.views }} views</span></div>
+    </header>
+
+    {% if post.image_url %}
+    <figure class="mad-article__image"><img src="{% if post.is_external_image %}{{ post.image_url }}{% else %}{% static post.image_url %}{% endif %}" alt="" loading="eager"><figcaption>Ideas worth building on.</figcaption></figure>
+    {% endif %}
+
+    <div class="mad-article__layout">
+      <aside class="mad-share"><span>Pass it on</span><a href="#comments" aria-label="Jump to comments">✦</a><a href="#article-body" aria-label="Read article">↓</a></aside>
+      <div id="article-body" class="mad-article__body">{{ post.body|safe }}</div>
+    </div>
+    <footer class="mad-article__footer"><span>Enjoyed this? Keep the momentum going.</span><a href="{% url 'category' post.category %}" class="mad-btn">Explore {{ post.get_category_display }} <span>→</span></a>{% if request.user.is_authenticated %}<a href="{% url 'dashboard_post_edit' post.pk %}" class="mad-btn ghost">Edit story</a>{% endif %}</footer>
+  </article>
+
+  <section id="comments" class="mad-comments">
+    <div class="mad-comments__head"><div><span class="mad-eyebrow">The conversation</span><h2>Thoughts with <em>energy.</em></h2></div><span class="mad-comment-count" data-comment-count>{{ comment_count }} comment{{ comment_count|pluralize }}</span></div>
+    <div class="comment-thread" id="comment-thread" data-slug="{{ post.slug }}">{% for c in comments %}{% include "includes/comment_tree.html" with comment=c %}{% empty %}<p class="mad-no-comments">No thoughts here yet. Be the spark.</p>{% endfor %}</div>
+    <div class="comment-form"><h3>Leave a thought</h3><form class="form-fab" method="post" action="{% url 'comment_create' post.slug %}" data-comment-form>{% csrf_token %}<textarea name="body" placeholder="Add something useful, bold or brilliant…" required></textarea><div class="fab-actions"><span>Be kind. Be sharp. Be yourself.</span><button class="mad-btn" type="submit">Publish thought <span>↗</span></button></div></form></div>
+  </section>
+
+  {% if related %}<section class="mad-related"><div class="mad-related__head"><div><span class="mad-eyebrow">Continue exploring</span><h2>More to make you move.</h2></div><span class="mad-related__spark">✦ Fresh perspective, same ambition.</span></div><div class="mad-related__grid">{% for p in related %}<a href="{% url 'blog_detail' p.slug %}" class="mad-related__card">{% if p.image_url %}<img src="{% if p.is_external_image %}{{ p.image_url }}{% else %}{% static p.image_url %}{% endif %}" alt="" loading="lazy">{% else %}<span class="mad-related__fallback" aria-hidden="true">✦</span>{% endif %}<span class="mad-related__shade"></span><div class="mad-related__content"><span>{{ p.get_category_display }}</span><strong>{{ p.title|truncatechars:82 }}</strong><i>Read story <b>→</b></i></div></a>{% endfor %}</div></section>{% endif %}
+</div>
+{% endblock %}

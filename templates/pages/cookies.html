@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Cookie Policy — The Nigerian Entrepreneur{% endblock %}
+{% block meta_description %}Learn how The Nigerian Entrepreneur uses cookies and how you can manage them.{% endblock %}
+{% block page_id %}cookies{% endblock %}
+
+{% block content %}
+<section class="page-hero t-about">
+  <div class="hero-scene"><img src="{% static 'img/photos/mesh.jpg' %}" alt="Abstract green backdrop"></div>
+  <div class="container page-hero__body">
+    <nav class="crumbs"><a href="{% url 'home' %}">Home</a><span>›</span>Cookie Policy</nav>
+    <h1>Cookie Policy</h1>
+    <p>How cookies help us provide a smoother, more useful experience.</p>
+  </div>
+</section>
+
+<div class="container legal">
+  <section class="widget legal__toc reveal">
+    <div class="widget__head">On this page</div>
+    <div class="widget__body"><ol data-spy>
+      <li><a href="#what-are-cookies">What cookies are<small>A quick explanation</small></a></li>
+      <li><a href="#how-we-use">How we use them<small>Why cookies are needed</small></a></li>
+      <li><a href="#your-choices">Your choices<small>Managing cookies</small></a></li>
+      <li><a href="#contact">Contact<small>Questions or concerns</small></a></li>
+    </ol></div>
+  </section>
+
+  <article class="panel reveal"><div class="article-body">
+    <div class="privacy-note"><div><strong>Last updated: October 2026</strong> This policy explains the cookies and similar technologies used on our website.</div></div>
+
+    <h2 id="what-are-cookies">1. What are cookies?</h2>
+    <p>Cookies are small text files placed on your device when you visit a website. They allow a site to remember information about your visit, such as your settings, so that it works more reliably and feels more personal when you return.</p>
+
+    <h2 id="how-we-use">2. How we use cookies</h2>
+    <p>We use cookies and similar technologies to operate and improve The Nigerian Entrepreneur. Depending on the features you use, they may include:</p>
+    <ul>
+      <li><strong>Essential cookies</strong> — support core functions such as security, navigation and remembering your session preferences.</li>
+      <li><strong>Preference cookies</strong> — remember choices such as your display settings or newsletter status.</li>
+      <li><strong>Analytics cookies</strong> — help us understand how visitors use pages so we can improve content and site performance.</li>
+    </ul>
+    <p>We do not use cookies to sell your personal information.</p>
+
+    <h2 id="third-party">3. Third-party cookies</h2>
+    <p>Some services embedded in or linked from our site may set their own cookies. These providers are responsible for their own cookie practices, so we encourage you to review their privacy and cookie policies.</p>
+
+    <h2 id="your-choices">4. Your choices</h2>
+    <p>Most web browsers let you view, block or delete cookies through their settings. You can also configure a browser to notify you before a cookie is stored. If you block essential cookies, parts of the website may not work as intended.</p>
+    <p>Your browser provider’s help pages explain how to manage cookies on the browser and device you use.</p>
+
+    <h2 id="changes">5. Updates to this policy</h2>
+    <p>We may update this Cookie Policy when our website or the technologies we use change. The latest version will always appear on this page.</p>
+
+    <h2 id="contact">6. Contact us</h2>
+    <p>For questions about cookies or this policy, email <a href="mailto:info@thenigerianentrepreneur.com" style="color:var(--green-700);font-weight:700">info@thenigerianentrepreneur.com</a>.</p>
+  </div></article>
+</div>
+{% endblock %}

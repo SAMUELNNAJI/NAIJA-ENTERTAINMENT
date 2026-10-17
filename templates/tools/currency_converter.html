@@ -1,0 +1,31 @@
+
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Currency converter — TNE{% endblock %}
+{% block extra_head %}
+<link rel="stylesheet" href="{% static 'css/mad.css' %}">
+<script src="{% static 'js/converter.js' %}" defer></script>
+{% endblock %}
+
+{% block content %}
+<main class="mad-body tool-page converter-page">
+  <section class="tool-shell">
+    <header class="tool-hero"><div><span class="tool-eyebrow"><i></i> Currency tools</span><h1>Move money <em>clearly.</em></h1><p>Convert between major currencies with the latest available rate. Your result updates as you type.</p></div><a class="tool-link" href="{% url 'markets' %}">Explore markets <span>→</span></a></header>
+    <div class="converter-layout">
+      <section class="converter-card" aria-labelledby="convert-title">
+        <div class="tool-section-head"><div><span class="section-label">Calculator</span><h2 id="convert-title">Currency converter</h2></div><span id="rate-status" class="rate-status">Checking rates</span></div>
+        <form id="form" class="converter-form" data-rates-url="{% url 'currency_rates' %}">
+          <label class="converter-field converter-field--amount"><span>Amount to convert</span><div class="amount-input"><span class="amount-input__mark">¤</span><input type="number" id="amount" name="amount" value="1" min="0" step="any" inputmode="decimal" class="field" aria-label="Amount"></div></label>
+          <div class="amount-presets" aria-label="Quick amount choices"><span>Quick pick</span><button type="button" data-amount="100">100</button><button type="button" data-amount="1000">1k</button><button type="button" data-amount="10000">10k</button><button type="button" data-amount="100000">100k</button></div>
+          <div class="currency-pair"><label class="converter-field"><span>From</span><select id="from" name="from" class="field" aria-label="Convert from">{% for code, name in currencies %}<option value="{{ code }}">{{ code }} — {{ name }}</option>{% endfor %}</select></label><button class="swap-button" type="button" id="swap" aria-label="Swap currencies" title="Swap currencies">⇄</button><label class="converter-field"><span>To</span><select id="to" name="to" class="field" aria-label="Convert to">{% for code, name in currencies %}<option value="{{ code }}">{{ code }} — {{ name }}</option>{% endfor %}</select></label></div>
+          <div id="result" class="conversion-result" aria-live="polite"><span class="result-label">Loading current rate</span><strong>—</strong></div><p id="rate-detail" class="rate-detail">Fetching the latest exchange rate…</p>
+        </form>
+      </section>
+      <aside class="converter-aside"><section class="quick-card"><span class="section-label">Popular destinations</span><h2>Jump to a currency</h2><div class="quick-currencies" id="chips"></div></section><section class="converter-note"><span>↻</span><p>Rates refresh automatically every minute, without interrupting your conversion.</p></section></aside>
+    </div>
+  </section>
+</main>
+{{ rates_json|json_script:"rates-json" }}
+{{ names_json|json_script:"names-json" }}
+{% endblock %}

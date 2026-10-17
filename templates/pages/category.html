@@ -1,0 +1,116 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}{{ category.meta_title }}{% endblock %}
+{% block meta_description %}{{ category.meta_description }}{% endblock %}
+{% block page_id %}{{ category.page_id }}{% endblock %}
+
+{% block content %}
+<section class="page-hero {{ category.theme }}">
+  <div class="hero-scene"><img src="{% static category.image %}" alt="{{ category.image_alt }}"></div>
+  <div class="container page-hero__body">
+    <nav class="crumbs"><a href="{% url 'home' %}">Home</a><span>›</span>{{ category.crumb }}</nav>
+    <h1>{{ category.heading }}</h1>
+    <p>{{ category.blurb }}</p>
+    {% if category.hero_actions %}
+    <div class="page-hero__actions">
+      {% for action in category.hero_actions %}
+      <a class="btn {{ action.class }}" href="{{ action.url }}">{{ action.label }}</a>
+      {% endfor %}
+    </div>
+    {% endif %}
+  </div>
+</section>
+
+<div class="container" data-filter-scope>
+  <div class="filters">
+    <span class="filters__label">Filter:</span>
+    {% for value, label in category.chips %}
+    <a class="chip{% if value == active_filter %} is-active{% endif %}" href="{% url 'category' category.slug %}{% if value != 'all' %}?filter={{ value }}{% endif %}">{{ label }}</a>
+    {% endfor %}
+    {% if chip_filtered %}
+    <span class="filters__count">{{ db_posts|length }} article{{ db_posts|length|pluralize }}</span>
+    {% endif %}
+  </div>
+
+  <div class="cat-grid">
+    {% if db_posts %}
+    {% with feature=db_posts.0 %}
+    <article class="feature-card feature-card--spotlight reveal" data-tags="{{ feature.tags }}">
+      <a href="{{ feature.url }}">
+        <div class="media">
+          <img src="{% if feature.is_external_image %}{{ feature.image }}{% else %}{% static feature.image %}{% endif %}" alt="{{ feature.alt }}">
+          <span class="media__tag">Featured</span>
+        </div>
+        <div class="feature-card__body">
+          <h3>{{ feature.title }}</h3>
+          <p>{{ feature.excerpt|truncatewords:34 }}</p>
+          <div class="mini-card__meta">
+            <span>
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align:-2px"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 3.6-6 8-6s8 2 8 6"/></svg>
+              {{ feature.author }}
+            </span>
+            <span class="dot">•</span><time datetime="{{ feature.iso }}">{{ feature.date }}</time>
+            <span class="dot">•</span><span>{{ feature.time }} min read</span>
+          </div>
+          <span class="feature-card__cta">Read full story <svg class="ico" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+        </div>
+      </a>
+    </article>
+    {% endwith %}
+    <div class="article-stack" style="display: contents">
+      {% for article in db_posts|slice:"1:5" %}
+      {% include "includes/mini_card.html" with hidden=False %}
+      {% endfor %}
+      {% for article in db_posts|slice:"5:" %}
+      {% include "includes/mini_card.html" with hidden=True %}
+      {% endfor %}
+    </div>
+    {% elif not chip_filtered %}
+    {% include "includes/feature_card.html" with article=category.feature %}
+    <div class="article-stack" style="display: contents">
+      {% for article in category.stack %}
+      {% include "includes/mini_card.html" %}
+      {% endfor %}
+      {% for article in category.more %}
+      {% include "includes/mini_card.html" with hidden=True %}
+      {% endfor %}
+    </div>
+    {% endif %}
+  </div>
+
+  {% if chip_filtered and not db_posts %}
+  <p class="filter-empty">No articles in this filter yet — check back soon.</p>
+  {% else %}
+  <div data-empty hidden style="text-align:center;color:var(--muted);font-size:13.5px;padding:30px 0">
+    Nothing published in this filter yet — check back soon.
+  </div>
+  {% endif %}
+
+  {% if db_posts|length > 5 or not db_posts and not chip_filtered %}
+  <div style="text-align:center;padding-bottom:8px">
+    <button class="btn btn--ghost btn--sm" type="button" data-more-btn data-batch="4">Load more articles</button>
+  </div>
+  {% endif %}
+</div>
+
+<section class="container" style="padding-bottom:12px">
+  <div class="cta {{ category.cta.modifier }} reveal">
+    <span class="cta__icon">{{ category.cta.icon|safe }}</span>
+    <div>
+      <h3>{{ category.cta.title }}</h3>
+      <p>{{ category.cta.text }}</p>
+    </div>
+    {% if category.cta.form %}
+    <div class="cta__form">
+      <input type="email" placeholder="Enter your email address" aria-label="Email address">
+      <button class="btn btn--light" type="button" onclick="TNE_subscribe(this)">Subscribe</button>
+    </div>
+    {% else %}
+    <div class="cta__actions">
+      <a class="btn btn--light" href="{{ category.cta.action.url }}">{{ category.cta.action.label }} <svg class="ico" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+    </div>
+    {% endif %}
+  </div>
+</section>
+{% endblock %}

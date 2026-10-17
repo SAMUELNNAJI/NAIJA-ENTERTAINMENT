@@ -1,0 +1,4 @@
+{% include "includes/comment_sticker.html" with comment=comment %}
+{% for reply in comment.replies.all %}
+  <div class="reply-wrap">{% include "includes/comment_tree.html" with comment=reply %}</div>
+{% endfor %}

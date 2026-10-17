@@ -1,0 +1,22 @@
+{% load static %}
+<article class="feature-card feature-card--spotlight reveal" data-tags="{{ article.filter_tag|default:article.tags }}"{% if extra %} data-filter-extra{% endif %}{% if hidden %} hidden{% endif %}>
+  <a href="{{ article.url }}">
+    <div class="media">
+      {% if article.is_external_image %}<img src="{{ article.image }}" alt="{{ article.alt }}">{% else %}<img src="{% static article.image %}" alt="{{ article.alt }}">{% endif %}
+      <span class="media__tag">{{ article.badge }}</span>
+    </div>
+    <div class="feature-card__body">
+      <h3>{{ article.title }}</h3>
+      <p>{{ article.blurb }}</p>
+      <div class="mini-card__meta">
+        <span>
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align:-2px"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 3.6-6 8-6s8 2 8 6"/></svg>
+          {{ article.author }}
+        </span>
+        <span class="dot">•</span><time datetime="{{ article.iso }}">{{ article.date }}</time>
+        <span class="dot">•</span><span>{{ article.time }} min read</span>
+      </div>
+      <span class="feature-card__cta">Read full story <svg class="ico" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+    </div>
+  </a>
+</article>

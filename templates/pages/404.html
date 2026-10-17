@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+
+{% block title %}Page Not Found — The Nigerian Entrepreneur{% endblock %}
+{% block meta_description %}The page you are looking for could not be found. Go back home or search the site.{% endblock %}
+{% block page_id %}404{% endblock %}
+
+{% block content %}
+<div class="container nf">
+  <div class="nf__bubbles"><i></i><i></i><i></i><i></i><i></i></div>
+  <div class="nf__code" aria-label="404">
+    <b>4</b>
+    <span class="zero" aria-hidden="true">
+      <svg viewBox="0 0 100 100">
+        <defs>
+          <linearGradient id="z404" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0" stop-color="#0a4a2e"/><stop offset="1" stop-color="#12a35d"/>
+          </linearGradient>
+        </defs>
+        <circle cx="50" cy="50" r="42" fill="none" stroke="url(#z404)" stroke-width="9"/>
+        <circle cx="50" cy="50" r="42" fill="none" stroke="#dff5e9" stroke-width="9" stroke-dasharray="40 224" stroke-linecap="round"/>
+        <circle cx="50" cy="50" r="24" fill="none" stroke="#e6f6ed" stroke-width="7" stroke-dasharray="24 127" stroke-linecap="round"/>
+        <circle cx="50" cy="26" r="5" fill="#e6f6ed"/>
+      </svg>
+    </span>
+    <b>4</b>
+  </div>
+  <h2>Page Not Found</h2>
+  <p>The page you’re looking for might have been moved, renamed, or it may no longer exist. Try searching, or head back to familiar ground.</p>
+  <div class="nf__actions">
+    <a class="btn btn--primary" href="{% url 'home' %}">Go Back Home</a>
+    <a class="btn btn--ghost" href="{% url 'page' 'contact' %}">Contact Us</a>
+  </div>
+  <form class="nf__search" id="nfSearch">
+    <input type="search" placeholder="Search the site…" aria-label="Search the site">
+    <button class="btn btn--primary" type="submit">Search</button>
+  </form>
+</div>
+
+<section class="container" style="padding-bottom:26px">
+  <div class="cta reveal">
+    <span class="cta__icon"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 3 4 6v6c0 5 3.4 8.4 8 9 4.6-.6 8-4 8-9V6z"/></svg></span>
+    <div>
+      <h3>While you’re here</h3>
+      <p>Our most-read guides on business, finance and crypto — all in one place.</p>
+    </div>
+    <div class="cta__actions">
+      <a class="btn btn--light" href="{% url 'category' 'business' %}">Browse Articles <svg class="ico" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+    </div>
+  </div>
+</section>
+{% endblock %}

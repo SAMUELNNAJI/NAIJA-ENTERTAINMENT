@@ -1,0 +1,17 @@
+
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Markets watch — TNE{% endblock %}
+{% block extra_head %}
+<link rel="stylesheet" href="{% static 'css/mad.css' %}">
+<script src="{% static 'js/markets.js' %}" defer></script>
+{% endblock %}
+
+{% block content %}
+<main class="mad-body tool-page markets-page"><section class="tool-shell"><header class="tool-hero tool-hero--markets"><div><span class="tool-eyebrow"><i></i> Nigerian Entrepreneur</span><h1>Your market <em>radar.</em></h1><p>Keep an eye on NGX, global crypto and commodities in one focused watchlist.</p></div><a class="tool-link" href="{% url 'currency_converter' %}">Currency converter <span>→</span></a></header>
+  <section class="market-summary" aria-label="Market summary"><div><span>Watchlist</span><strong id="count">0</strong><small>saved symbols</small></div><div><span>Markets covered</span><strong>4</strong><small>NGX, crypto &amp; commodities</small></div><div><span>Last refreshed</span><strong id="last">Checking…</strong><small id="market-source">Connecting to live data</small></div></section>
+  <section class="market-board" data-snapshot-url="{% url 'market_snapshot' %}"><div class="market-board__head"><div><span class="section-label">Market snapshot <b class="market-live-dot" aria-hidden="true"></b></span><h2>Browse instruments</h2></div><label class="market-search"><span>⌕</span><input type="search" id="q" name="q" placeholder="Search symbols or names" autocomplete="off"></label></div><div class="market-table-wrap"><table class="market-table"><thead><tr><th>Instrument</th><th>Market</th><th>Price</th><th>Today</th><th aria-label="Watchlist"></th></tr></thead><tbody id="rows">{% for a in assets %}<tr data-symbol="{{ a.symbol }}" data-search="{{ a.symbol }} {{ a.name }} {{ a.market }}"><td><div class="instrument"><span class="instrument-icon">{{ a.symbol|slice:":1" }}</span><div><b>{{ a.symbol }}</b><small>{{ a.name }}</small></div></div></td><td><span class="market-tag">{{ a.market }}</span></td><td class="market-price">{{ a.price|floatformat:2 }}</td><td><span class="change {% if a.change >= 0 %}up{% else %}down{% endif %}">{% if a.change >= 0 %}+{% endif %}{{ a.change }}%</span></td><td><button class="watch-button" type="button" data-add aria-label="Add {{ a.symbol }} to watchlist">+ Watch</button></td></tr>{% endfor %}</tbody></table><p class="market-empty" id="empty" hidden>No instruments match that search.</p></div></section>
+</section></main>
+{{ assets_json|json_script:"assets-json" }}
+{% endblock %}

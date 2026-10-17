@@ -8,6 +8,39 @@
   var $  = function (sel, ctx) { return (ctx || document).querySelector(sel); };
   var $$ = function (sel, ctx) { return Array.prototype.slice.call((ctx || document).querySelectorAll(sel)); };
 
+  /* Official contact destinations used by every reusable social-icon row. */
+  var officialLinks = {
+    's-x': 'https://x.com/tneforafrica',
+    's-yt': 'https://www.youtube.com/@Thenigerianentrepreneur',
+    's-ig': 'https://www.instagram.com/the_nigerian_entrepreneur/',
+    's-wa': 'https://wa.me/2349040649218'
+  };
+  Object.keys(officialLinks).forEach(function (className) {
+    $$('a.' + className).forEach(function (link) {
+      link.href = officialLinks[className];
+      link.target = '_blank';
+      link.rel = 'noopener noreferrer';
+    });
+  });
+
+  /* Sponsor campaigns rotate through active banners; dismissal lasts this browser session. */
+  (function () {
+    var banner = document.querySelector('[data-sponsor-banner]');
+    if (!banner || sessionStorage.getItem('tne-sponsor-closed')) return;
+    var slides = Array.prototype.slice.call(banner.querySelectorAll('[data-sponsor-slide]'));
+    if (!slides.length) return;
+    banner.hidden = false;
+    var index = Math.floor(Math.random() * slides.length);
+    function show(n) { slides.forEach(function (slide, i) { slide.hidden = i !== n; slide.classList.toggle('is-active', i === n); }); }
+    show(index);
+    if (slides.length > 1) setInterval(function () { index = (index + 1) % slides.length; show(index); }, 7000);
+    banner.querySelector('[data-sponsor-close]').addEventListener('click', function () { banner.hidden = true; sessionStorage.setItem('tne-sponsor-closed', '1'); });
+  })();
+  $$('a[href="tel:+2348000000000"]').forEach(function (link) {
+    link.href = 'tel:+2349040649218';
+    link.textContent = '0904 064 9218';
+  });
+
   /* ---------------------------------------------------------
      Toast helper
      --------------------------------------------------------- */
@@ -132,7 +165,10 @@
       e.preventDefault();
       var q = ($('input', form) || {}).value || '';
       if (!q.trim()) { toast('Type something to search first.'); return; }
-      toast('Searching the site for “' + q.trim() + '”…');
+      // Real site search: the form carries the action (/search/ by default)
+      // so pages with static search markup keep working too.
+      var action = form.getAttribute('action') || '/search/';
+      window.location.href = action + '?q=' + encodeURIComponent(q.trim());
     });
   });
 
@@ -157,8 +193,13 @@
         items.forEach(function (item) {
           var tags = (item.getAttribute('data-tags') || '').toLowerCase();
           var match = value === 'all' || tags.split(/\s+/).indexOf(value.toLowerCase()) > -1;
-          item.style.display = match ? '' : 'none';
-          if (match) shown++;
+          // Extra cards are hidden in the default home feed, but
+          // become available whenever their category is selected.
+          var isExtra = item.hasAttribute('data-filter-extra');
+          var shouldShow = match && !(value === 'all' && isExtra);
+          item.hidden = !shouldShow;
+          item.style.display = shouldShow ? '' : 'none';
+          if (shouldShow) shown++;
         });
 
         if (empty) empty.hidden = shown !== 0;
@@ -167,19 +208,44 @@
   });
 
   /* ---------------------------------------------------------
+     Deep links: honour ?filter=<value> in the URL so header /
+     footer category links land with the right chip active
+     instead of always showing "All".
+     --------------------------------------------------------- */
+  try {
+    var initialFilter = new URLSearchParams(window.location.search).get('filter');
+    if (initialFilter) {
+      initialFilter = initialFilter.toLowerCase();
+      var deepLinkChip = $$('.chip[data-filter]').filter(function (c) {
+        return (c.getAttribute('data-filter') || '').toLowerCase() === initialFilter;
+      })[0];
+      if (deepLinkChip) deepLinkChip.click();
+    }
+  } catch (e) {}
+
+  /* ---------------------------------------------------------
      "Load more" reveal
      --------------------------------------------------------- */
   $$('[data-more-btn]').forEach(function (btn) {
+    // The button sits below the card grid, so use the surrounding page
+    // filter scope rather than the button's own wrapper.
+    var scope = btn.closest('[data-filter-scope]') || btn.closest('[data-more-scope]') || document;
+
+    // Nothing left to reveal (section already fully loaded) — hide the button.
+    if (!$$('[data-more-item][hidden]', scope).length) { btn.remove(); return; }
+
     btn.addEventListener('click', function () {
-      var scope = btn.closest('[data-more-scope]') || document;
       var hidden = $$('[data-more-item][hidden]', scope);
-      var batch = hidden.slice(0, 4);
+      var size  = parseInt(btn.getAttribute('data-batch'), 10) || 4;
+      var batch = hidden.slice(0, size);
 
       batch.forEach(function (item) {
         item.hidden = false;
         item.classList.add('reveal', 'is-in');
       });
 
+      // Remove the button once the last batch has been revealed so it never
+      // lingers with nothing left to load.
       if (hidden.length <= batch.length) btn.remove();
       else toast('Showing more articles');
 

@@ -1,0 +1,9 @@
+{% load static %}
+<article class="mini-card reveal" data-tags="{{ article.filter_tag|default:article.tags }}"{% if hidden %} data-more-item hidden{% endif %}>
+  <a class="media" href="{{ article.url }}">{% if article.is_external_image %}<img src="{{ article.image }}" alt="{{ article.alt }}">{% else %}<img src="{% static article.image %}" alt="{{ article.alt }}">{% endif %}</a>
+  <div>
+    <span class="tagline {{ article.tag_class }}">{{ article.tag }}</span>
+    <h4><a href="{{ article.url }}">{{ article.title }}</a></h4>
+    <div class="mini-card__meta"><time datetime="{{ article.iso }}">{{ article.date }}</time><span class="dot">•</span><span>{{ article.time }} min read</span></div>
+  </div>
+</article>

@@ -1,0 +1,74 @@
+
+{% extends "dashboard_base.html" %}
+{% load static %}
+
+{% block title %}Admin control panel — TNE{% endblock %}
+{% block extra_head %}
+<link rel="stylesheet" href="{% static 'css/mad.css' %}">
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<script src="{% static 'js/charts.js' %}"></script>
+{% endblock %}
+
+{% block dashboard_brand %}<a class="dashboard-brand" href="{% url 'admin_panel' %}"><span>TN</span><strong>Command<br>Center</strong></a>{% endblock %}
+{% block dashboard_heading %}Admin command center{% endblock %}
+{% block dashboard_nav %}<a href="{% url 'admin_panel' %}" class="is-active"><i><svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg></i> Overview</a><a href="{% url 'admin_panel_posts' %}"><i><svg viewBox="0 0 24 24"><path d="M4 5h16v14H4zM8 9h8M8 13h5"/></svg></i> Posts</a><a href="{% url 'admin_panel_comments' %}"><i><svg viewBox="0 0 24 24"><path d="M20 15a4 4 0 0 1-4 4H8l-4 3v-7a4 4 0 0 1-2-3.5v-5A4 4 0 0 1 6 3h10a4 4 0 0 1 4 4z"/></svg></i> Comments</a><a href="{% url 'home' %}"><i><svg viewBox="0 0 24 24"><path d="M14 3h7v7M21 3l-9 9"/><path d="M19 14v5a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2h5"/></svg></i> View website</a>{% endblock %}
+{% block dashboard_action %}<a class="dashboard-new" href="{% url 'admin_panel_post_new' %}">New post <b>＋</b></a>{% endblock %}
+{% block dashboard_tabs %}<nav class="dashboard-tabs" aria-label="Admin sections"><a class="is-active" href="#overview">Overview</a><a href="#performance">Performance</a><a href="{% url 'admin_panel_posts' %}">All posts</a><a href="{% url 'admin_panel_comments' %}">Moderation</a><a href="{% url 'admin_panel_sponsors' %}">Sponsor ads</a><a href="{% url 'admin_panel_payouts' %}">Payouts</a></nav>{% endblock %}
+
+{% block content %}
+<div class="mad-body" id="overview">
+  <div class="mad-panel" style="max-width:1100px;margin:0 auto">
+    <div class="flex justify-between items-start">
+      <div>
+        <h1 class="mad-title glow">Control panel <span class="title-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m13 2-9 12h7l-1 8 10-13h-7z"/></svg></span></h1>
+        <p class="mad-muted">Everything the site runs on — posts, comments and creators.</p>
+      </div>
+      <div class="flex gap-3">
+        <a href="{% url 'admin_panel_posts' %}" class="mad-btn sm">Manage posts</a>
+        <a href="{% url 'admin_panel_comments' %}" class="mad-btn sm">Moderate comments</a>
+        <a href="{% url 'admin_panel_users' %}" class="mad-btn sm">All users</a>
+        <a href="{% url 'admin_panel_payouts' %}" class="mad-btn sm">Payouts</a>
+        <a href="{% url 'admin_panel_sponsors' %}" class="mad-btn sm">Sponsor ads</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="mad-stats" style="max-width:1100px;margin:0 auto">
+    <div class="mad-stat accent-neon"><div class="label">Total posts</div><div class="value">{{ stats.posted }}</div><div class="delta up">{{ stats.published }} published</div></div>
+    <div class="mad-stat accent-aqua"><div class="label">Views this week</div><div class="value">{{ stats.total_views }}</div><div class="delta up">{{ stats.total_views|floatformat:0 }} readers</div></div>
+    <div class="mad-stat accent-violet"><div class="label">Comments</div><div class="value">{{ stats.comments }}</div><div class="delta">{{ stats.pending_comments }} pending</div></div>
+    <div class="mad-stat accent-pink"><div class="label">Creators</div><div class="value">{{ stats.creators }}</div><div class="delta">{{ stats.users }} users</div></div>
+  </div>
+
+  <div class="mad-grid-2" id="performance" style="max-width:1100px;margin:0 auto">
+    <div class="mad-panel">
+      <h3 class="mad-kicker"><span class="pulse"></span> Views per day</h3>
+      <canvas class="mad-chart" data-chart="line" data-from="admin-views-json"></canvas>
+      <script id="admin-views-json" type="application/json">
+        {"labels":{{ chart_labels|tojson }},"datasets":[{"label":"Views","data":{{ chart_views|tojson }},"borderColor":"#38f9d7","backgroundColor":"rgba(56,249,215,0.12)","fill":true,"pointBackgroundColor":"#38f9d7"}]}
+      </script>
+    </div>
+    <div class="mad-panel">
+      <h3 class="mad-kicker"><span class="pulse"></span> Comments per day</h3>
+      <canvas class="mad-chart" data-chart="line" data-from="admin-comments-json"></canvas>
+      <script id="admin-comments-json" type="application/json">
+        {"labels":{{ chart_labels|tojson }},"datasets":[{"label":"New comments","data":{{ chart_comments|tojson }},"borderColor":"#ff5edb","backgroundColor":"rgba(255,94,219,0.12)","fill":true,"pointBackgroundColor":"#ff5edb"}]}
+      </script>
+    </div>
+    <div class="mad-panel">
+      <h3 class="mad-kicker"><span class="pulse"></span> New accounts per day</h3>
+      <canvas class="mad-chart" data-chart="line" data-from="admin-signups-json"></canvas>
+      <script id="admin-signups-json" type="application/json">
+        {"labels":{{ chart_labels|tojson }},"datasets":[{"label":"Signups","data":{{ chart_signups|tojson }},"borderColor":"#ffb020","backgroundColor":"rgba(255,176,32,0.12)","fill":true,"pointBackgroundColor":"#ffb020"}]}
+      </script>
+    </div>
+    <div class="mad-panel">
+      <h3 class="mad-kicker"><span class="pulse"></span> Posts by category</h3>
+      <canvas class="mad-chart" data-chart="doughnut" data-from="admin-categories-json"></canvas>
+      <script id="admin-categories-json" type="application/json">
+        {"labels":{{ chart_categories|tojson }},"datasets":[{"data":{{ chart_category_counts|tojson }},"backgroundColor":["#b9ff3d","#38f9d7","#ff5edb","#7c6cff","#ffb020"]}]}
+      </script>
+    </div>
+  </div>
+</div>
+{% endblock %}

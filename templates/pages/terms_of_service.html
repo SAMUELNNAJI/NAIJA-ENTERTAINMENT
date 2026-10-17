@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Terms of Service — The Nigerian Entrepreneur{% endblock %}
+{% block meta_description %}Read the terms that govern your use of The Nigerian Entrepreneur website, content and services.{% endblock %}
+{% block page_id %}terms-of-service{% endblock %}
+
+{% block content %}
+<section class="page-hero t-about">
+  <div class="hero-scene"><img src="{% static 'img/photos/mesh.jpg' %}" alt="Abstract green backdrop"></div>
+  <div class="container page-hero__body">
+    <nav class="crumbs"><a href="{% url 'home' %}">Home</a><span>›</span>Terms of Service</nav>
+    <h1>Terms of Service</h1>
+    <p>The terms that help keep our platform useful, fair and secure for everyone.</p>
+  </div>
+</section>
+
+<div class="container legal">
+  <section class="widget legal__toc reveal">
+    <div class="widget__head">On this page</div>
+    <div class="widget__body"><ol data-spy>
+      <li><a href="#acceptance">Acceptance<small>Using our website</small></a></li>
+      <li><a href="#content">Our content<small>How it may be used</small></a></li>
+      <li><a href="#responsibilities">Your responsibilities<small>Respectful participation</small></a></li>
+      <li><a href="#disclaimer">Important disclaimer<small>Information, not advice</small></a></li>
+      <li><a href="#contact">Contact<small>Questions about these terms</small></a></li>
+    </ol></div>
+  </section>
+
+  <article class="panel reveal"><div class="article-body">
+    <div class="privacy-note"><div><strong>Last updated: October 2026</strong> By accessing or using this website, you agree to these Terms of Service.</div></div>
+
+    <h2 id="acceptance">1. Acceptance of these terms</h2>
+    <p>These Terms of Service govern your use of The Nigerian Entrepreneur website, its articles, newsletters, resources and related services. If you do not agree with these terms, please do not use the site.</p>
+
+    <h2 id="content">2. Our content and intellectual property</h2>
+    <p>Unless stated otherwise, the content on this website belongs to The Nigerian Entrepreneur or its licensors and is protected by applicable intellectual-property laws. You may read, share links to and quote short extracts of our content with clear attribution and a link back to the original page.</p>
+    <p>You may not reproduce, republish, sell, distribute or create commercial derivative works from our content without prior written permission.</p>
+
+    <h2 id="responsibilities">3. Your responsibilities</h2>
+    <p>You agree to use the website lawfully and respectfully. You must not attempt to disrupt the site, introduce harmful code, scrape protected content, impersonate another person or use any form, comment area or contact channel to send spam, abuse or unlawful material.</p>
+    <p>We may restrict or end access to the site where we reasonably believe these terms have been breached.</p>
+
+    <h2 id="disclaimer">4. Information, not professional advice</h2>
+    <p>Our articles and resources are provided for general educational and informational purposes. They are not financial, investment, legal, tax or professional advice, and should not be relied on as the sole basis for a decision. Consider your own circumstances and seek qualified advice where appropriate.</p>
+    <p>We aim for accuracy, but do not guarantee that all information is complete, current or error-free. Your use of the site and any action you take based on its content is at your own risk.</p>
+
+    <h2 id="third-parties">5. Third-party links and services</h2>
+    <p>We may link to third-party websites or services for convenience. We do not control or endorse their content, availability or privacy practices. Review their terms and policies before using them.</p>
+
+    <h2 id="changes">6. Changes to these terms</h2>
+    <p>We may update these terms from time to time. The revised version will be posted on this page with an updated date. Continuing to use the website after a change means you accept the revised terms.</p>
+
+    <h2 id="contact">7. Contact us</h2>
+    <p>Questions about these terms can be sent to <a href="mailto:info@thenigerianentrepreneur.com" style="color:var(--green-700);font-weight:700">info@thenigerianentrepreneur.com</a>.</p>
+  </div></article>
+</div>
+{% endblock %}

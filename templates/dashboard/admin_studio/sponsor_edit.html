@@ -1,0 +1,4 @@
+{% extends "dashboard_base.html" %}
+{% block title %}Edit sponsor — Admin Studio{% endblock %}
+{% block dashboard_heading %}Edit sponsor banner{% endblock %}
+{% block content %}<div class="mad-body"><section class="mad-panel"><div class="mad-panel__head"><div><span class="mad-eyebrow">Sponsor campaign</span><h1 class="mad-title">Edit {{ ad.title }}</h1></div><a href="{% url 'admin_panel_sponsors' %}" class="mad-btn ghost">Back to campaigns</a></div><form method="post" class="mad-form" style="max-width:760px">{% csrf_token %}{% for field in form %}<div class="dashboard-field"><label for="{{ field.id_for_label }}">{{ field.label }}</label>{{ field }}{% for error in field.errors %}<small>{{ error }}</small>{% endfor %}</div>{% endfor %}<button class="mad-btn" type="submit">Save changes</button></form></section></div>{% endblock %}

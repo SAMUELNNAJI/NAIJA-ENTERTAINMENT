@@ -1,0 +1,29 @@
+<div class="comment-sticker" id="comment-{{ comment.pk }}">
+  <div class="avatar">{{ comment.initials }}</div>
+  <div class="body">
+    <div class="who"><span class="nm">{{ comment.name }}</span><span class="em">{{ comment.email }} · {{ comment.created|friendly }}</span></div>
+    <div class="body-text">{{ comment.body|linebreaksbr }}</div>
+  </div>
+  <div class="actions">
+    <button type="button" data-reply-comment="{{ comment.pk }}" class="action-link">↩ Reply</button>
+    {% if comment.can_edit %}
+    <a href="#" data-edit-comment="{{ comment.pk }}" class="action-link">✎ Edit</a>
+    <button type="button" class="action-link danger" data-delete-comment="{{ comment.pk }}">✕ Delete</button>
+    {% endif %}
+    {% if not comment.is_parent and not comment.is_approved %}
+    <span class="pending">awaiting approval</span>
+    {% endif %}
+  </div>
+  {% if comment.can_edit %}
+  <form class="comment-edit-form" data-edit-form-id="{{ comment.pk }}" action="{% url 'comment_edit' comment.pk %}" method="post" style="display:none;margin-top:8px">
+    {% csrf_token %}
+    <textarea name="body" required>{{ comment.body }}</textarea>
+    <div class="edit-controls" style="display:flex;gap:6px;align-items:center">
+      <button class="mad-btn sm" type="submit">Save</button>
+      <button class="mad-btn sm ghost" type="button" data-cancel-edit="{{ comment.pk }}">Cancel</button>
+    </div>
+    <p class="edit-note" style="font-size:11.5px;color:var(--muted);margin:4px 0 0"></p>
+  </form>
+  {% endif %}
+  <div class="comment-reply-slot" data-reply-slot="{{ comment.pk }}"></div>
+</div>

@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}{% if q %}“{{ q }}” — Search{% else %}Search{% endif %} — The Nigerian Entrepreneur{% endblock %}
+{% block meta_description %}Search The Nigerian Entrepreneur for articles on finance, business, crypto, startups and affiliate marketing.{% endblock %}
+{% block page_id %}search{% endblock %}
+
+{% block content %}
+<section class="container section" style="padding-top:26px">
+  <div class="headline-row">
+    <h1 class="section__title" style="margin:0">Search results{% if q %} for “{{ q }}”{% endif %}</h1>
+    <span class="badge-live">{{ result_count }} article{{ result_count|pluralize }}{% if result_count > 30 %} · top 30 shown{% endif %}</span>
+  </div>
+
+  <form class="search-inline" data-search action="{% url 'search' %}" method="get">
+    <input type="search" name="q" value="{{ q }}" placeholder="Search articles, guides, funding, crypto…" aria-label="Search the site">
+    <button class="btn btn--primary" type="submit">Search</button>
+  </form>
+
+  {% if results %}
+  <div data-more-scope>
+  <div class="cat-grid" style="padding-top:0">
+    {% for article in results|slice:":12" %}
+    {% include "includes/mini_card.html" %}
+    {% endfor %}
+    {% for article in results|slice:"12:" %}
+    {% include "includes/mini_card.html" with hidden=True %}
+    {% endfor %}
+  </div>
+  {% if results|length > 12 %}
+  <div style="text-align:center;padding:6px 0 10px">
+    <button class="btn btn--ghost btn--sm" type="button" data-more-btn data-batch="12">Load more results</button>
+  </div>
+  {% endif %}
+  </div>
+  {% elif q %}
+  <p style="text-align:center;color:var(--muted);font-size:14.5px;padding:40px 0">
+    Nothing matched “{{ q }}”. Try another keyword — e.g. budgeting, bitcoin, pricing.
+  </p>
+  {% else %}
+  <p style="text-align:center;color:var(--muted);font-size:14.5px;padding:40px 0">
+    Type a keyword above to search published articles.
+  </p>
+  {% endif %}
+</section>
+{% endblock %}
