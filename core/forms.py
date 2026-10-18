@@ -229,6 +229,12 @@ class PayoutRequestForm(BootstrapFormMixin, forms.ModelForm):
         model = PayoutRequest
         fields = ("amount",)
 
+    def clean_amount(self):
+        amount = self.cleaned_data["amount"]
+        if amount <= 0:
+            raise forms.ValidationError("Enter a payout amount greater than ₦0.")
+        return amount
+
 
 class SponsorAdForm(BootstrapFormMixin, forms.ModelForm):
     cover_upload = forms.FileField(

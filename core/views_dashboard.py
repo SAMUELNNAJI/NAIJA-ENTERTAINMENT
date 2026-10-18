@@ -8,6 +8,7 @@ from django.contrib.auth.decorators import login_required, user_passes_test
 from django.contrib.auth.models import User
 from django.core.files.storage import default_storage
 from django.core.paginator import Paginator
+from django.db import transaction
 from django.db.models import Count, Q, Sum
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse
@@ -173,10 +174,11 @@ def dashboard_posts(request):
         defaults={"display_name": request.user.first_name or request.user.username},
     )
     posts = Post.objects.filter(author=request.user).order_by("-updated_at")
+    page_obj = Paginator(posts, 20).get_page(request.GET.get("page"))
     return render(
         request,
         "dashboard/creator_studio/posts.html",
-        {"creator": creator, "posts": posts, "nav_active": "posts"},
+        {"creator": creator, "posts": page_obj, "page_obj": page_obj, "nav_active": "posts"},
     )
 
 
@@ -246,11 +248,24 @@ def payouts(request):
         request_form = PayoutRequestForm(request.POST)
         if not account: messages.error(request, "Add a payout account before requesting payment.")
         elif request_form.is_valid():
-            payout = request_form.save(commit=False)
-            if payout.amount <= 0 or payout.amount > available: request_form.add_error("amount", "Enter an amount within your available balance.")
-            else: payout.creator=creator; payout.account=account; payout.save(); messages.success(request, "Payout request sent for review."); return redirect("payouts")
+            # Lock the profile while recalculating the reserved balance so two
+            # simultaneous requests cannot exceed the creator's funds.
+            with transaction.atomic():
+                locked_creator = CreatorProfile.objects.select_for_update().get(pk=creator.pk)
+                reserved = locked_creator.payout_requests.filter(status="pending").aggregate(total=Sum("amount"))["total"] or 0
+                current_available = max(locked_creator.ad_balance - reserved, 0)
+                payout = request_form.save(commit=False)
+                if payout.amount > current_available:
+                    request_form.add_error("amount", "Enter an amount within your available balance.")
+                else:
+                    payout.creator = locked_creator
+                    payout.account = account
+                    payout.save()
+                    messages.success(request, "Payout request sent for review.")
+                    return redirect("payouts")
     else: request_form = PayoutRequestForm()
-    return render(request, "dashboard/creator_studio/payouts.html", {"creator":creator,"account_form":account_form,"request_form":request_form,"available":available,"requests":creator.payout_requests.all()})
+    requests_page = Paginator(creator.payout_requests.all(), 20).get_page(request.GET.get("page"))
+    return render(request, "dashboard/creator_studio/payouts.html", {"creator":creator,"account_form":account_form,"request_form":request_form,"available":available,"requests":requests_page,"page_obj":requests_page})
 
 
 # ---------------------------------------------------------- admin panel ----
@@ -563,17 +578,33 @@ def notification_dismiss(request, pk):
 
 @user_passes_test(_is_staff, login_url="login")
 def admin_panel_payouts(request):
-    return render(request, "dashboard/admin_studio/payouts.html", {"requests": PayoutRequest.objects.select_related("creator__user", "account")})
+    base_requests = PayoutRequest.objects.select_related("creator__user", "account")
+    pending_page = Paginator(base_requests.filter(status="pending"), 20).get_page(request.GET.get("pending_page"))
+    paid_page = Paginator(base_requests.filter(status="paid"), 20).get_page(request.GET.get("paid_page"))
+    return render(request, "dashboard/admin_studio/payouts.html", {"requests": pending_page, "pending_page": pending_page, "paid_requests": paid_page, "paid_page": paid_page})
 
 
 @user_passes_test(_is_staff, login_url="login")
 def admin_panel_payout_action(request, pk, action):
-    payout = get_object_or_404(PayoutRequest, pk=pk, status="pending")
     if request.method == "POST" and action in ("paid", "rejected"):
-        if action == "paid":
-            if payout.amount > payout.creator.ad_balance: messages.error(request, "Creator balance is too low."); return redirect("admin_panel_payouts")
-            payout.creator.ad_balance -= payout.amount; payout.creator.save(update_fields=["ad_balance"])
-        payout.status = action; payout.processed_at = timezone.now(); payout.save(update_fields=["status", "processed_at"]); messages.success(request, f"Payout marked {action}.")
+        # A second admin click must never debit the account twice.
+        with transaction.atomic():
+            payout = get_object_or_404(
+                PayoutRequest.objects.select_for_update().select_related("creator"),
+                pk=pk,
+                status="pending",
+            )
+            if action == "paid":
+                creator = CreatorProfile.objects.select_for_update().get(pk=payout.creator_id)
+                if payout.amount > creator.ad_balance:
+                    messages.error(request, "Creator balance is too low.")
+                    return redirect("admin_panel_payouts")
+                creator.ad_balance -= payout.amount
+                creator.save(update_fields=["ad_balance"])
+            payout.status = action
+            payout.processed_at = timezone.now()
+            payout.save(update_fields=["status", "processed_at"])
+        messages.success(request, f"Payout marked {action}.")
     return redirect("admin_panel_payouts")
 
 

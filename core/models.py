@@ -258,6 +258,12 @@ class PayoutRequest(models.Model):
 
     class Meta:
         ordering = ["-created_at"]
+        constraints = [
+            models.CheckConstraint(
+                condition=models.Q(amount__gt=0),
+                name="payout_request_amount_gt_zero",
+            ),
+        ]
 
 
 class Notification(models.Model):

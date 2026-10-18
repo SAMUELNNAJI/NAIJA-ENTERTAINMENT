@@ -132,12 +132,57 @@
         </tbody>
       </table>
     </div>
+    {% if pending_page.paginator.num_pages > 1 %}
+    <nav class="dashboard-pagination" aria-label="Pending payout pagination">
+      {% if pending_page.has_previous %}<a href="?pending_page={{ pending_page.previous_page_number }}&paid_page={{ paid_page.number }}" class="dash-btn ghost sm">&larr; Previous</a>{% endif %}
+      <span class="pagination-info">Page {{ pending_page.number }} of {{ pending_page.paginator.num_pages }}</span>
+      {% if pending_page.has_next %}<a href="?pending_page={{ pending_page.next_page_number }}&paid_page={{ paid_page.number }}" class="dash-btn ghost sm">Next &rarr;</a>{% endif %}
+    </nav>
+    {% endif %}
     {% else %}
     <div class="dash-empty-state">
       <div class="empty-icon">💸</div>
       <h3>No pending payout requests</h3>
       <p class="dash-muted">All creator withdrawal requests have been reviewed and processed.</p>
     </div>
+    {% endif %}
+  </div>
+
+  <div class="dash-stories-panel" style="margin-top:24px">
+    <header class="dash-stories-panel__header">
+      <div>
+        <span class="card-eyebrow">COMPLETED DISBURSEMENTS</span>
+        <h2 class="card-title">Paid Payouts</h2>
+      </div>
+    </header>
+    {% if paid_requests %}
+    <div class="dash-table-container">
+      <table class="dash-table">
+        <thead>
+          <tr><th>Creator</th><th>Amount</th><th>Destination Bank</th><th>Paid On</th><th class="text-right">Reference</th></tr>
+        </thead>
+        <tbody>
+          {% for r in paid_requests %}
+          <tr>
+            <td><strong>{{ r.creator.display_name|default:r.creator.user.username }}</strong><small style="display:block;color:var(--dash-muted)">{{ r.creator.user.email }}</small></td>
+            <td class="font-num accent-green"><strong>₦{{ r.amount|floatformat:2|intcomma }}</strong></td>
+            <td><strong>{{ r.account.bank_name }}</strong><span style="display:block;color:var(--dash-muted);font-size:12px">{{ r.account.account_number }} · {{ r.account.account_name }}</span></td>
+            <td class="font-num text-muted">{{ r.processed_at|date:"M d, Y · H:i" }}</td>
+            <td class="text-right font-num text-muted">#{{ r.pk }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+    {% if paid_page.paginator.num_pages > 1 %}
+    <nav class="dashboard-pagination" aria-label="Paid payout pagination">
+      {% if paid_page.has_previous %}<a href="?pending_page={{ pending_page.number }}&paid_page={{ paid_page.previous_page_number }}" class="dash-btn ghost sm">&larr; Previous</a>{% endif %}
+      <span class="pagination-info">Page {{ paid_page.number }} of {{ paid_page.paginator.num_pages }}</span>
+      {% if paid_page.has_next %}<a href="?pending_page={{ pending_page.number }}&paid_page={{ paid_page.next_page_number }}" class="dash-btn ghost sm">Next &rarr;</a>{% endif %}
+    </nav>
+    {% endif %}
+    {% else %}
+    <div class="dash-empty-state"><div class="empty-icon">✓</div><h3>No paid payouts yet</h3><p class="dash-muted">Payouts marked as paid move here automatically.</p></div>
     {% endif %}
   </div>
 </div>
