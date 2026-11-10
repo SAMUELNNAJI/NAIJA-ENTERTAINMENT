@@ -1,4 +1,5 @@
 """Dashboard views — creator studio and the admin control panel."""
+import logging
 import uuid
 from datetime import timedelta
 
@@ -17,6 +18,14 @@ from django.utils import timezone
 from . import content, views_seo
 from .forms import PayoutAccountForm, PayoutRequestForm, PostForm, SponsorAdForm
 from .models import Comment, CreatorProfile, Notification, PayoutAccount, PayoutRequest, Post, PostDailyStat, SponsorAd, estimate_view_earnings
+from .email_service import (
+    EmailDeliveryError,
+    notify_new_post,
+    send_account_email,
+    send_admin_payout_email,
+)
+
+logger = logging.getLogger(__name__)
 
 
 def _creator_or_none(user):
@@ -153,6 +162,7 @@ def dashboard_post_new(request):
         post.save()
         if post.status == "published":
             views_seo.ping_search_engines(request, post)
+            _notify_post_subscribers(post, request)
         messages.success(request, f"“{post.title}” saved as {post.status}.")
         return redirect("dashboard")
     return render(
@@ -197,11 +207,14 @@ def dashboard_post_edit(request, pk):
         user=request.user,
     )
     if request.method == "POST" and form.is_valid():
+        was_published = post.status == "published"
         post = form.save(commit=False)
         _apply_cover_upload(post, form.cleaned_data.get("cover_upload"))
         post.save()
         if post.status == "published":
             views_seo.ping_search_engines(request, post)
+            if not was_published:
+                _notify_post_subscribers(post, request)
         messages.success(request, "Post updated.")
         return redirect("dashboard")
     return render(
@@ -247,21 +260,25 @@ def payouts(request):
         request_form = PayoutRequestForm(request.POST)
         if not account: messages.error(request, "Add a payout account before requesting payment.")
         elif request_form.is_valid():
+            payout = None
             # Lock the profile while recalculating the reserved balance so two
             # simultaneous requests cannot exceed the creator's funds.
             with transaction.atomic():
                 locked_creator = CreatorProfile.objects.select_for_update().get(pk=creator.pk)
                 reserved = locked_creator.payout_requests.filter(status="pending").aggregate(total=Sum("amount"))["total"] or 0
                 current_available = max(locked_creator.ad_balance - reserved, 0)
-                payout = request_form.save(commit=False)
-                if payout.amount > current_available:
+                payout_candidate = request_form.save(commit=False)
+                if payout_candidate.amount > current_available:
                     request_form.add_error("amount", "Enter an amount within your available balance.")
                 else:
-                    payout.creator = locked_creator
-                    payout.account = account
-                    payout.save()
-                    messages.success(request, "Payout request sent for review.")
-                    return redirect("payouts")
+                    payout_candidate.creator = locked_creator
+                    payout_candidate.account = account
+                    payout_candidate.save()
+                    payout = payout_candidate
+            if payout:
+                messages.success(request, "Payout request sent for review.")
+                _send_payout_notifications(payout, request)
+                return redirect("payouts")
     else: request_form = PayoutRequestForm()
     requests_page = Paginator(creator.payout_requests.all(), 20).get_page(request.GET.get("page"))
     return render(request, "dashboard/creator_studio/payouts.html", {"creator":creator,"account_form":account_form,"request_form":request_form,"available":available,"requests":requests_page,"page_obj":requests_page})
@@ -271,6 +288,40 @@ def payouts(request):
 
 def _is_staff(user):
     return user.is_active and user.is_staff
+
+
+def _notify_post_subscribers(post, request):
+    sent, failed = notify_new_post(post)
+    if failed:
+        logger.error("New post %s email campaign has %s queued/failed deliveries.", post.pk, failed)
+        messages.warning(
+            request,
+            f"The post is live, but {failed} email notification(s) could not be sent yet.",
+        )
+
+
+def _send_payout_notifications(payout, request):
+    recipients = settings.ADMIN_NOTIFICATION_EMAILS or list(
+        User.objects.filter(is_active=True, is_staff=True)
+        .exclude(email="")
+        .values_list("email", flat=True)
+    )
+    email_failed = False
+    try:
+        send_account_email(payout.creator.user, "payout_requested", amount=payout.amount)
+    except EmailDeliveryError:
+        logger.exception("Payout request receipt email failed for request %s.", payout.pk)
+        email_failed = True
+    if recipients:
+        try:
+            send_admin_payout_email(payout, recipients)
+        except EmailDeliveryError:
+            email_failed = True
+    else:
+        logger.warning("Payout request %s has no configured admin email recipients.", payout.pk)
+        email_failed = True
+    if email_failed:
+        messages.warning(request, "Your payout request was recorded, but one or more notification emails failed.")
 
 
 @user_passes_test(_is_staff, login_url="login")
@@ -386,6 +437,7 @@ def admin_panel_post_new(request):
         post.save()
         if post.status == "published":
             views_seo.ping_search_engines(request, post)
+            _notify_post_subscribers(post, request)
         messages.success(request, f"“{post.title}” published to the site.")
         return redirect("admin_panel_posts")
     return render(
@@ -405,11 +457,14 @@ def admin_panel_post_edit(request, pk):
     post = get_object_or_404(Post, pk=pk)
     form = PostForm(request.POST or None, request.FILES or None, instance=post, user=request.user)
     if request.method == "POST" and form.is_valid():
+        was_published = post.status == "published"
         post = form.save(commit=False)
         _apply_cover_upload(post, form.cleaned_data.get("cover_upload"))
         post.save()
         if post.status == "published":
             views_seo.ping_search_engines(request, post)
+            if not was_published:
+                _notify_post_subscribers(post, request)
         messages.success(request, "Post updated.")
         return redirect("admin_panel_posts")
     return render(request, "dashboard/admin_studio/post_form.html", {"form": form, "mode": "Edit blog post", "post": post, "panel": "admin", "filter_options": _filter_tag_options()})
@@ -419,6 +474,7 @@ def admin_panel_post_edit(request, pk):
 def admin_panel_toggle_publish(request, pk):
     post = get_object_or_404(Post, pk=pk)
     if request.method == "POST":
+        was_published = post.status == "published"
         if post.status == "published":
             post.status = "draft"
             post.published_at = None
@@ -427,6 +483,8 @@ def admin_panel_toggle_publish(request, pk):
         post.save(update_fields=["status", "published_at"])
         if post.status == "published":
             views_seo.ping_search_engines(request, post)
+            if not was_published:
+                _notify_post_subscribers(post, request)
         messages.success(
             request,
             f"“{post.title}” is now {post.status} — it {'replaces' if post.status == 'published' else 'is hidden from'} the site's article cards.",
@@ -602,6 +660,12 @@ def admin_panel_payout_action(request, pk, action):
             payout.status = action
             payout.processed_at = timezone.now()
             payout.save(update_fields=["status", "processed_at"])
+        if action == "paid":
+            try:
+                send_account_email(payout.creator.user, "payout_paid", amount=payout.amount)
+            except EmailDeliveryError:
+                logger.exception("Paid payout email failed for request %s.", payout.pk)
+                messages.warning(request, "Payout updated, but the confirmation email could not be sent.")
         messages.success(request, f"Payout marked {action}.")
     return redirect("admin_panel_payouts")
 

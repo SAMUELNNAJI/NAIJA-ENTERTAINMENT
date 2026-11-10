@@ -13,6 +13,28 @@ python manage.py migrate        # creates db.sqlite3 (admin/sessions only)
 python manage.py runserver      # http://127.0.0.1:8000/
 ```
 
+For ZeptoMail, copy `.env.example` to `.env`, add the SMTP token from your
+ZeptoMail SMTP configuration, and use a sender address/domain verified in
+ZeptoMail. Django uses the console backend for local development by default;
+set `EMAIL_BACKEND=django.core.mail.backends.smtp.EmailBackend` to test actual
+delivery locally.
+
+Emails cover password resets, account welcome/business-promotion notes, payout
+request and paid notices, and new-post newsletters. Newsletter signup is
+optional, confirmed by email, and story emails include an unsubscribe link.
+Publishing a post notifies active subscribers immediately. To run the once-daily low-view
+reminders and popular-post announcements, schedule
+`python manage.py send_post_engagement_emails` with your deployment scheduler
+(or configure a daily HTTPS POST to `/automation/post-emails/` with an
+`Authorization: Bearer <EMAIL_AUTOMATION_TOKEN>` header). Generate a long
+random `EMAIL_AUTOMATION_TOKEN` and keep it secret; the endpoint returns 404
+when no token is configured. A Render Cron Job can instead use the management
+command with this service's database and the same ZeptoMail environment
+variables. Defaults are one reminder after 7 days below
+100 views and one popular-post email at 1,000 views; adjust the matching
+environment variables to change them. The command also retries queued story
+emails that previously failed.
+
 Environment variables (all optional, sensible dev defaults):
 
 | Variable                     | Default                           |
@@ -23,6 +45,15 @@ Environment variables (all optional, sensible dev defaults):
 | `DJANGO_CSRF_TRUSTED_ORIGINS`| — (Render domain appended)        |
 | `DATABASE_URL`               | — (SQLite when unset)             |
 | `MEDIA_ROOT`                 | `<repo>/media`                    |
+| `EMAIL_BACKEND`              | Console in debug; SMTP in production |
+| `EMAIL_HOST`, `EMAIL_PORT`, `EMAIL_HOST_USER`, `ZEPTOMAIL_SMTP_TOKEN`, `EMAIL_USE_TLS` | ZeptoMail SMTP settings |
+| `DEFAULT_FROM_EMAIL`         | Verified TNE sender address       |
+| `PUBLIC_SITE_URL`            | `https://thenigerianentrepreneur.com` |
+| `ADMIN_NOTIFICATION_EMAILS`  | Comma-separated payout alert inboxes |
+| `LOW_POST_MIN_AGE_DAYS`      | `7`                                |
+| `LOW_POST_VIEW_THRESHOLD`    | `100`                              |
+| `HIGH_PERFORMANCE_VIEW_THRESHOLD` | `1000`                         |
+| `EMAIL_AUTOMATION_TOKEN`     | Required only for the protected automation endpoint |
 | `DJANGO_SUPERUSER_USERNAME` / `_PASSWORD` / `_EMAIL` | — (bootstrap)  |
 
 ## Deploy to Render

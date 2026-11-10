@@ -31,6 +31,32 @@ services:
         fromDatabase:
           name: naija-db
           property: connectionString
+      - key: EMAIL_BACKEND
+        value: django.core.mail.backends.smtp.EmailBackend
+      - key: EMAIL_HOST
+        value: smtp.zeptomail.com
+      - key: EMAIL_PORT
+        value: "587"
+      - key: EMAIL_HOST_USER
+        value: emailapikey
+      - key: ZEPTOMAIL_SMTP_TOKEN
+        sync: false
+      - key: EMAIL_USE_TLS
+        value: "True"
+      - key: DEFAULT_FROM_EMAIL
+        value: "The Nigerian Entrepreneur <noreply@thenigerianentrepreneur.com>"
+      - key: PUBLIC_SITE_URL
+        value: https://thenigerianentrepreneur.com
+      - key: ADMIN_NOTIFICATION_EMAILS
+        sync: false
+      - key: LOW_POST_MIN_AGE_DAYS
+        value: "7"
+      - key: LOW_POST_VIEW_THRESHOLD
+        value: "100"
+      - key: HIGH_PERFORMANCE_VIEW_THRESHOLD
+        value: "1000"
+      - key: EMAIL_AUTOMATION_TOKEN
+        sync: false
       # Optional admin override (created/refreshed on each deploy when set —
       # fill these in the Render dashboard; seeded fallback: admin
       # / naija-admin-2025):

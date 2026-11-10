@@ -1,0 +1,11 @@
+{% extends "emails/base.html" %}
+{% block title %}A new story from TNE{% endblock %}
+{% block content %}
+<p style="margin:0 0 10px;color:#0b8c52;font-size:11px;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;">Fresh from TNE</p>
+<h1 style="margin:0 0 14px;color:#14231a;font-size:27px;line-height:1.25;">{{ post.title }}</h1>
+<p style="margin:0 0 18px;color:#526058;font-size:14px;line-height:1.7;">{{ post.excerpt|default:"A new story for Nigeria’s builders and entrepreneurs." }}</p>
+<table role="presentation" cellspacing="0" cellpadding="0" border="0"><tr><td style="border-radius:8px;background:#0b6b3f;">
+  <a href="{{ post_url }}" style="display:inline-block;padding:14px 22px;color:#fff;text-decoration:none;font-size:14px;font-weight:700;">Read the story</a>
+</td></tr></table>
+{% endblock %}
+{% block footer_extra %}{% if unsubscribe_url %}<br><a href="{{ unsubscribe_url }}" style="color:#69756d;">Unsubscribe from story emails</a>{% endif %}{% endblock %}

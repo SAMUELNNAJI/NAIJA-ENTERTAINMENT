@@ -1,0 +1,13 @@
+{% extends "emails/base.html" %}
+{% block title %}Payout request received{% endblock %}
+{% block content %}
+<p style="margin:0 0 10px;color:#0b8c52;font-size:11px;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;">Admin notification</p>
+<h1 style="margin:0 0 16px;color:#14231a;font-size:28px;">A payout needs review.</h1>
+<p style="margin:0 0 18px;color:#526058;font-size:15px;line-height:1.7;">{{ creator.name }} ({{ creator.user.email }}) submitted a payout request.</p>
+<div style="padding:18px 20px;border:1px solid #e0eae3;border-radius:12px;background:#f7faf8;">
+  <span style="display:block;color:#69756d;font-size:12px;">REQUESTED AMOUNT</span>
+  <strong style="display:block;margin-top:6px;color:#0b6b3f;font-size:27px;">₦{{ payout.amount|floatformat:2 }}</strong>
+  <span style="display:block;margin-top:12px;color:#526058;font-size:13px;">{{ account.bank_name }} · {{ account.account_name }}</span>
+</div>
+<p style="margin:20px 0 0;"><a href="{{ site_url }}/panel/payouts/" style="color:#0b6b3f;font-weight:700;">Review payout requests</a></p>
+{% endblock %}

@@ -31,7 +31,8 @@ urlpatterns = [
         auth_views.PasswordResetView.as_view(
             form_class=CustomPasswordResetForm,
             template_name="auth/password_reset.html",
-            email_template_name="auth/password_reset_email.html",
+            email_template_name="auth/password_reset_email.txt",
+            html_email_template_name="auth/password_reset_email.html",
             subject_template_name="auth/password_reset_subject.txt",
             success_url="/password-reset/done/",
         ),
@@ -41,7 +42,8 @@ urlpatterns = [
         auth_views.PasswordResetView.as_view(
             form_class=CustomPasswordResetForm,
             template_name="auth/password_reset.html",
-            email_template_name="auth/password_reset_email.html",
+            email_template_name="auth/password_reset_email.txt",
+            html_email_template_name="auth/password_reset_email.html",
             subject_template_name="auth/password_reset_subject.txt",
             success_url="/password-reset/done/",
         ),
@@ -77,6 +79,9 @@ urlpatterns = [
         ),
     ),
     path("subscribe/", views.subscribe, name="subscribe"),
+    path("subscribe/confirm/<uuid:token>/", views.confirm_subscription, name="confirm_subscription"),
+    path("unsubscribe/<uuid:token>/", views.unsubscribe, name="unsubscribe"),
+    path("automation/post-emails/", views.run_post_email_automation, name="run_post_email_automation"),
     # dashboards
     path("dashboard/", views_dashboard.dashboard, name="dashboard"),
     path("dashboard/posts/", views_dashboard.dashboard_posts, name="dashboard_posts"),
@@ -153,4 +158,3 @@ urlpatterns = [
     # simple static pages: /about/, /contact/, /services/, /privacy-policy/
     re_path(r"^(?P<slug>[\w-]+)/$", views.page, name="page"),
 ]
-

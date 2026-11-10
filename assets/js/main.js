@@ -388,6 +388,7 @@
       e.preventDefault();
       var input = $('input[type="email"]', form);
       var status = $('[data-form-status]', form);
+      var submitButton = $('button[type="submit"]', form);
       var value = input ? input.value : '';
 
       if (!validEmail(value)) {
@@ -396,9 +397,34 @@
         return;
       }
 
-      if (status) { status.textContent = 'You’re on the list! Check your inbox to confirm.'; status.style.color = ''; status.classList.add('is-visible'); }
-      form.reset();
-      toast('Subscribed — welcome aboard!');
+      if (submitButton) submitButton.disabled = true;
+      fetch(form.action, {
+        method: 'POST',
+        body: new FormData(form),
+        headers: { 'X-Requested-With': 'XMLHttpRequest' },
+        credentials: 'same-origin'
+      }).then(function (response) {
+        return response.json().then(function (data) {
+          if (!response.ok || !data.ok) throw new Error(data.error || 'Subscription failed. Please try again.');
+          if (status) {
+            status.textContent = data.message;
+            status.style.color = '';
+            status.classList.add('is-visible');
+          }
+          form.reset();
+          toast(data.message);
+        }, function () {
+          throw new Error('We couldn’t subscribe you right now. Please try again.');
+        });
+      }).catch(function (error) {
+        if (status) {
+          status.textContent = error.message || 'We couldn’t subscribe you right now. Please try again.';
+          status.style.color = '#dc2626';
+          status.classList.add('is-visible');
+        }
+      }).finally(function () {
+        if (submitButton) submitButton.disabled = false;
+      });
     });
   });
 

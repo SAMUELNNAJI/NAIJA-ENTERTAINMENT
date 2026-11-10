@@ -173,16 +173,32 @@ LOGIN_URL = "login"
 LOGIN_REDIRECT_URL = "dashboard"
 LOGOUT_REDIRECT_URL = "home"
 
-# Email Configuration for Password Reset & Notifications
+# ZeptoMail SMTP configuration for account and newsletter email.
 EMAIL_BACKEND = os.environ.get(
     "EMAIL_BACKEND",
     "django.core.mail.backends.console.EmailBackend" if DEBUG else "django.core.mail.backends.smtp.EmailBackend"
 )
-EMAIL_HOST = os.environ.get("EMAIL_HOST", "smtp.sendgrid.net")
+EMAIL_HOST = os.environ.get("EMAIL_HOST", "smtp.zeptomail.com")
 EMAIL_PORT = int(os.environ.get("EMAIL_PORT", 587))
-EMAIL_HOST_USER = os.environ.get("EMAIL_HOST_USER", "")
-EMAIL_HOST_PASSWORD = os.environ.get("EMAIL_HOST_PASSWORD", "")
+EMAIL_HOST_USER = os.environ.get("EMAIL_HOST_USER", "emailapikey")
+EMAIL_HOST_PASSWORD = os.environ.get(
+    "ZEPTOMAIL_SMTP_TOKEN", os.environ.get("EMAIL_HOST_PASSWORD", "")
+)
 EMAIL_USE_TLS = os.environ.get("EMAIL_USE_TLS", "True").lower() in ("true", "1", "yes")
 DEFAULT_FROM_EMAIL = os.environ.get(
     "DEFAULT_FROM_EMAIL", "The Nigerian Entrepreneur <noreply@thenigerianentrepreneur.com>"
 )
+PUBLIC_SITE_URL = os.environ.get(
+    "PUBLIC_SITE_URL", "https://thenigerianentrepreneur.com"
+).rstrip("/")
+ADMIN_NOTIFICATION_EMAILS = [
+    email.strip()
+    for email in os.environ.get("ADMIN_NOTIFICATION_EMAILS", "").split(",")
+    if email.strip()
+]
+LOW_POST_VIEW_THRESHOLD = int(os.environ.get("LOW_POST_VIEW_THRESHOLD", "100"))
+LOW_POST_MIN_AGE_DAYS = int(os.environ.get("LOW_POST_MIN_AGE_DAYS", "7"))
+HIGH_PERFORMANCE_VIEW_THRESHOLD = int(
+    os.environ.get("HIGH_PERFORMANCE_VIEW_THRESHOLD", "1000")
+)
+EMAIL_AUTOMATION_TOKEN = os.environ.get("EMAIL_AUTOMATION_TOKEN", "")

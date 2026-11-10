@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light">
+  <title>{% block title %}The Nigerian Entrepreneur{% endblock %}</title>
+</head>
+<body style="margin:0;padding:0;background:#f2f5f3;color:#17221c;font-family:Arial,Helvetica,sans-serif;">
+  <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="background:#f2f5f3;">
+    <tr><td align="center" style="padding:34px 14px;">
+      <table role="presentation" width="600" cellspacing="0" cellpadding="0" border="0" style="width:100%;max-width:600px;background:#ffffff;border:1px solid #e4ebe6;border-radius:18px;overflow:hidden;">
+        <tr><td style="padding:26px 34px;background:#092d1d;color:#ffffff;">
+          <a href="{% if site_url %}{{ site_url }}{% else %}https://thenigerianentrepreneur.com{% endif %}" style="color:#ffffff;text-decoration:none;font-size:15px;font-weight:800;letter-spacing:1.2px;">THE NIGERIAN <span style="color:#b9ff3d;">ENTREPRENEUR</span></a>
+        </td></tr>
+        <tr><td style="padding:36px 34px 30px;">
+          {% block content %}{% endblock %}
+        </td></tr>
+        <tr><td style="padding:22px 34px;background:#f8faf8;border-top:1px solid #e8eee9;color:#6b756e;font-size:12px;line-height:1.6;">
+          <p style="margin:0 0 7px;">Ideas, opportunity and growth for Nigerian entrepreneurs.</p>
+          <a href="{{ site_url }}" style="color:#0a6b3f;text-decoration:underline;">Visit our website</a>
+          {% block footer_extra %}{% endblock %}
+        </td></tr>
+      </table>
+      <p style="margin:16px 0 0;color:#7a847d;font-size:11px;">&copy; The Nigerian Entrepreneur</p>
+    </td></tr>
+  </table>
+</body>
+</html>

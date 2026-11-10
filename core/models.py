@@ -7,6 +7,7 @@ live in core/content.py.
 from __future__ import annotations
 
 import re
+import uuid
 from decimal import Decimal
 
 from django.contrib.auth.models import User
@@ -214,6 +215,12 @@ class Comment(models.Model):
 
 class NewsletterSubscriber(models.Model):
     email = models.EmailField(unique=True)
+    user = models.ForeignKey(
+        User, on_delete=models.SET_NULL, null=True, blank=True, related_name="newsletter_subscriptions"
+    )
+    is_active = models.BooleanField(default=False)
+    unsubscribe_token = models.UUIDField(default=uuid.uuid4, unique=True, editable=False)
+    confirmation_sent_at = models.DateTimeField(null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:
@@ -221,6 +228,37 @@ class NewsletterSubscriber(models.Model):
 
     def __str__(self) -> str:
         return self.email
+
+
+class EmailDelivery(models.Model):
+    KIND_CHOICES = [
+        ("new_post", "New post"),
+        ("low_views", "Low-view reminder"),
+        ("high_performance", "High-performing post"),
+    ]
+    STATUS_CHOICES = [("queued", "Queued"), ("sent", "Sent")]
+
+    post = models.ForeignKey(Post, on_delete=models.CASCADE, related_name="email_deliveries")
+    recipient_email = models.EmailField()
+    kind = models.CharField(max_length=24, choices=KIND_CHOICES)
+    unsubscribe_token = models.UUIDField(null=True, blank=True)
+    status = models.CharField(max_length=8, choices=STATUS_CHOICES, default="queued")
+    attempts = models.PositiveSmallIntegerField(default=0)
+    last_error = models.CharField(max_length=500, blank=True)
+    sent_at = models.DateTimeField(null=True, blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ["created_at"]
+        constraints = [
+            models.UniqueConstraint(
+                fields=["post", "recipient_email", "kind"],
+                name="unique_post_email_delivery",
+            ),
+        ]
+
+    def __str__(self):
+        return f"{self.kind} for {self.post_id} to {self.recipient_email}"
 
 
 class SponsorAd(models.Model):

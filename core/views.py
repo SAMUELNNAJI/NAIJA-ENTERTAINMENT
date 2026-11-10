@@ -1,20 +1,28 @@
 """Views for The Nigerian Entrepreneur — one view per URL pattern."""
 import re
 import random
+import logging
+import secrets
+import uuid
+from datetime import timedelta
 
+from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth import login
 from django.db.models import Count, Q, Sum
-from django.http import Http404, JsonResponse
+from django.http import Http404, HttpResponseNotFound, JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.template.loader import render_to_string
 from django.urls import reverse
 from django.utils import timezone
+from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_POST
 
 from . import content
 from .forms import CommentForm, SignupForm
-from .models import Comment, NewsletterSubscriber, Post, PostDailyStat
+from .models import Comment, EmailDelivery, NewsletterSubscriber, Post, PostDailyStat
+
+logger = logging.getLogger(__name__)
 
 
 def _resolve_href(href):
@@ -378,8 +386,41 @@ def signup(request):
             CreatorProfile.objects.get_or_create(
                 user=user, defaults={"display_name": user.first_name or user.username}
             )
+        subscriber = None
+        if form.cleaned_data.get("email_updates"):
+            subscriber, created = NewsletterSubscriber.objects.get_or_create(
+                email=user.email.lower(),
+                defaults={"user": user, "is_active": False},
+            )
+            if not created and subscriber.user_id is None:
+                subscriber.user = user
+                subscriber.save(update_fields=["user"])
+        from .email_service import (
+            EmailDeliveryError,
+            send_account_email,
+            send_subscription_confirmation,
+        )
+
+        email_error = False
+        for kind in ("welcome", "business_promo"):
+            try:
+                send_account_email(user, kind)
+            except EmailDeliveryError:
+                logger.exception("Signup %s email failed for user %s", kind, user.pk)
+                email_error = True
+        if subscriber and not subscriber.is_active:
+            try:
+                send_subscription_confirmation(subscriber)
+            except EmailDeliveryError:
+                logger.exception("Newsletter confirmation email failed for user %s", user.pk)
+                email_error = True
         login(request, user)
         messages.success(request, "Welcome! Your account is ready.")
+        if email_error:
+            messages.warning(
+                request,
+                "Your account is ready, but some emails could not be sent. Please contact us if you need help.",
+            )
         return redirect("dashboard")
     return render(
         request,
@@ -413,11 +454,97 @@ def logout_view(request):
 @require_POST
 def subscribe(request):
     email = (request.POST.get("email") or "").strip()
-    if email:
-        NewsletterSubscriber.objects.get_or_create(email=email.lower())
+    from django.core.validators import validate_email
+    from django.core.exceptions import ValidationError
+
+    try:
+        validate_email(email)
+    except ValidationError:
+        if request.headers.get("X-Requested-With") == "XMLHttpRequest":
+            return JsonResponse({"ok": False, "error": "Enter a valid email address."}, status=400)
+        messages.error(request, "Enter a valid email address.")
+        return redirect(request.META.get("HTTP_REFERER", reverse("home")))
+    subscriber, _created = NewsletterSubscriber.objects.get_or_create(
+        email=email.lower(),
+        defaults={
+            "user": request.user if request.user.is_authenticated else None,
+            "is_active": False,
+        },
+    )
+    if not subscriber.is_active:
+        from .email_service import EmailDeliveryError, send_subscription_confirmation
+
+        if request.user.is_authenticated and subscriber.user_id is None:
+            subscriber.user = request.user
+            subscriber.save(update_fields=["user"])
+        resend_after = timezone.now() - timedelta(minutes=10)
+        if (
+            subscriber.confirmation_sent_at is None
+            or subscriber.confirmation_sent_at <= resend_after
+        ):
+            try:
+                send_subscription_confirmation(subscriber)
+            except EmailDeliveryError:
+                logger.exception("Newsletter confirmation email failed for %s", subscriber.email)
+                error = "We saved your request, but could not send the confirmation email. Please try again."
+                if request.headers.get("X-Requested-With") == "XMLHttpRequest":
+                    return JsonResponse({"ok": False, "error": error}, status=503)
+                messages.error(request, error)
+                return redirect(request.META.get("HTTP_REFERER", reverse("home")))
     if request.headers.get("X-Requested-With") == "XMLHttpRequest":
-        return JsonResponse({"ok": True})
-    messages.success(request, "You're subscribed. Welcome aboard!")
+        return JsonResponse(
+            {
+                "ok": True,
+                "message": (
+                    "You're subscribed to new story emails."
+                    if subscriber.is_active
+                    else "Check your inbox to confirm your story email subscription."
+                ),
+            }
+        )
+    messages.success(
+        request,
+        "You're subscribed to new story emails."
+        if subscriber.is_active
+        else "Check your inbox to confirm your story email subscription.",
+    )
     return redirect(request.META.get("HTTP_REFERER", reverse("home")))
 
 
+def confirm_subscription(request, token):
+    subscriber = get_object_or_404(NewsletterSubscriber, unsubscribe_token=token)
+    if not subscriber.is_active:
+        subscriber.is_active = True
+        subscriber.save(update_fields=["is_active"])
+    return render(request, "emails/subscribed.html")
+
+
+def unsubscribe(request, token):
+    subscriber = get_object_or_404(NewsletterSubscriber, unsubscribe_token=token)
+    if subscriber.is_active:
+        subscriber.is_active = False
+    subscriber.unsubscribe_token = uuid.uuid4()
+    subscriber.confirmation_sent_at = None
+    subscriber.save(update_fields=["is_active", "unsubscribe_token", "confirmation_sent_at"])
+    EmailDelivery.objects.filter(
+        unsubscribe_token=token,
+        status="queued",
+    ).delete()
+    return render(request, "emails/unsubscribed.html")
+
+
+@csrf_exempt
+@require_POST
+def run_post_email_automation(request):
+    token = settings.EMAIL_AUTOMATION_TOKEN
+    if not token:
+        return HttpResponseNotFound()
+    supplied_token = request.headers.get("Authorization", "")
+    expected_token = f"Bearer {token}"
+    if not secrets.compare_digest(supplied_token, expected_token):
+        return JsonResponse({"ok": False, "error": "Not authorized."}, status=403)
+
+    from .email_service import queue_post_engagement_emails
+
+    sent, failed = queue_post_engagement_emails()
+    return JsonResponse({"ok": True, "sent": sent, "failed_or_queued": failed})

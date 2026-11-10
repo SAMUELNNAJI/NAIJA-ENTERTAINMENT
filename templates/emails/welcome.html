@@ -1,0 +1,11 @@
+{% extends "emails/base.html" %}
+{% block title %}Welcome to The Nigerian Entrepreneur{% endblock %}
+{% block content %}
+<p style="margin:0 0 10px;color:#0b8c52;font-size:11px;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;">Your next chapter starts here</p>
+<h1 style="margin:0 0 16px;color:#14231a;font-size:30px;line-height:1.2;">Welcome, {{ name }}.</h1>
+<p style="margin:0 0 16px;color:#526058;font-size:16px;line-height:1.7;">Your account is ready. Explore practical business insights, meet ambitious builders, and share ideas with a community creating what comes next.</p>
+<table role="presentation" cellspacing="0" cellpadding="0" border="0"><tr><td style="border-radius:8px;background:#0b6b3f;">
+  <a href="{{ site_url }}" style="display:inline-block;padding:14px 22px;color:#fff;text-decoration:none;font-size:14px;font-weight:700;">Explore the latest stories</a>
+</td></tr></table>
+<p style="margin:22px 0 0;color:#526058;font-size:14px;line-height:1.7;">We’re glad you’re here.<br><strong style="color:#17221c;">The Nigerian Entrepreneur team</strong></p>
+{% endblock %}

@@ -47,6 +47,11 @@ class SignupForm(BootstrapFormMixin, UserCreationForm):
         initial=True,
         help_text="Get a creator dashboard, publish blogs and earn from ads.",
     )
+    email_updates = forms.BooleanField(
+        required=False,
+        label="Email me new stories and business opportunities",
+        help_text="Optional. Unsubscribe at any time.",
+    )
 
     class Meta:
         model = User
