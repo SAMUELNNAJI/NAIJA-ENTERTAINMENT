@@ -16,7 +16,7 @@ from django.utils import timezone
 
 from . import content, views_seo
 from .forms import PayoutAccountForm, PayoutRequestForm, PostForm, SponsorAdForm
-from .models import Comment, CreatorProfile, Notification, PayoutAccount, PayoutRequest, Post, PostDailyStat, SponsorAd
+from .models import Comment, CreatorProfile, Notification, PayoutAccount, PayoutRequest, Post, PostDailyStat, SponsorAd, estimate_view_earnings
 
 
 def _creator_or_none(user):
@@ -111,8 +111,7 @@ def dashboard(request):
     )
 
     total_views = sum(p.views for p in posts)
-    # 100 views/impression is 10 Naira
-    total_earned = (total_views / 100.0) * 10.0
+    total_earned = estimate_view_earnings(total_views)
 
     ctx = {
         "nav_active": "dashboard",
@@ -316,8 +315,7 @@ def admin_panel(request):
     top_posts = sorted(posts, key=lambda p: p.views, reverse=True)[:6]
 
     total_platform_views = sum(p.views for p in posts)
-    # 100 views/impression is 10 Naira
-    total_platform_earned = (total_platform_views / 100.0) * 10.0
+    total_platform_earned = estimate_view_earnings(total_platform_views)
 
     ctx = {
         "nav_active": "admin",

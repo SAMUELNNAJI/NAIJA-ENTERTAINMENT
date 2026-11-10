@@ -91,6 +91,25 @@
 </head>
 <body data-page="{% block page_id %}page{% endblock %}">
 
+<div class="site-loader" data-site-loader aria-hidden="true">
+  <div class="site-loader__glow site-loader__glow--lime"></div>
+  <div class="site-loader__glow site-loader__glow--violet"></div>
+  <div class="site-loader__content">
+    <div class="site-loader__emblem">
+      <span class="site-loader__orbit site-loader__orbit--outer"></span>
+      <span class="site-loader__orbit site-loader__orbit--inner"></span>
+      <img src="{% static 'img/photos/LOgo.png' %}" alt="">
+      <span class="site-loader__spark"></span>
+    </div>
+    <p class="site-loader__brand">THE NIGERIAN <strong>ENTREPRENEUR</strong></p>
+    <div class="site-loader__status">
+      <span class="site-loader__bars" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></span>
+      <span>LOADING FRESH IDEAS</span>
+    </div>
+  </div>
+  <div class="site-loader__progress"><span></span></div>
+</div>
+
 <a class="btn btn--primary btn--sm" href="#main" style="position:absolute;left:-999px;top:0;z-index:100" onfocus="this.style.left='8px';this.style.top='8px'" onblur="this.style.left='-999px'">Skip to content</a>
 
 <!-- ================= HEADER ================= -->

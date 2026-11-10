@@ -7,11 +7,19 @@ live in core/content.py.
 from __future__ import annotations
 
 import re
+from decimal import Decimal
 
 from django.contrib.auth.models import User
 from django.db import models
 from django.urls import reverse
 from django.utils import timezone
+
+
+NGN_PER_VIEW = Decimal("0.50")
+
+
+def estimate_view_earnings(views: int) -> Decimal:
+    return Decimal(views) * NGN_PER_VIEW
 
 
 def _slugify(title: str) -> str:
@@ -31,8 +39,8 @@ class CreatorProfile(models.Model):
     rpm = models.DecimalField(
         max_digits=6,
         decimal_places=2,
-        default=950,
-        help_text="Estimated NGN revenue per 1,000 post views.",
+        default=500,
+        help_text="Estimated NGN revenue per 1,000 post views (₦50 per 100 views).",
     )
     is_approved = models.BooleanField(default=True)
     created_at = models.DateTimeField(auto_now_add=True)
@@ -129,8 +137,7 @@ class Post(models.Model):
 
     @property
     def estimated_earnings(self):
-        """100 views/impression is 10 Naira (0.10 NGN per view/impression)."""
-        return (self.views / 100.0) * 10.0
+        return estimate_view_earnings(self.views)
 
 
     @property

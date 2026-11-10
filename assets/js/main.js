@@ -8,6 +8,28 @@
   var $  = function (sel, ctx) { return (ctx || document).querySelector(sel); };
   var $$ = function (sel, ctx) { return Array.prototype.slice.call((ctx || document).querySelectorAll(sel)); };
 
+  (function () {
+    if (!$('[data-site-loader]')) return;
+
+    var startedAt = Date.now();
+    var finished = false;
+    var fallbackTimer = setTimeout(finishLoading, 5000);
+
+    function finishLoading() {
+      if (finished) return;
+      finished = true;
+      document.documentElement.classList.add('is-loaded');
+    }
+
+    window.addEventListener('load', function () {
+      var minimumDuration = window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 100 : 500;
+      setTimeout(function () {
+        clearTimeout(fallbackTimer);
+        finishLoading();
+      }, Math.max(0, minimumDuration - (Date.now() - startedAt)));
+    }, { once: true });
+  })();
+
   /* Official contact destinations used by every reusable social-icon row. */
   var officialLinks = {
     's-x': 'https://x.com/tneforafrica',
