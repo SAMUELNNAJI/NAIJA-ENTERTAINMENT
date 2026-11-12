@@ -1,0 +1,114 @@
+[
+{
+  "model": "core.creatorprofile",
+  "pk": 1,
+  "fields": {
+    "user": 2,
+    "display_name": "Ngozi Eze",
+    "bio": "Finance writer covering savings, investing and business in Nigeria.",
+    "avatar_url": "",
+    "ad_balance": "0.00",
+    "rpm": "950.00",
+    "is_approved": true,
+    "created_at": "2026-10-17T00:03:00.166Z"
+  }
+},
+{
+  "model": "core.creatorprofile",
+  "pk": 2,
+  "fields": {
+    "user": 3,
+    "display_name": "Sami",
+    "bio": "",
+    "avatar_url": "",
+    "ad_balance": "0.00",
+    "rpm": "950.00",
+    "is_approved": true,
+    "created_at": "2026-10-17T01:31:45.582Z"
+  }
+},
+{
+  "model": "core.creatorprofile",
+  "pk": 6,
+  "fields": {
+    "user": 7,
+    "display_name": "Validator",
+    "bio": "",
+    "avatar_url": "",
+    "ad_balance": "0.00",
+    "rpm": "950.00",
+    "is_approved": true,
+    "created_at": "2026-10-17T08:31:29.993Z"
+  }
+},
+{
+  "model": "core.creatorprofile",
+  "pk": 7,
+  "fields": {
+    "user": 10,
+    "display_name": "Verify",
+    "bio": "",
+    "avatar_url": "",
+    "ad_balance": "0.00",
+    "rpm": "950.00",
+    "is_approved": true,
+    "created_at": "2026-10-17T09:16:01.928Z"
+  }
+},
+{
+  "model": "core.creatorprofile",
+  "pk": 8,
+  "fields": {
+    "user": 1,
+    "display_name": "admin",
+    "bio": "",
+    "avatar_url": "",
+    "ad_balance": "0.00",
+    "rpm": "950.00",
+    "is_approved": true,
+    "created_at": "2026-10-17T10:47:19.757Z"
+  }
+},
+{
+  "model": "core.creatorprofile",
+  "pk": 9,
+  "fields": {
+    "user": 9,
+    "display_name": "Admin",
+    "bio": "",
+    "avatar_url": "",
+    "ad_balance": "0.00",
+    "rpm": "950.00",
+    "is_approved": true,
+    "created_at": "2026-10-17T10:48:25.860Z"
+  }
+},
+{
+  "model": "core.creatorprofile",
+  "pk": 10,
+  "fields": {
+    "user": 13,
+    "display_name": "test_creator",
+    "bio": "",
+    "avatar_url": "",
+    "ad_balance": "0.00",
+    "rpm": "950.00",
+    "is_approved": true,
+    "created_at": "2026-10-17T14:32:14.198Z"
+  }
+},
+{
+  "model": "core.creatorprofile",
+  "pk": 11,
+  "fields": {
+    "user": 14,
+    "display_name": "test_staff",
+    "bio": "",
+    "avatar_url": "",
+    "ad_balance": "0.00",
+    "rpm": "950.00",
+    "is_approved": true,
+    "created_at": "2026-10-17T15:54:07.727Z"
+  }
+}
+]
