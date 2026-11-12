@@ -89,6 +89,8 @@ TEMPLATES = [
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
                 "core.context_processors.active_sponsor_ads",
+                "core.context_processors.show_ads",
+                "core.context_processors.show_ads",
             ],
             "builtins": ["core.templatetags.tne_tags"],
         },
