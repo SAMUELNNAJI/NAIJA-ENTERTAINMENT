@@ -2767,3 +2767,30 @@ input.field, select.field {
   width: 100% !important;
   box-sizing: border-box !important;
 }
+
+/* ============================================================
+   Ad Cards
+   ============================================================ */
+:root {
+  --border: var(--line, #e3e8ee);
+  --card: var(--white, #ffffff);
+}
+
+.ad-card-section {
+  margin: 30px 0 !important;
+  text-align: center;
+}
+
+.ad-card {
+  display: inline-block !important;
+  border: 1px solid var(--border) !important;
+  border-radius: 12px !important;
+  padding: 16px !important;
+  background: var(--card) !important;
+  min-height: 320px;
+  box-shadow: var(--shadow-sm);
+}
+
+.ad-card #container-fd0fa3acc9ff1b732e7daac83e145815 {
+  min-height: 280px;
+}
