@@ -1,0 +1,22 @@
+# /etc/systemd/system/naija.service
+# Run: sudo cp deploy/gunicorn.service /etc/systemd/system/naija.service
+
+[Unit]
+Description=Naija Gunicorn daemon for The Nigerian Entrepreneur
+After=network.target
+
+[Service]
+User=naija
+Group=www-data
+WorkingDirectory=/opt/naija
+Environment="PATH=/opt/naija/.venv/bin"
+ExecStart=/opt/naija/.venv/bin/gunicorn config.wsgi:application \
+    --bind 127.0.0.1:8000 \
+    --workers 3 \
+    --timeout 120
+ExecReload=/bin/kill -HUP $MAINPID
+Restart=always
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target
