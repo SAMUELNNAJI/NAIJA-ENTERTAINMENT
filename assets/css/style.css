@@ -106,6 +106,24 @@ p { margin: 0 0 1em; }
   padding-inline: 22px;
 }
 
+/* Full-bleed advertising placement */
+.banner-ad-section {
+  width: 100%;
+  margin: 30px 0;
+  text-align: center;
+}
+
+.banner-ad {
+  width: 100%;
+}
+
+.banner-ad iframe {
+  display: block;
+  width: 100% !important;
+  max-width: none !important;
+  margin-inline: auto;
+}
+
 /* ------------------------------------------------------------
    Logo
    ------------------------------------------------------------ */
