@@ -121,7 +121,14 @@ p { margin: 0 0 1em; }
   display: block;
   width: 100% !important;
   max-width: none !important;
+  height: 90px !important;
   margin-inline: auto;
+}
+
+@media (max-width: 728px) {
+  .banner-ad iframe {
+    height: clamp(50px, 12.36vw, 90px) !important;
+  }
 }
 
 /* ------------------------------------------------------------
