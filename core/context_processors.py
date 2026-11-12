@@ -15,8 +15,6 @@ NO_AD_URL_NAMES = {
     "notification_dismiss", "admin_panel_payouts", "admin_panel_sponsors",
     "admin_panel_sponsor_toggle", "admin_panel_sponsor_edit", "admin_panel_toggle_featured",
     "admin_panel_payout_action", "admin_panel_comment_toggle",
-    # Tools
-    "currency_converter", "currency_rates", "markets", "market_snapshot",
 }
 
 

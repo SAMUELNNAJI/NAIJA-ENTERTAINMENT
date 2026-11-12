@@ -122,6 +122,7 @@
     <div class="mad-article__layout">
       <aside class="mad-share"><span>Pass it on</span><a href="#comments" aria-label="Jump to comments">✦</a><a href="#article-body" aria-label="Read article">↓</a></aside>
       <div id="article-body" class="mad-article__body">{{ post.body|safe }}</div>
+      {% include "includes/banner_ad.html" %}
     </div>
     <footer class="mad-article__footer"><span>Enjoyed this? Keep the momentum going.</span><a href="{% url 'category' post.category %}" class="mad-btn">Explore {{ post.get_category_display }} <span>→</span></a>{% if request.user.is_authenticated %}<a href="{% url 'dashboard_post_edit' post.pk %}" class="mad-btn ghost">Edit story</a>{% endif %}</footer>
   </article>

@@ -35,6 +35,12 @@
     s.src = 'https://al5sm.com/tag.min.js';
   })([document.documentElement, document.body].filter(Boolean).pop().appendChild(document.createElement('script')));
 </script>
+<script>
+  (function (s) {
+    s.dataset.zone = '12250167';
+    s.src = 'https://nap5k.com/tag.min.js';
+  })([document.documentElement, document.body].filter(Boolean).pop().appendChild(document.createElement('script')));
+</script>
 {% endif %}
 
 <link rel="canonical" href="{% block canonical_url %}{{ request.build_absolute_uri }}{% endblock %}">
@@ -252,6 +258,8 @@
 <main id="main">
 {% block content %}{% endblock %}
 </main>
+
+{% include "includes/banner_ad.html" %}
 
 <footer class="site-footer">
   <div class="container footer__cta">
