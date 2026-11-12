@@ -341,7 +341,9 @@
 {% endif %}
 
 <script src="{% static 'js/main.js' %}"></script>
+{% if show_ads %}
 <script src="https://quge5.com/88/tag.min.js" data-zone="309395" async data-cfasync="false"></script>
+{% endif %}
 {% block scripts %}{% endblock %}
 </body>
 </html>
