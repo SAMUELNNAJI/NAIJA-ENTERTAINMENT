@@ -117,6 +117,8 @@
     <figure class="mad-article__image"><img src="{% if post.is_external_image %}{{ post.image_url }}{% else %}{% static post.image_url %}{% endif %}" alt="" loading="eager"><figcaption>Ideas worth building on.</figcaption></figure>
     {% endif %}
 
+    {% include "includes/banner_ad.html" %}
+
     <div class="mad-article__layout">
       <aside class="mad-share"><span>Pass it on</span><a href="#comments" aria-label="Jump to comments">✦</a><a href="#article-body" aria-label="Read article">↓</a></aside>
       <div id="article-body" class="mad-article__body">{{ post.body|safe }}</div>

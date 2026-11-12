@@ -355,7 +355,12 @@
     // Nothing left to reveal (section already fully loaded) — hide the button.
     if (!$$('[data-more-item][hidden]', scope).length) { btn.remove(); return; }
 
-    btn.addEventListener('click', function () {
+    btn.addEventListener('click', function (event) {
+      // Keep this control entirely client-side even when a parent container
+      // or a third-party script attaches its own navigation behaviour.
+      event.preventDefault();
+      event.stopPropagation();
+
       var hidden = $$('[data-more-item][hidden]', scope);
       var size  = parseInt(btn.getAttribute('data-batch'), 10) || 4;
       var batch = hidden.slice(0, size);
