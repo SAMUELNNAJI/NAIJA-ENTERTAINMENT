@@ -7,7 +7,8 @@ NO_AD_URL_NAMES = {
     "login", "signup", "logout",
     "password_reset", "password_reset_done", "password_reset_confirm", "password_reset_complete",
     # Dashboard / admin panel
-    "dashboard", "dashboard_posts", "dashboard_post_edit", "dashboard_post_delete",
+    "dashboard", "dashboard_posts", "dashboard_payouts", "dashboard_post_new",
+    "dashboard_post_edit", "dashboard_post_delete",
     "admin_panel", "admin_panel_posts", "admin_panel_post_new", "admin_panel_post_edit",
     "admin_panel_toggle_publish", "admin_panel_post_delete", "admin_panel_comments",
     "admin_panel_users", "admin_panel_user_toggle_suspend", "admin_panel_user_delete",

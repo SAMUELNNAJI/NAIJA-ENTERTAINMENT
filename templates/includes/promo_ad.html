@@ -1,0 +1,13 @@
+{% load static %}
+{% if show_ads %}
+<aside class="promo-ad" aria-label="Sponsored recommendation">
+  <a class="promo-ad__link" href="https://araplhn.org/4/8122c8edde2f5fee0607b139dd758dc4" target="_blank" rel="sponsored noopener noreferrer">
+    <img src="{% static 'img/photos/startup.jpg' %}" alt="Sponsored discovery" loading="lazy">
+    <span class="promo-ad__content">
+      <span class="promo-ad__eyebrow">Sponsored</span>
+      <strong>Discover your next opportunity</strong>
+      <span class="promo-ad__cta">Explore now <span aria-hidden="true">→</span></span>
+    </span>
+  </a>
+</aside>
+{% endif %}
