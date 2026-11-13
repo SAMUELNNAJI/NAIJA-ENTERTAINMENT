@@ -136,11 +136,31 @@
 <script>
 $(document).ready(function() {
   var $body = $('#{{ form.body.id_for_label }}');
+  var initialContent = '';
+
+  /* Custom "Reset to Default" toolbar button */
+  var resetButton = function(context) {
+    var ui = $.summernote.ui;
+    return ui.button({
+      contents: '<i class="note-icon-rollback"></i>&nbsp;Reset',
+      tooltip: 'Reset editor to default content',
+      click: function() {
+        var sure = window.confirm('Reset the editor back to its default state? All unsaved changes will be lost.');
+        if (!sure) return;
+        $body.summernote('code', initialContent);
+        $body.val(initialContent);
+      }
+    });
+  };
+
   $body.summernote({
     placeholder: 'Craft your article here... Write compelling stories, format headings, insert images, links and quotes.',
     tabsize: 2,
     height: 420,
     minHeight: 280,
+    buttons: {
+      resetToDefault: resetButton
+    },
     toolbar: [
       ['style', ['style']],
       ['font', ['bold', 'italic', 'underline', 'strikethrough', 'clear']],
@@ -150,9 +170,13 @@ $(document).ready(function() {
       ['para', ['ul', 'ol', 'paragraph']],
       ['table', ['table']],
       ['insert', ['link', 'picture', 'video', 'hr']],
+      ['misc', ['resetToDefault']],
       ['view', ['fullscreen', 'codeview', 'help']]
     ],
     callbacks: {
+      onInit: function() {
+        initialContent = $body.summernote('code');
+      },
       onChange: function(contents) {
         $body.val(contents);
       }
