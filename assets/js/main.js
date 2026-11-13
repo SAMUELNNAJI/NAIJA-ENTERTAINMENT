@@ -376,8 +376,11 @@
       else toast('Showing more articles');
 
       // keep any active filter applied to the newly revealed items
+      // Only re-apply client-side filters (buttons with data-filter).
+      // Category-page chips are <a href> links — clicking them would
+      // reload the page and undo the reveal we just did.
       var activeChip = $('.chip.is-active');
-      if (activeChip && activeChip.getAttribute('data-filter') !== 'all') activeChip.click();
+      if (activeChip && activeChip.hasAttribute('data-filter') && activeChip.getAttribute('data-filter') !== 'all') activeChip.click();
     });
   });
 
