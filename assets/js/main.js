@@ -385,6 +385,73 @@
   });
 
   /* ---------------------------------------------------------
+     AJAX "Load more" for category pages
+     Fetches the next batch of cards from the server without
+     reloading the page, then injects them into the grid.
+     --------------------------------------------------------- */
+  $$('[data-ajax-more]').forEach(function (btn) {
+    var container = btn.closest('[data-ajax-more-container]');
+    // Find the nearest card grid to append cards into.
+    var grid = $('[data-filter-scope] .article-stack') || $('[data-filter-scope] .cat-grid') || $('[data-filter-scope]');
+
+    btn.addEventListener('click', function () {
+      var url      = btn.getAttribute('data-url');
+      var page     = parseInt(btn.getAttribute('data-page') || '1', 10);
+      var filter   = btn.getAttribute('data-filter') || '';
+
+      // Build query string.
+      var qs = '?page=' + page;
+      if (filter && filter !== 'all') qs += '&filter=' + encodeURIComponent(filter);
+
+      btn.disabled = true;
+      btn.textContent = 'Loading…';
+
+      fetch(url + qs, {
+        headers: { 'X-Requested-With': 'XMLHttpRequest' }
+      })
+        .then(function (res) {
+          if (!res.ok) throw new Error('Server error ' + res.status);
+          return res.json();
+        })
+        .then(function (data) {
+          if (!data.ok || !data.html) throw new Error('Empty response');
+
+          // Parse the returned HTML fragment into real DOM nodes.
+          var tmp = document.createElement('div');
+          tmp.innerHTML = data.html;
+
+          // Find the right target — prefer the article-stack wrapper
+          // so cards land in the same column flow as the initial batch.
+          var target = $('[data-filter-scope] .article-stack', document) ||
+                       grid;
+
+          Array.prototype.forEach.call(tmp.children, function (node) {
+            node.classList.add('reveal', 'is-in');
+            if (target) target.appendChild(node);
+            else if (container) container.parentNode.insertBefore(node, container);
+          });
+
+          if (data.has_more) {
+            // Advance to the next page for the next click.
+            btn.setAttribute('data-page', data.next_page);
+            btn.disabled = false;
+            btn.textContent = 'Load more articles';
+          } else {
+            // No more posts — remove the button.
+            if (container) container.remove();
+            else btn.remove();
+            toast('All articles loaded');
+          }
+        })
+        .catch(function () {
+          btn.disabled = false;
+          btn.textContent = 'Load more articles';
+          toast('Could not load more articles — please try again');
+        });
+    });
+  });
+
+  /* ---------------------------------------------------------
      Forms: newsletter / subscribe / contact
      --------------------------------------------------------- */
   var emailPattern = /^[^\s@]+@[^\s@]+\.[a-z]{2,}$/i;

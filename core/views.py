@@ -176,6 +176,59 @@ def category(request, slug):
     return render(request, "pages/category.html", ctx)
 
 
+def category_load_more(request, slug):
+    """AJAX endpoint — returns the next batch of article cards as HTML fragments."""
+    try:
+        category_data = content.CATEGORIES[slug]
+    except KeyError:
+        return JsonResponse({"ok": False, "error": "Unknown category"}, status=404)
+
+    PAGE_SIZE = 4
+    try:
+        page_num = max(1, int(request.GET.get("page", 1)))
+    except (TypeError, ValueError):
+        page_num = 1
+
+    active_filter = (request.GET.get("filter") or "").strip().lower()
+    chip_values = [v for v, _ in category_data.get("chips", []) if v != "all"]
+    chip_filtered = active_filter in chip_values
+
+    posts_qs = Post.published().filter(category=slug).order_by("-published_at")
+
+    if chip_filtered:
+        matched = [
+            p for p in posts_qs
+            if active_filter in set(re.split(r"[ ,]+", p.tags.lower()))
+        ]
+        all_cards = _post_cards(request, matched)
+    else:
+        all_cards = _post_cards(request, list(posts_qs))
+
+    # The initial page already shows the first 15 (1 feature + 4 visible + 10 hidden).
+    # Each subsequent AJAX call delivers PAGE_SIZE more, offset from position 15.
+    INITIAL = 15
+    start = INITIAL + (page_num - 1) * PAGE_SIZE
+    batch = all_cards[start: start + PAGE_SIZE]
+    has_more = len(all_cards) > start + PAGE_SIZE
+
+    html_parts = []
+    for article in batch:
+        html_parts.append(
+            render_to_string(
+                "includes/mini_card.html",
+                {"article": article, "hidden": False},
+                request=request,
+            )
+        )
+
+    return JsonResponse({
+        "ok": True,
+        "html": "".join(html_parts),
+        "has_more": has_more,
+        "next_page": page_num + 1,
+    })
+
+
 def page(request, slug):
     try:
         template = content.STATIC_PAGES[slug]

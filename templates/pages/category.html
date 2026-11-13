@@ -126,8 +126,13 @@
   {% endif %}
 
   {% if db_posts|length > 5 or not db_posts and not chip_filtered %}
-  <div style="text-align:center;padding-bottom:8px">
-    <button class="btn btn--ghost btn--sm" type="button" data-more-btn data-batch="4">Load more articles</button>
+  <div style="text-align:center;padding-bottom:8px" data-ajax-more-container>
+    <button class="btn btn--ghost btn--sm"
+            type="button"
+            data-ajax-more
+            data-url="{% url 'category_load_more' category.slug %}"
+            data-page="1"
+            data-filter="{{ active_filter }}">Load more articles</button>
   </div>
   {% endif %}
 </div>

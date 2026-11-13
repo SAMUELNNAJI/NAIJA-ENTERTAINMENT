@@ -147,6 +147,7 @@ urlpatterns = [
     path("markets/snapshot/", views_tools.market_snapshot, name="market_snapshot"),
     # category archives: /finance/, /business/, /crypto/, ...
     re_path(r"^category/(?P<slug>[\w-]+)/$", views.category, name="category"),
+    re_path(r"^category/(?P<slug>[\w-]+)/more/$", views.category_load_more, name="category_load_more"),
     # long-form articles: /article/<slug>/
     re_path(r"^article/(?P<slug>[\w-]+)/$", views.article, name="article"),
     # SEO, Search Engine Crawlers & RSS Syndication
