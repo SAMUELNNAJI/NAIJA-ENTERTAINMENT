@@ -1474,22 +1474,39 @@ p { margin: 0 0 1em; }
 .toast {
   position: fixed;
   left: 50%;
-  bottom: 26px;
-  transform: translate(-50%, 20px);
-  background: var(--ink);
-  color: #fff;
-  padding: 12px 20px;
-  border-radius: 10px;
-  font-size: 13px;
+  bottom: 32px;
+  transform: translate(-50%, 24px);
+  background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+  color: #f1f5f9;
+  padding: 14px 24px 14px 18px;
+  border-radius: 14px;
+  font-size: 13.5px;
   font-weight: 600;
+  letter-spacing: 0.01em;
   opacity: 0;
   visibility: hidden;
-  transition: .22s;
-  z-index: 80;
-  box-shadow: var(--shadow-lg);
+  transition: opacity .28s ease, transform .28s cubic-bezier(.22,.68,0,1.2), visibility .28s;
+  z-index: 9000;
+  box-shadow: 0 8px 32px rgba(0,0,0,.45), 0 1px 0 rgba(255,255,255,.06) inset;
+  border: 1px solid rgba(99,179,237,.25);
+  max-width: 90vw;
+  white-space: nowrap;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  pointer-events: none;
 }
-
-.toast.is-visible { opacity: 1; visibility: visible; transform: translate(-50%, 0); }
+.toast::before {
+  content: '';
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #38bdf8;
+  flex-shrink: 0;
+  box-shadow: 0 0 6px #38bdf8;
+}
+.toast.is-visible { opacity: 1; visibility: visible; transform: translate(-50%, 0); pointer-events: auto; }
 
 /* ------------------------------------------------------------
    Reveal animation (only active once JS has flagged the document,
@@ -2747,8 +2764,7 @@ a.chip { text-decoration: none; }
   .site-footer .footer__inner { grid-template-columns: minmax(0, 1fr); }
 }
 
-/* ---------- toast + back to top ---------- */
-.toast { border: 1px solid rgba(232, 198, 106, .4); }
+/* ---------- back to top ---------- */
 .to-top {
   background: var(--grad-emerald);
   color: #fff;

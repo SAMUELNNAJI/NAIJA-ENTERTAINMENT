@@ -170,12 +170,13 @@
 
   function toast(message) {
     if (!toastEl) return;
-    toastEl.textContent = message;
+    toastEl.textContent = '';           /* clear first so ::before still renders */
+    toastEl.appendChild(document.createTextNode(message));
     toastEl.classList.add('is-visible');
     clearTimeout(toastTimer);
     toastTimer = setTimeout(function () {
       toastEl.classList.remove('is-visible');
-    }, 2800);
+    }, 7000);
   }
 
   /* ---------------------------------------------------------
@@ -391,15 +392,18 @@
      --------------------------------------------------------- */
   $$('[data-ajax-more]').forEach(function (btn) {
     var container = btn.closest('[data-ajax-more-container]');
-    // Find the nearest card grid to append cards into.
-    var grid = $('[data-filter-scope] .article-stack') || $('[data-filter-scope] .cat-grid') || $('[data-filter-scope]');
+    // Target: the article-stack inside the nearest filter scope,
+    // or fall back to the .cat-grid itself.
+    var scope = document.querySelector('[data-filter-scope]');
+    var target = scope
+      ? (scope.querySelector('.article-stack') || scope.querySelector('.cat-grid'))
+      : null;
 
     btn.addEventListener('click', function () {
-      var url      = btn.getAttribute('data-url');
-      var page     = parseInt(btn.getAttribute('data-page') || '1', 10);
-      var filter   = btn.getAttribute('data-filter') || '';
+      var url    = btn.getAttribute('data-url');
+      var page   = parseInt(btn.getAttribute('data-page') || '1', 10);
+      var filter = btn.getAttribute('data-filter') || '';
 
-      // Build query string.
       var qs = '?page=' + page;
       if (filter && filter !== 'all') qs += '&filter=' + encodeURIComponent(filter);
 
@@ -414,39 +418,39 @@
           return res.json();
         })
         .then(function (data) {
-          if (!data.ok || !data.html) throw new Error('Empty response');
+          if (!data.ok || !data.html.trim()) throw new Error('No more articles');
 
-          // Parse the returned HTML fragment into real DOM nodes.
           var tmp = document.createElement('div');
           tmp.innerHTML = data.html;
 
-          // Find the right target — prefer the article-stack wrapper
-          // so cards land in the same column flow as the initial batch.
-          var target = $('[data-filter-scope] .article-stack', document) ||
-                       grid;
-
+          /* Append every returned card into the grid — no page navigation */
           Array.prototype.forEach.call(tmp.children, function (node) {
-            node.classList.add('reveal', 'is-in');
-            if (target) target.appendChild(node);
-            else if (container) container.parentNode.insertBefore(node, container);
+            node.classList.add('reveal');
+            if (target) {
+              target.appendChild(node);
+            } else if (container) {
+              container.parentNode.insertBefore(node, container);
+            }
+            /* Trigger reveal animation on next frame */
+            requestAnimationFrame(function () { node.classList.add('is-in'); });
           });
 
           if (data.has_more) {
-            // Advance to the next page for the next click.
             btn.setAttribute('data-page', data.next_page);
             btn.disabled = false;
             btn.textContent = 'Load more articles';
           } else {
-            // No more posts — remove the button.
             if (container) container.remove();
             else btn.remove();
             toast('All articles loaded');
           }
         })
-        .catch(function () {
+        .catch(function (err) {
           btn.disabled = false;
           btn.textContent = 'Load more articles';
-          toast('Could not load more articles — please try again');
+          toast(err.message === 'No more articles'
+            ? 'No more articles to show'
+            : 'Could not load more articles — please try again');
         });
     });
   });

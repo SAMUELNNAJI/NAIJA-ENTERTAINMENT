@@ -159,7 +159,8 @@
         Join Our Newsletter
       </div>
       <div class="widget__body">
-        <form class="newsletter-form" data-newsletter novalidate>
+        <form class="newsletter-form" data-newsletter action="{% url 'subscribe' %}" method="post" novalidate>
+          {% csrf_token %}
           <p style="font-size:13px;color:var(--muted);margin:0">Get the latest business news, finance tips, crypto insights and entrepreneurial wisdom — straight to your inbox.</p>
           <input type="email" name="email" placeholder="Enter your email address" aria-label="Email address" required>
           <button class="btn btn--primary btn--block" type="submit">Subscribe</button>
