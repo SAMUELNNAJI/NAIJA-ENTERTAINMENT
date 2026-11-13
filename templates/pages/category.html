@@ -100,9 +100,6 @@
       {% for article in db_posts|slice:"1:5" %}
       {% include "includes/mini_card.html" with hidden=False %}
       {% endfor %}
-      {% for article in db_posts|slice:"5:" %}
-      {% include "includes/mini_card.html" with hidden=True %}
-      {% endfor %}
     </div>
     {% elif not chip_filtered %}
     {% include "includes/feature_card.html" with article=category.feature %}
@@ -125,7 +122,7 @@
   </div>
   {% endif %}
 
-  {% if db_posts|length > 5 or not db_posts and not chip_filtered %}
+  {% if db_posts|length > 5 %}
   <div style="text-align:center;padding-bottom:8px" data-ajax-more-container>
     <button class="btn btn--ghost btn--sm"
             type="button"
@@ -133,6 +130,10 @@
             data-url="{% url 'category_load_more' category.slug %}"
             data-page="1"
             data-filter="{{ active_filter }}">Load more articles</button>
+  </div>
+  {% elif not db_posts and not chip_filtered %}
+  <div style="text-align:center;padding-bottom:8px">
+    <button class="btn btn--ghost btn--sm" type="button" data-more-btn data-batch="4">Load more articles</button>
   </div>
   {% endif %}
 </div>

@@ -204,9 +204,10 @@ def category_load_more(request, slug):
     else:
         all_cards = _post_cards(request, list(posts_qs))
 
-    # The initial page already shows the first 15 (1 feature + 4 visible + 10 hidden).
-    # Each subsequent AJAX call delivers PAGE_SIZE more, offset from position 15.
-    INITIAL = 15
+    # The initial page shows one feature and four supporting cards.  Every
+    # remaining card is supplied by AJAX so the button never skips cards that
+    # were rendered into the page but left hidden.
+    INITIAL = 5
     start = INITIAL + (page_num - 1) * PAGE_SIZE
     batch = all_cards[start: start + PAGE_SIZE]
     has_more = len(all_cards) > start + PAGE_SIZE

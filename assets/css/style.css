@@ -1474,39 +1474,62 @@ p { margin: 0 0 1em; }
 .toast {
   position: fixed;
   left: 50%;
-  bottom: 32px;
+  bottom: 28px;
   transform: translate(-50%, 24px);
-  background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
-  color: #f1f5f9;
-  padding: 14px 24px 14px 18px;
-  border-radius: 14px;
-  font-size: 13.5px;
-  font-weight: 600;
-  letter-spacing: 0.01em;
+  isolation: isolate;
+  overflow: hidden;
+  background: linear-gradient(115deg, #0b1020 0%, #18214a 56%, #162e3e 100%);
+  color: #ffffff;
+  padding: 16px 24px 16px 18px;
+  border: 1px solid rgba(185, 255, 61, .85);
+  border-radius: 16px;
+  font-size: 14px;
+  font-weight: 800;
+  letter-spacing: .015em;
   opacity: 0;
   visibility: hidden;
   transition: opacity .28s ease, transform .28s cubic-bezier(.22,.68,0,1.2), visibility .28s;
   z-index: 9000;
-  box-shadow: 0 8px 32px rgba(0,0,0,.45), 0 1px 0 rgba(255,255,255,.06) inset;
-  border: 1px solid rgba(99,179,237,.25);
-  max-width: 90vw;
-  white-space: nowrap;
+  box-shadow: 0 18px 46px rgba(0,0,0,.55), 0 0 0 4px rgba(185,255,61,.12), 0 0 28px rgba(56,249,215,.22), inset 0 1px 0 rgba(255,255,255,.14);
+  max-width: min(90vw, 460px);
+  line-height: 1.45;
   display: flex;
   align-items: center;
   gap: 10px;
   pointer-events: none;
 }
 .toast::before {
-  content: '';
+  content: '✓';
   display: inline-block;
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background: #38bdf8;
+  width: 26px;
+  height: 26px;
+  border-radius: 9px;
+  background: linear-gradient(135deg, #b9ff3d, #38f9d7);
+  color: #08121a;
   flex-shrink: 0;
-  box-shadow: 0 0 6px #38bdf8;
+  display: grid;
+  place-items: center;
+  font-size: 15px;
+  font-weight: 900;
+  box-shadow: 0 0 16px rgba(185,255,61,.65);
+}
+.toast::after {
+  content: '';
+  position: absolute;
+  z-index: -1;
+  width: 150px;
+  height: 150px;
+  right: -76px;
+  top: -94px;
+  border-radius: 50%;
+  background: rgba(124,108,255,.38);
+  filter: blur(3px);
 }
 .toast.is-visible { opacity: 1; visibility: visible; transform: translate(-50%, 0); pointer-events: auto; }
+
+@media (max-width: 540px) {
+  .toast { bottom: 18px; width: calc(100vw - 32px); box-sizing: border-box; padding: 14px 17px; }
+}
 
 /* ------------------------------------------------------------
    Reveal animation (only active once JS has flagged the document,
