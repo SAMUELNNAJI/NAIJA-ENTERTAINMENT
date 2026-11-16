@@ -206,6 +206,43 @@
   </aside>
 </section>
 
+<!-- ================= NEWEST POSTS ================= -->
+<section class="container latest-posts" id="latest-posts" aria-labelledby="newest-posts-heading">
+  <div class="headline-row latest-posts__heading">
+    <div>
+      <span class="section__eyebrow">Just published</span>
+      <h2 class="section__title" id="newest-posts-heading">Newest posts</h2>
+    </div>
+    {% if latest_page_obj.paginator.count %}
+    <p class="latest-posts__count">Showing {{ latest_page_obj.start_index }}–{{ latest_page_obj.end_index }} of {{ latest_page_obj.paginator.count }} stories</p>
+    {% endif %}
+  </div>
+
+  {% if latest_posts %}
+  <div class="latest-posts__grid">
+    {% for article in latest_posts %}
+    {% include "includes/mini_card.html" with hidden=False %}
+    {% endfor %}
+  </div>
+
+  {% if latest_page_obj.paginator.num_pages > 1 %}
+  <nav class="latest-pagination" aria-label="Newest posts pagination">
+    {% if latest_page_obj.has_previous %}
+    <a class="btn btn--ghost btn--sm" href="?latest_page={{ latest_page_obj.previous_page_number }}#latest-posts">← Newer posts</a>
+    {% else %}
+    <span></span>
+    {% endif %}
+    <span class="latest-pagination__status">Page {{ latest_page_obj.number }} of {{ latest_page_obj.paginator.num_pages }}</span>
+    {% if latest_page_obj.has_next %}
+    <a class="btn btn--ghost btn--sm" href="?latest_page={{ latest_page_obj.next_page_number }}#latest-posts">Older posts →</a>
+    {% else %}
+    <span></span>
+    {% endif %}
+  </nav>
+  {% endif %}
+  {% endif %}
+</section>
+
 <!-- ================= CTA ================= -->
 <section class="container" style="padding-bottom:10px">
   <div class="cta cta--orange reveal">

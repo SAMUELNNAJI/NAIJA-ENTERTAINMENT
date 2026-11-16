@@ -88,7 +88,8 @@ def _post_cards(request, posts):
 
 
 def home(request):
-    ordered = Post.published().order_by("-published_at")
+    ordered = Post.published().order_by("-published_at", "-pk")
+    latest_page_obj = Paginator(ordered, 20).get_page(request.GET.get("latest_page"))
 
     # Each home filter is its own eleven-post database feed: a lead card plus
     # ten supporting cards. New published stories sort to the front.
@@ -130,6 +131,8 @@ def home(request):
             "filter_posts": filter_posts,
             "featured_posts": featured_posts,
             "popular_posts": popular_posts,
+            "latest_posts": _post_cards(request, latest_page_obj.object_list),
+            "latest_page_obj": latest_page_obj,
         },
     )
 
