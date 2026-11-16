@@ -18,30 +18,6 @@
 <meta name="googlebot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
 <meta name="bingbot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
 <meta name="google-site-verification" content="za9_sk-XprYc9cnMqTGW7vyIwOd3rN1Tq6e4ZH1bR4o" />
-<meta name="monetag" content="29aceab638705514dd186f827d560c04" />
-
-{% if show_ads %}
-<script data-cfasync="false" src="https://abscloud.org/1/daaad779e3c4970de27953044de9670f"></script>
-<script data-cfasync="false" src="https://bauval.org/14/064f2b083d789ebd2f6f203dc7c9450e"></script>
-<script>
-  (function (s) {
-    s.dataset.zone = '12250142';
-    s.src = 'https://n6wxm.com/vignette.min.js';
-  })([document.documentElement, document.body].filter(Boolean).pop().appendChild(document.createElement('script')));
-</script>
-<script>
-  (function (s) {
-    s.dataset.zone = '12250154';
-    s.src = 'https://al5sm.com/tag.min.js';
-  })([document.documentElement, document.body].filter(Boolean).pop().appendChild(document.createElement('script')));
-</script>
-<script>
-  (function (s) {
-    s.dataset.zone = '12250167';
-  })([document.documentElement, document.body].filter(Boolean).pop().appendChild(document.createElement('script')));
-</script>
-{% endif %}
-
 <link rel="canonical" href="{% block canonical_url %}{{ request.build_absolute_uri }}{% endblock %}">
 <link rel="alternate" type="application/rss+xml" title="The Nigerian Entrepreneur RSS Feed" href="{% url 'posts_feed' %}">
 <link rel="alternate" type="application/atom+xml" title="The Nigerian Entrepreneur Atom Feed" href="{% url 'posts_atom' %}">
@@ -258,8 +234,6 @@
 {% block content %}{% endblock %}
 </main>
 
-{% include "includes/banner_ad.html" %}
-
 <footer class="site-footer">
   <div class="container footer__cta">
     <div class="footer__cta-card">
@@ -352,17 +326,6 @@
   <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M12 19V6M6 12l6-6 6 6"/></svg>
 </button>
 <div class="toast" role="status" aria-live="polite"></div>
-
-{% if sponsor_ads %}
-<aside class="sponsor-banner" data-sponsor-banner hidden aria-label="Sponsored message">
-  {% for ad in sponsor_ads %}
-  <a class="sponsor-banner__slide{% if forloop.first %} is-active{% endif %}" data-sponsor-slide href="{{ ad.redirect_url }}" target="_blank" rel="sponsored noopener"{% if not forloop.first %} hidden{% endif %}>
-    <img src="{% if ad.is_external_image %}{{ ad.image_url }}{% else %}{% static ad.image_url %}{% endif %}" alt="{{ ad.title }}" loading="eager"{% if forloop.first %} fetchpriority="high"{% endif %} decoding="async"><span><small>Sponsored</small><strong>{{ ad.title }}</strong></span>
-  </a>
-  {% endfor %}
-  <button type="button" class="sponsor-banner__close" data-sponsor-close aria-label="Close sponsor message">×</button>
-</aside>
-{% endif %}
 
 <script src="{% static 'js/main.js' %}"></script>
 {% block scripts %}{% endblock %}
