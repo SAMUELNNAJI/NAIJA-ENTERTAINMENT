@@ -13,6 +13,7 @@ urlpatterns = [
     # site-wide search
     path("search/", views.search, name="search"),
     # blog
+    path("blog/", views.latest_posts, name="latest_posts"),
     re_path(r"^blog/(?P<slug>[\w-]+)/$", views.blog_detail, name="blog_detail"),
     # comments (AJAX)
     re_path(

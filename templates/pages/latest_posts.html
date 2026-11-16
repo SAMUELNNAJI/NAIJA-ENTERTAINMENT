@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Latest Business Stories | The Nigerian Entrepreneur{% endblock %}
+{% block meta_description %}The latest business, finance, startup, crypto and affiliate stories for Nigerian entrepreneurs.{% endblock %}
+{% block page_id %}latest-posts{% endblock %}
+
+{% block content %}
+<section class="page-hero t-business">
+  <div class="hero-scene"><img src="{% static 'img/photos/hero-home.jpg' %}" alt="Nigerian entrepreneur working on a laptop in a bright office"></div>
+  <div class="container page-hero__body">
+    <nav class="crumbs"><a href="{% url 'home' %}">Home</a><span>›</span>Latest stories</nav>
+    <h1>Newest ideas, first.</h1>
+    <p>Fresh business intelligence, practical finance and founder stories—always arranged from the most recently published.</p>
+  </div>
+</section>
+
+<section class="container latest-posts section" aria-labelledby="latest-posts-heading">
+  <div class="headline-row latest-posts__heading">
+    <div>
+      <span class="section__eyebrow">The latest</span>
+      <h2 class="section__title" id="latest-posts-heading">Latest stories</h2>
+    </div>
+    {% if page_obj.paginator.count %}
+    <p class="latest-posts__count">Showing {{ page_obj.start_index }}–{{ page_obj.end_index }} of {{ page_obj.paginator.count }} published stories</p>
+    {% endif %}
+  </div>
+
+  {% if posts %}
+  <div class="latest-posts__grid">
+    {% for article in posts %}
+    {% include "includes/mini_card.html" with hidden=False %}
+    {% endfor %}
+  </div>
+
+  {% if page_obj.paginator.num_pages > 1 %}
+  <nav class="latest-pagination" aria-label="Latest stories pagination">
+    {% if page_obj.has_previous %}
+    <a class="btn btn--ghost btn--sm" href="?page={{ page_obj.previous_page_number }}">← Newer stories</a>
+    {% else %}
+    <span></span>
+    {% endif %}
+    <span class="latest-pagination__status">Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}</span>
+    {% if page_obj.has_next %}
+    <a class="btn btn--ghost btn--sm" href="?page={{ page_obj.next_page_number }}">Older stories →</a>
+    {% else %}
+    <span></span>
+    {% endif %}
+  </nav>
+  {% endif %}
+  {% else %}
+  <p class="filter-empty">No stories have been published yet. Check back soon.</p>
+  {% endif %}
+</section>
+{% endblock %}

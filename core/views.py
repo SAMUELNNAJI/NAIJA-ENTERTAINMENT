@@ -9,6 +9,7 @@ from datetime import timedelta
 from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth import login
+from django.core.paginator import Paginator
 from django.db.models import Count, Q, Sum
 from django.http import Http404, HttpResponseNotFound, JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
@@ -129,6 +130,22 @@ def home(request):
             "filter_posts": filter_posts,
             "featured_posts": featured_posts,
             "popular_posts": popular_posts,
+        },
+    )
+
+
+def latest_posts(request):
+    """A chronological archive of published stories, twenty per page."""
+    posts = Post.published().order_by("-published_at", "-pk")
+    page_obj = Paginator(posts, 20).get_page(request.GET.get("page"))
+
+    return render(
+        request,
+        "pages/latest_posts.html",
+        {
+            "posts": _post_cards(request, page_obj.object_list),
+            "page_obj": page_obj,
+            "nav_active": "latest",
         },
     )
 
