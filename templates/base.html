@@ -239,6 +239,16 @@
 
 <main id="main">
 {% block content %}{% endblock %}
+
+<!-- ================= AD SECTION ================= -->
+{% block ad_section %}
+<section class="container ad-section">
+  <div class="ad-section__inner">
+    <span class="ad-section__label">Advertisement</span>
+    <div class="ad-section__slot" id="main-ad-{{ block.super|default:'page' }}"></div>
+  </div>
+</section>
+{% endblock %}
 </main>
 
 <footer class="site-footer">
@@ -336,5 +346,19 @@
 
 <script src="{% static 'js/main.js' %}"></script>
 {% block scripts %}{% endblock %}
+
+<!-- ================= VIDEO AD ================= -->
+<script>
+(function(aqbmtg){
+var d = document,
+    s = d.createElement('script'),
+    l = d.currentScript || d.scripts[d.scripts.length - 1];
+s.settings = aqbmtg || {};
+s.src = "\/\/unfortunateheart.com\/bzXyV.s\/dMGRlT0RYOWYcH\/pexmS9uuHZrU-lQkJPITVcq2iNZDNAox\/MNTTcHtQNHz\/YZ0UMnDCEgyZMVQk";
+s.async = true;
+s.referrerPolicy = 'no-referrer-when-downgrade';
+l.parentNode.insertBefore(s, l);
+})({})
+</script>
 </body>
 </html>
